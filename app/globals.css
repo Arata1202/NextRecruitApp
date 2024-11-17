@@ -4,10 +4,14 @@
 
 /* テーマ */
 .LightTheme {
-  background-color: white;
+  background-color: rgb(249 250 251);
   color: rgb(55 65 81);
   border-color: rgb(209 213 219);
   --tw-ring-color: rgb(209 213 219);
+}
+
+.error {
+  margin: 0 !important;
 }
 
 :root {
