@@ -120,7 +120,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: 'https://next-recruit-app-eight.vercel.app/api/auth/apple',
+        redirectTo: '/',
       },
     });
   };
