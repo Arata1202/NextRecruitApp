@@ -119,6 +119,9 @@ export default function SignUp() {
   const handleAppleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
+      options: {
+        redirectTo: 'https://next-recruit-app-eight.vercel.app/auth/apple',
+      },
     });
   };
 
