@@ -3,7 +3,7 @@
 import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { Switch } from '@headlessui/react';
-import { useState, useRef, Fragment } from 'react';
+import { useState, useRef, Fragment, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Transition } from '@headlessui/react';
 import { XMarkIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
@@ -27,6 +27,7 @@ export default function SignUp() {
     watch,
     setError,
     clearErrors,
+    reset,
   } = useForm<FormData>();
   const [enabled, setEnabled] = useState(false);
   const password = watch('password');
@@ -38,6 +39,23 @@ export default function SignUp() {
   const [ConfirmTitle, setConfirmTitle] = useState('');
   const [ConfirmMessage, setConfirmMessage] = useState('');
 
+  useEffect(() => {
+    if (confirmShow) {
+      const timer = setTimeout(() => {
+        setConfirmShow(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [confirmShow]);
+  useEffect(() => {
+    if (errorShow) {
+      const timer = setTimeout(() => {
+        setErrorShow(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorShow]);
+
   const onChange = (value: string | null) => {
     setCaptchaValue(value);
     if (value) {
@@ -46,66 +64,59 @@ export default function SignUp() {
   };
 
   const onSubmit = async (data: FormData) => {
-    if (data.password !== data.passwordConf) {
-      return;
-    }
     if (!captchaValue) {
       setError('recaptcha', { type: 'manual', message: 'reCAPTCHAをチェックしてください。' });
       return;
     }
-    try {
-      const recaptchaResponse = await fetch('/api/recaptcha', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          'g-recaptcha-response': captchaValue,
-        }),
-      });
 
-      const recaptchaResult = await recaptchaResponse.json();
-      if (!recaptchaResult.success) {
-        setErrorTitle('reCAPTCHAの検証に失敗しました。');
-        setErrorMessage('お手数ですが、もう一度やり直してください。');
-        setErrorShow(true);
-        return;
-      }
+    const recaptchaResponse = await fetch('/api/recaptcha', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        'g-recaptcha-response': captchaValue,
+      }),
+    });
 
-      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
-        email: data.email,
-        password: data.password,
-      });
-      const identities = signUpData?.user?.identities;
-      if (identities?.length === 0) {
-        setErrorTitle('このメールアドレスは既に登録されています。');
-        setErrorMessage('別のメールアドレスを使用するか、ログインしてください。');
-        setErrorShow(true);
-        return;
-      }
-      if (signUpError) {
-        return;
-      }
-      setConfirmTitle('確認メールを送信しました。');
-      setConfirmMessage('メール内のリンクから登録を完了させてください。');
-      setConfirmShow(true);
-    } catch (error) {
+    const recaptchaResult = await recaptchaResponse.json();
+    if (!recaptchaResult.success) {
+      setErrorTitle('reCAPTCHAの検証に失敗しました。');
+      setErrorMessage('お手数ですが、最初からやり直してください。');
+      setErrorShow(true);
+      reset();
       return;
     }
+
+    const { data: signUpData } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+    });
+    const identities = signUpData?.user?.identities;
+    if (identities?.length === 0) {
+      setErrorTitle('このメールアドレスは既に登録されています。');
+      setErrorMessage('別のメールアドレスを使用するか、ログインしてください。');
+      setErrorShow(true);
+      reset();
+      return;
+    }
+    setConfirmTitle('確認メールを送信しました。');
+    setConfirmMessage('メール内のリンクから登録を完了させてください。');
+    setConfirmShow(true);
+    reset();
   };
 
   const handleGoogleLogin = async () => {
-    try {
-      const { error } = await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: '/',
-        },
-      });
-      if (error) {
-        return;
-      }
-    } catch {
-      return;
-    }
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: '/',
+      },
+    });
+  };
+
+  const handleGithubLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'github',
+    });
   };
 
   return (
@@ -149,7 +160,7 @@ export default function SignUp() {
                         message: '有効なメールアドレスを入力してください。',
                       },
                     })}
-                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 px-2"
                   />
                   {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                 </div>
@@ -192,7 +203,7 @@ export default function SignUp() {
                         return true;
                       },
                     })}
-                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 px-2"
                   />
                   {errors.password && <p className="text-red-500">{errors.password.message}</p>}
                 </div>
@@ -211,7 +222,7 @@ export default function SignUp() {
                       required: 'パスワード（確認）を入力してください。',
                       validate: (value) => value === password || 'パスワードが一致しません。',
                     })}
-                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                    className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 px-2"
                   />
                   {errors.passwordConf && (
                     <p className="text-red-500">{errors.passwordConf.message}</p>
@@ -294,6 +305,7 @@ export default function SignUp() {
               </div>
 
               <div className="mt-6 grid grid-cols-2 gap-4">
+                {/* Google */}
                 <button
                   onClick={handleGoogleLogin}
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
@@ -318,8 +330,11 @@ export default function SignUp() {
                   </svg>
                   <span className="text-sm/6 font-semibold">Google</span>
                 </button>
-
-                <button className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent">
+                {/* GitHub */}
+                <button
+                  onClick={handleGithubLogin}
+                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                >
                   <svg
                     fill="currentColor"
                     viewBox="0 0 20 20"
@@ -333,6 +348,34 @@ export default function SignUp() {
                     />
                   </svg>
                   <span className="text-sm/6 font-semibold">GitHub</span>
+                </button>
+              </div>
+              <div className="mt-3 grid grid-cols-2 gap-4">
+                {/* Apple */}
+                <button className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent">
+                  <svg
+                    width="22"
+                    height="22"
+                    viewBox="0 0 24 24"
+                    fill="var(--alias-color-system-staticWhite-default)"
+                    xmlns="http://www.w3.org/2000/svg"
+                    version="1.1"
+                    role="img"
+                  >
+                    <title>Apple</title>
+                    <path d="M12.4824 5.75781C13.4531 5.75781 14.6699 5.11523 15.3809 4.24023C16.0371 3.44727 16.5156 2.35352 16.5156 1.25977C16.5156 1.10938 16.502 0.958984 16.4746 0.835938C15.3945 0.876953 14.0957 1.54688 13.3301 2.44922C12.7285 3.14648 12.1543 4.24023 12.1543 5.34766C12.1543 5.51172 12.1816 5.67578 12.1953 5.73047C12.2637 5.74414 12.373 5.75781 12.4824 5.75781Z"></path>
+                    <path d="M9.0918 22.2051C10.418 22.2051 11.0059 21.3164 12.6465 21.3164C14.3008 21.3164 14.6836 22.1777 16.1465 22.1777C17.582 22.1777 18.5527 20.8516 19.4551 19.5391C20.4805 18.0352 20.9043 16.5859 20.918 16.5039C20.8359 16.4766 18.0742 15.3555 18.0742 12.1836C18.0742 9.43555 20.248 8.21875 20.3711 8.12305C18.9355 6.04492 16.748 5.99023 16.1465 5.99023C14.5195 5.99023 13.2207 6.97461 12.373 6.97461C11.4844 6.97461 10.3086 6.04492 8.90039 6.04492C6.24805 6.04492 3.54102 8.25977 3.54102 12.4023C3.54102 15 4.53906 17.7207 5.76953 19.4844C6.83594 20.9746 7.76562 22.2051 9.0918 22.2051Z"></path>
+                  </svg>
+                  <span className="text-sm/6 font-semibold">Apple</span>
+                </button>
+                {/* X */}
+                <button className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent">
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://cdn.qiita.com/assets/brand_icons/icon-x-23c6879a50878a0838c78bdbb3d17c16.svg"
+                  />
+                  <span className="text-sm/6 font-semibold">X（旧Twitter）</span>
                 </button>
               </div>
             </div>
