@@ -1,13 +1,13 @@
 'use client';
 
-import Home from '@/components/Pages/Home';
+import Settings from '@/components/Pages/Settings';
 import { useAuthMainCheck } from '@/hooks/Moddleware/Main';
 
-export default function HomePage() {
+export default function SettingsPage() {
   const { userChecked } = useAuthMainCheck();
 
   if (!userChecked) {
     return null;
   }
-  return <Home />;
+  return <Settings />;
 }

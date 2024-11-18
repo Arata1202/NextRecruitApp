@@ -1,13 +1,13 @@
 'use client';
 
-import Home from '@/components/Pages/Home';
+import Selection from '@/components/Pages/Selection';
 import { useAuthMainCheck } from '@/hooks/Moddleware/Main';
 
-export default function HomePage() {
+export default function SelectionPage() {
   const { userChecked } = useAuthMainCheck();
 
   if (!userChecked) {
     return null;
   }
-  return <Home />;
+  return <Selection />;
 }

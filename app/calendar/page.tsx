@@ -1,13 +1,13 @@
 'use client';
 
-import Home from '@/components/Pages/Home';
+import Calendar from '@/components/Pages/Calendar';
 import { useAuthMainCheck } from '@/hooks/Moddleware/Main';
 
-export default function HomePage() {
+export default function CalendarPage() {
   const { userChecked } = useAuthMainCheck();
 
   if (!userChecked) {
     return null;
   }
-  return <Home />;
+  return <Calendar />;
 }
