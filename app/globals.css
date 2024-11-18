@@ -10,6 +10,16 @@
   --tw-ring-color: rgb(209 213 219);
 }
 
+/* メディアクエリ */
+.SidebarLayout {
+  display: none;
+}
+@media (max-width: 1023px) {
+  .SidebarLayout {
+    display: block;
+  }
+}
+
 .error {
   margin: 0 !important;
 }
