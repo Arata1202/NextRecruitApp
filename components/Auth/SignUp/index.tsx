@@ -119,9 +119,6 @@ export default function SignUp() {
   const handleAppleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
-      options: {
-        redirectTo: '/',
-      },
     });
   };
 
