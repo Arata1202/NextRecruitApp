@@ -83,6 +83,7 @@ export default function SignUp() {
       setErrorMessage('お手数ですが、最初からやり直してください。');
       setErrorShow(true);
       reset();
+      recaptchaRef.current?.reset();
       return;
     }
 
@@ -96,12 +97,14 @@ export default function SignUp() {
       setErrorMessage('別のメールアドレスを使用するか、ログインしてください。');
       setErrorShow(true);
       reset();
+      recaptchaRef.current?.reset();
       return;
     }
     setConfirmTitle('確認メールを送信しました。');
     setConfirmMessage('メール内のリンクから登録を完了させてください。');
     setConfirmShow(true);
     reset();
+    recaptchaRef.current?.reset();
   };
 
   const handleGoogleLogin = async () => {
@@ -313,7 +316,7 @@ export default function SignUp() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-4">
+              <div className="mt-6 grid grid-cols-2 gap-2.5">
                 {/* Google */}
                 <button
                   onClick={handleGoogleLogin}
@@ -359,7 +362,7 @@ export default function SignUp() {
                   <span className="text-sm/6 font-semibold">GitHub</span>
                 </button>
               </div>
-              <div className="mt-3 grid grid-cols-2 gap-4">
+              <div className="mt-3 grid grid-cols-2 gap-2.5">
                 {/* Apple */}
                 <button
                   onClick={handleAppleLogin}
