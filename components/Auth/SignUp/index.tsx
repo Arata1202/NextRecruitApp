@@ -191,7 +191,6 @@ export default function SignUp() {
                   <input
                     id="password"
                     type={enabled ? 'text' : 'password'}
-                    autoComplete="current-password"
                     required
                     {...register('password', {
                       required: 'パスワードを入力してください。',
