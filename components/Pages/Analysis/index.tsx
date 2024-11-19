@@ -18,6 +18,16 @@ type AnalysisTitle = {
   title: string;
 };
 
+type AnalysisRawData = {
+  id: number;
+  title_id: {
+    id: number;
+    title: string;
+    sort: number;
+  };
+  description: string;
+};
+
 export default function Calendar() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
@@ -63,26 +73,37 @@ export default function Calendar() {
             `
             id,
             title_id (
-              title
+              id,
+              title,
+              sort
             ),
             description
           `,
           )
-          .eq('supabaseauth_id', userId)
-          .order('id', { ascending: true });
+          .eq('supabaseauth_id', userId);
 
-        if (error) throw error;
+        if (error) {
+          console.error('Error fetching analyses:', error.message, error.details, error.hint);
+          return;
+        }
+
+        if (!data) {
+          console.error('No data fetched');
+          return;
+        }
 
         const formattedData = data.map((item: any) => ({
           id: item.id,
-          title: item.title_id.title,
+          title: item.title_id?.title || 'Untitled',
           description: item.description,
+          sort: item.title_id?.sort || 0,
         }));
 
-        setAnalyses(formattedData);
+        const sortedData = formattedData.sort((a, b) => a.sort - b.sort);
+
+        setAnalyses(sortedData);
       } catch (error) {
         console.error('Error fetching analyses:', error);
-      } finally {
       }
     };
 
@@ -117,7 +138,6 @@ export default function Calendar() {
     }
 
     try {
-      // title_id の検証
       const { data: titleData } = await supabase
         .from('analysistitle')
         .select('id')
