@@ -91,10 +91,7 @@ export default function SignUp() {
       email: data.email,
       password: data.password,
       options: {
-        emailRedirectTo:
-          process.env.VERCEL_ENV === 'development'
-            ? 'http://localhost:3000'
-            : 'https://next-recruit-app-eight.vercel.app',
+        emailRedirectTo: window.location.origin,
       },
     });
     const identities = signUpData?.user?.identities;
@@ -113,16 +110,11 @@ export default function SignUp() {
     recaptchaRef.current?.reset();
   };
 
-  const redirectUrl =
-    process.env.VERCEL_ENV === 'development'
-      ? 'http://localhost:3000'
-      : 'https://next-recruit-app-eight.vercel.app';
-
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: window.location.origin,
       },
     });
   };
@@ -131,7 +123,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: window.location.origin,
       },
     });
   };
@@ -140,7 +132,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: window.location.origin,
       },
     });
   };
@@ -149,7 +141,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'twitter',
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: window.location.origin,
       },
     });
   };

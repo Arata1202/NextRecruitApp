@@ -51,16 +51,11 @@ export default function Login() {
     await router.push('/');
   };
 
-  const redirectUrl =
-    process.env.VERCEL_ENV === 'development'
-      ? 'http://localhost:3000'
-      : 'https://next-recruit-app-eight.vercel.app';
-
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: window.location.origin,
       },
     });
   };
@@ -69,7 +64,7 @@ export default function Login() {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: window.location.origin,
       },
     });
   };
@@ -78,7 +73,7 @@ export default function Login() {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: window.location.origin,
       },
     });
   };
@@ -87,7 +82,7 @@ export default function Login() {
     await supabase.auth.signInWithOAuth({
       provider: 'twitter',
       options: {
-        redirectTo: redirectUrl,
+        redirectTo: window.location.origin,
       },
     });
   };
