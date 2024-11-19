@@ -110,12 +110,12 @@ export default function SignUp() {
     recaptchaRef.current?.reset();
   };
 
-  const redirectTo = process.env.BASE_URL;
+  const redirectUrl = process.env.BASE_URL;
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo,
+        redirectTo: redirectUrl,
       },
     });
   };
@@ -124,7 +124,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo,
+        redirectTo: redirectUrl,
       },
     });
   };
@@ -133,7 +133,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo,
+        redirectTo: redirectUrl,
       },
     });
   };
@@ -142,7 +142,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'twitter',
       options: {
-        redirectTo,
+        redirectTo: redirectUrl,
       },
     });
   };
