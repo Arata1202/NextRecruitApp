@@ -51,27 +51,40 @@ export default function Login() {
     await router.push('/');
   };
 
+  const redirectTo = process.env.BASE_URL;
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
+      options: {
+        redirectTo,
+      },
     });
   };
 
   const handleGithubLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
+      options: {
+        redirectTo,
+      },
     });
   };
 
   const handleAppleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
+      options: {
+        redirectTo,
+      },
     });
   };
 
   const handleTwitterLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'twitter',
+      options: {
+        redirectTo,
+      },
     });
   };
 

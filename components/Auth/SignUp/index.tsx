@@ -87,9 +87,12 @@ export default function SignUp() {
       return;
     }
 
-    const { data: signUpData } = await supabase.auth.signUp({
+    const { data: signUpData, error } = await supabase.auth.signUp({
       email: data.email,
       password: data.password,
+      options: {
+        emailRedirectTo: process.env.BASE_URL,
+      },
     });
     const identities = signUpData?.user?.identities;
     if (identities?.length === 0) {
@@ -107,27 +110,40 @@ export default function SignUp() {
     recaptchaRef.current?.reset();
   };
 
+  const redirectTo = process.env.BASE_URL;
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
+      options: {
+        redirectTo,
+      },
     });
   };
 
   const handleGithubLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
+      options: {
+        redirectTo,
+      },
     });
   };
 
   const handleAppleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
+      options: {
+        redirectTo,
+      },
     });
   };
 
   const handleTwitterLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'twitter',
+      options: {
+        redirectTo,
+      },
     });
   };
 
