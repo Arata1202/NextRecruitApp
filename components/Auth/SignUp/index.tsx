@@ -92,7 +92,7 @@ export default function SignUp() {
       password: data.password,
       options: {
         emailRedirectTo:
-          process.env.NODE_ENV === 'development'
+          process.env.VERCEL_ENV === 'development'
             ? 'http://localhost:3000'
             : 'https://next-recruit-app-eight.vercel.app',
       },
@@ -114,7 +114,7 @@ export default function SignUp() {
   };
 
   const redirectUrl =
-    process.env.NODE_ENV === 'development'
+    process.env.VERCEL_ENV === 'development'
       ? 'http://localhost:3000'
       : 'https://next-recruit-app-eight.vercel.app';
 

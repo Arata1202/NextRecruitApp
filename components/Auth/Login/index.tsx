@@ -52,7 +52,7 @@ export default function Login() {
   };
 
   const redirectUrl =
-    process.env.NODE_ENV === 'development'
+    process.env.VERCEL_ENV === 'development'
       ? 'http://localhost:3000'
       : 'https://next-recruit-app-eight.vercel.app';
 
