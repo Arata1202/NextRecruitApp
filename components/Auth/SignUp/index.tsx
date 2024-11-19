@@ -91,7 +91,10 @@ export default function SignUp() {
       email: data.email,
       password: data.password,
       options: {
-        emailRedirectTo: process.env.BASE_URL,
+        emailRedirectTo:
+          process.env.NODE_ENV === 'development'
+            ? 'http://localhost:3000'
+            : 'https://next-recruit-app-eight.vercel.app',
       },
     });
     const identities = signUpData?.user?.identities;
@@ -110,7 +113,11 @@ export default function SignUp() {
     recaptchaRef.current?.reset();
   };
 
-  const redirectUrl = process.env.BASE_URL;
+  const redirectUrl =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:3000'
+      : 'https://next-recruit-app-eight.vercel.app';
+
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',

@@ -51,7 +51,11 @@ export default function Login() {
     await router.push('/');
   };
 
-  const redirectUrl = process.env.BASE_URL;
+  const redirectUrl =
+    process.env.NODE_ENV === 'development'
+      ? 'http://localhost:3000'
+      : 'https://next-recruit-app-eight.vercel.app';
+
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
