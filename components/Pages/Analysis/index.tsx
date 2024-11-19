@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
@@ -46,6 +47,18 @@ export default function Calendar() {
   const [, setDeleteId] = useState<number | null>(null);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: {
+      titleId: '',
+      description: '',
+    },
+  });
 
   // ユーザー取得
   useEffect(() => {
@@ -136,8 +149,8 @@ export default function Calendar() {
   }, []);
 
   // データ追加
-  const handleAddAnalysis = async () => {
-    if (!userId || !formData.titleId) {
+  const handleAddAnalysis = async (formValues: { titleId: string; description: string }) => {
+    if (!userId || !formValues.titleId) {
       console.error('User ID or Title ID is missing');
       return;
     }
@@ -146,21 +159,20 @@ export default function Calendar() {
       const { data: titleData } = await supabase
         .from('analysistitle')
         .select('id')
-        .eq('id', formData.titleId);
+        .eq('id', formValues.titleId);
 
       if (!titleData || titleData.length === 0) {
         console.error('Invalid title_id: Does not exist in analysistitle table.');
         return;
       }
 
-      // データ挿入
       const { data, error } = await supabase
         .from('analysis')
         .insert([
           {
             supabaseauth_id: userId,
-            title_id: parseInt(formData.titleId),
-            description: formData.description,
+            title_id: parseInt(formValues.titleId),
+            description: formValues.description,
           },
         ])
         .select();
@@ -172,18 +184,22 @@ export default function Calendar() {
 
       if (data && data.length > 0) {
         const addedAnalysis = data[0];
-        const title = analysisTitles.find((t) => t.id === parseInt(formData.titleId))?.title || '';
+        const title =
+          analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
         setAnalyses((prev) => [
           ...prev,
-          { id: addedAnalysis.id, title, description: formData.description },
+          { id: addedAnalysis.id, title, description: formValues.description },
         ]);
-        window.location.reload();
       } else {
         console.warn('No data returned from insert.');
       }
 
-      setFormData({ titleId: '', description: '' });
+      reset({
+        titleId: '',
+        description: '',
+      });
       setIsModalOpen(false);
+      window.location.reload();
     } catch (error) {
       console.error('Error adding analysis:', error);
     }
@@ -219,6 +235,10 @@ export default function Calendar() {
 
       setEditData({ id: 0, titleId: '', description: '' });
       setIsEditModalOpen(false);
+      reset({
+        titleId: '',
+        description: '',
+      });
     } catch (error) {
       console.error('Error editing analysis:', error);
     }
@@ -228,6 +248,10 @@ export default function Calendar() {
     const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
     setEditData({
       id: analysis.id,
+      titleId,
+      description: analysis.description,
+    });
+    reset({
       titleId,
       description: analysis.description,
     });
@@ -279,7 +303,7 @@ export default function Calendar() {
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                    className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
                   >
                     追加
                   </button>
@@ -340,7 +364,7 @@ export default function Calendar() {
 
       {/* 追加モーダル */}
       <Transition.Root show={isModalOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={setIsModalOpen}>
+        <Dialog as="div" className="relative z-50" onClose={() => {}}>
           <DialogBackdrop
             transition
             className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -353,60 +377,76 @@ export default function Calendar() {
                 style={{ width: '100%' }}
                 className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
               >
-                <div className="mt-3 text-center sm:mt-0 sm:text-left">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
-                      <PlusIcon aria-hidden="true" className="size-6 text-blue-500" />
+                <form onSubmit={handleSubmit(handleAddAnalysis)}>
+                  <div className="mt-3 text-center sm:mt-0 sm:text-left">
+                    <div className="sm:flex sm:items-start">
+                      <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
+                        <PlusIcon aria-hidden="true" className="size-6 text-blue-500" />
+                      </div>
+                      <div className="mt-2 text-center sm:ml-4 sm:text-left">
+                        <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
+                          自己分析を追加
+                        </Dialog.Title>
+                      </div>
                     </div>
-                    <div className="mt-2 text-center sm:ml-4 sm:text-left">
-                      <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
-                        自己分析を追加
-                      </Dialog.Title>
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <select
-                      value={formData.titleId}
-                      onChange={(e) => setFormData({ ...formData, titleId: e.target.value })}
-                      className="w-full rounded-md border border-gray-300 p-2 mb-4"
-                    >
-                      <option value="">タイトルを選択</option>
-                      {analysisTitles
-                        .filter(
-                          (title) => !analyses.some((analysis) => analysis.title === title.title),
-                        ) // 存在するタイトルを除外
-                        .map((title) => (
-                          <option key={title.id} value={title.id}>
-                            {title.title}
-                          </option>
-                        ))}
-                    </select>
+                    <div className="mt-4">
+                      <div className="mb-4">
+                        <select
+                          {...register('titleId', { required: 'タイトルを選択してください' })}
+                          className="w-full rounded-md border border-gray-300 p-2"
+                        >
+                          <option value="">タイトルを選択</option>
+                          {analysisTitles
+                            .filter(
+                              (title) =>
+                                !analyses.some((analysis) => analysis.title === title.title),
+                            ) // 存在するタイトルを除外
+                            .map((title) => (
+                              <option key={title.id} value={title.id}>
+                                {title.title}
+                              </option>
+                            ))}
+                        </select>
+                        {errors.titleId && (
+                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                        )}
+                      </div>
 
-                    <textarea
-                      placeholder="内容"
-                      rows={10}
-                      value={formData.description}
-                      onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                      className="w-full rounded-md border border-gray-300 p-2"
-                    />
+                      <div className="mb-4">
+                        <textarea
+                          {...register('description', { required: '内容を入力してください' })}
+                          placeholder="内容"
+                          rows={10}
+                          className="w-full rounded-md border border-gray-300 p-2"
+                        />
+                        {errors.description && (
+                          <p className="text-red-500 text-left">{errors.description.message}</p>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-                <div className="mt-3 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(false)}
-                    className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
-                  >
-                    キャンセル
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleAddAnalysis}
-                    className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                  >
-                    追加
-                  </button>
-                </div>
+                  <div className="mt-3 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsModalOpen(false);
+                        reset({
+                          titleId: '',
+                          description: '',
+                        });
+                      }}
+                      className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                    >
+                      キャンセル
+                    </button>
+                    <button
+                      type="submit"
+                      className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                    >
+                      追加
+                    </button>
+                  </div>
+                </form>
               </DialogPanel>
             </div>
           </div>
@@ -415,7 +455,7 @@ export default function Calendar() {
 
       {/* 編集モーダル */}
       <Transition.Root show={isEditModalOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={setIsModalOpen}>
+        <Dialog as="div" className="relative z-50" onClose={() => {}}>
           <DialogBackdrop
             transition
             className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -428,55 +468,58 @@ export default function Calendar() {
                 style={{ width: '100%' }}
                 className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
               >
-                <div className="mt-3 text-center sm:mt-0 sm:text-left">
-                  <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
-                      <PencilIcon aria-hidden="true" className="size-6 text-blue-500" />
+                <form onSubmit={handleSubmit(handleEditAnalysis)}>
+                  <div className="mt-3 text-center sm:mt-0 sm:text-left">
+                    <div className="sm:flex sm:items-start">
+                      <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
+                        <PencilIcon aria-hidden="true" className="size-6 text-blue-500" />
+                      </div>
+                      <div className="mt-2 text-center sm:ml-4 sm:text-left">
+                        <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
+                          「{initialEditTitle}」を編集
+                        </Dialog.Title>
+                      </div>
                     </div>
-                    <div className="mt-2 text-center sm:ml-4 sm:text-left">
-                      <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
-                        「{initialEditTitle}」を編集
-                      </Dialog.Title>
+                    <div className="mt-4">
+                      <div className="mb-4">
+                        <textarea
+                          {...register('description', { required: '内容を入力してください' })}
+                          placeholder="内容"
+                          rows={10}
+                          value={editData.description}
+                          onChange={(e) =>
+                            setEditData({ ...editData, description: e.target.value })
+                          }
+                          className="w-full rounded-md border border-gray-300 p-2"
+                        />
+                        {errors.description && (
+                          <p className="text-red-500 text-left">{errors.description.message}</p>
+                        )}
+                      </div>
                     </div>
                   </div>
-                  <div className="mt-4">
-                    {/* <select
-                      value={editData.titleId}
-                      onChange={(e) => setEditData({ ...editData, titleId: e.target.value })}
-                      className="w-full rounded-md border border-gray-300 p-2 mb-4"
+                  <div className="mt-3 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setIsEditModalOpen(false);
+                        reset({
+                          titleId: '',
+                          description: '',
+                        });
+                      }}
+                      className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
-                      <option value="">タイトルを選択</option>
-                      {analysisTitles.map((title) => (
-                        <option key={title.id} value={title.id}>
-                          {title.title}
-                        </option>
-                      ))}
-                    </select> */}
-                    <textarea
-                      placeholder="内容"
-                      rows={10}
-                      value={editData.description}
-                      onChange={(e) => setEditData({ ...editData, description: e.target.value })}
-                      className="w-full rounded-md border border-gray-300 p-2"
-                    />
+                      キャンセル
+                    </button>
+                    <button
+                      type="submit"
+                      className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                    >
+                      編集
+                    </button>
                   </div>
-                </div>
-                <div className="mt-3 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
-                  <button
-                    type="button"
-                    onClick={() => setIsEditModalOpen(false)}
-                    className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
-                  >
-                    キャンセル
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleEditAnalysis}
-                    className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                  >
-                    編集
-                  </button>
-                </div>
+                </form>
               </DialogPanel>
             </div>
           </div>
@@ -485,7 +528,7 @@ export default function Calendar() {
 
       {/* 削除モーダル */}
       <Transition.Root show={isDeleteModalOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => setIsDeleteModalOpen(false)}>
+        <Dialog as="div" className="relative z-50" onClose={() => {}}>
           <DialogBackdrop
             transition
             className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"

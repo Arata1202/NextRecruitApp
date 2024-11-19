@@ -228,7 +228,7 @@ export default function MainLayout() {
           as="div"
           className="relative z-50"
           initialFocus={cancelButtonRef}
-          onClose={setLogoutDialogOpen}
+          onClose={() => {}}
         >
           <Transition.Child
             as={Fragment}
