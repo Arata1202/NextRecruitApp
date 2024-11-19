@@ -14,9 +14,18 @@
 .SidebarLayout {
   display: none;
 }
+.TitleBanner {
+  padding: 40px 0;
+}
 @media (max-width: 1023px) {
+  .MobileHeader {
+    margin-top: 64px;
+  }
   .SidebarLayout {
     display: block;
+  }
+  .TitleBanner {
+    padding: 20px 0;
   }
 }
 

@@ -5,7 +5,12 @@ import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { Fragment } from 'react';
-import { ExclamationTriangleIcon, PlusIcon, PencilIcon } from '@heroicons/react/24/solid';
+import {
+  ExclamationTriangleIcon,
+  PlusIcon,
+  PencilIcon,
+  TrashIcon,
+} from '@heroicons/react/24/solid';
 
 type Analysis = {
   id: number;
@@ -172,6 +177,7 @@ export default function Calendar() {
           ...prev,
           { id: addedAnalysis.id, title, description: formData.description },
         ]);
+        window.location.reload();
       } else {
         console.warn('No data returned from insert.');
       }
@@ -262,8 +268,8 @@ export default function Calendar() {
         <div className="lg:pl-72">
           <main className="">
             {/* タイトル */}
-            <div className="bg-white px-4 sm:px-6 lg:px-8">
-              <div className="py-10 flex items-center justify-between">
+            <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
+              <div className="flex items-center justify-between TitleBanner">
                 <div className="min-w-0 flex-1">
                   <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
                     自己分析
@@ -273,7 +279,7 @@ export default function Calendar() {
                   <button
                     type="button"
                     onClick={() => setIsModalOpen(true)}
-                    className="ml-3 inline-flex items-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                    className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
                   >
                     追加
                   </button>
@@ -296,16 +302,16 @@ export default function Calendar() {
                           <button
                             type="button"
                             onClick={() => openEditModal(analysis)}
-                            className="inline-flex items-center rounded-md bg-blue-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                            className="hover:text-blue-600"
                           >
-                            編集
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
                           </button>
                           <button
                             type="button"
                             onClick={() => openDeleteModal(analysis)}
-                            className="ml-2 inline-flex items-center rounded-md bg-red-500 px-2 py-1 text-sm font-semibold text-white shadow-sm hover:bg-red-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-500"
+                            className="ml-3 hover:text-blue-600"
                           >
-                            削除
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
                           </button>
                         </div>
                       </div>
@@ -365,12 +371,17 @@ export default function Calendar() {
                       className="w-full rounded-md border border-gray-300 p-2 mb-4"
                     >
                       <option value="">タイトルを選択</option>
-                      {analysisTitles.map((title) => (
-                        <option key={title.id} value={title.id}>
-                          {title.title}
-                        </option>
-                      ))}
+                      {analysisTitles
+                        .filter(
+                          (title) => !analyses.some((analysis) => analysis.title === title.title),
+                        ) // 存在するタイトルを除外
+                        .map((title) => (
+                          <option key={title.id} value={title.id}>
+                            {title.title}
+                          </option>
+                        ))}
                     </select>
+
                     <textarea
                       placeholder="内容"
                       rows={10}
