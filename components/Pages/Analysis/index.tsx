@@ -50,7 +50,8 @@ export default function Calendar() {
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
   const [searchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [showNoResultMessage, setShowNoResultMessage] = useState(false);
+  const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
+  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
 
   const {
     register,
@@ -89,7 +90,7 @@ export default function Calendar() {
 
     const fetchAnalyses = async () => {
       try {
-        const { data, error } = await supabase
+        const query = supabase
           .from('analysis')
           .select(
             `
@@ -105,6 +106,12 @@ export default function Calendar() {
           .ilike('title_id.title', `%${searchQuery}%`)
           .eq('supabaseauth_id', userId);
 
+        if (selectedGroupId) {
+          query.eq('title_id.group_id', selectedGroupId);
+        }
+
+        const { data, error } = await query;
+
         if (error) {
           console.error('Error fetching analyses:', error.message, error.details, error.hint);
           return;
@@ -115,7 +122,9 @@ export default function Calendar() {
           return;
         }
 
-        const formattedData = data.map((item: any) => ({
+        const filteredData = data.filter((item: any) => item.title_id && item.title_id.title);
+
+        const formattedData = filteredData.map((item: any) => ({
           id: item.id,
           title: item.title_id?.title || 'Untitled',
           description: item.description,
@@ -133,7 +142,27 @@ export default function Calendar() {
     };
 
     fetchAnalyses();
-  }, [userId, searchQuery]);
+  }, [userId, searchQuery, selectedGroupId]);
+
+  // analysisgroup データを取得
+  useEffect(() => {
+    const fetchAnalysisGroups = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('analysisgroup')
+          .select('id, title')
+          .order('id', { ascending: true });
+
+        if (error) throw error;
+
+        setAnalysisGroups(data || []);
+      } catch (error) {
+        console.error('Error fetching analysis groups:', error);
+      }
+    };
+
+    fetchAnalysisGroups();
+  }, []);
 
   // AnalysisTitle データ取得
   useEffect(() => {
@@ -325,18 +354,39 @@ export default function Calendar() {
                   </div>
                 </div>
               </div>
-              <div className="pb-5">
-                <div className="Search relative mt-2 rounded-md shadow-sm">
-                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                    <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-400" />
+              <div>
+                <div className="pb-5 flex">
+                  <div className="w-2/3 Search relative mt-2 rounded-md shadow-sm">
+                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                      <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-400" />
+                    </div>
+                    <input
+                      type="text"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      placeholder="検索"
+                      className="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                    />
                   </div>
-                  <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="検索"
-                    className="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
-                  />
+
+                  <div className="w-1/3 ml-2">
+                    <select
+                      value={selectedGroupId || ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setSelectedGroupId(value ? parseInt(value) : null);
+                      }}
+                      style={{ height: '36px' }}
+                      className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                    >
+                      <option>全て</option>
+                      {analysisGroups.map((group) => (
+                        <option key={group.id} value={group.id}>
+                          {group.title}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
                 </div>
               </div>
             </div>
