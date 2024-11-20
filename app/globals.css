@@ -27,6 +27,9 @@
   .TitleBanner {
     padding: 20px 0;
   }
+  .DialogButton {
+    margin-top: 0px;
+  }
 }
 
 .error {

@@ -425,7 +425,7 @@ export default function Calendar() {
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                  <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
                     <button
                       type="button"
                       onClick={() => {
@@ -435,7 +435,7 @@ export default function Calendar() {
                           description: '',
                         });
                       }}
-                      className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                      className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
                       キャンセル
                     </button>
@@ -498,7 +498,7 @@ export default function Calendar() {
                       </div>
                     </div>
                   </div>
-                  <div className="mt-3 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                  <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
                     <button
                       type="button"
                       onClick={() => {
@@ -508,7 +508,7 @@ export default function Calendar() {
                           description: '',
                         });
                       }}
-                      className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                      className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
                       キャンセル
                     </button>
@@ -554,11 +554,11 @@ export default function Calendar() {
                     </div>
                   </div>
                 </div>
-                <div className="mt-3 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
                   <button
                     type="button"
                     onClick={() => setIsDeleteModalOpen(false)}
-                    className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                    className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                   >
                     キャンセル
                   </button>
