@@ -15,7 +15,7 @@
   display: none;
 }
 .TitleBanner {
-  padding: 40px 0;
+  padding: 20px 0 10px 0;
 }
 @media (max-width: 1023px) {
   .MobileHeader {
@@ -24,8 +24,11 @@
   .SidebarLayout {
     display: block;
   }
+  .Search {
+    margin-top: 0px;
+  }
   .TitleBanner {
-    padding: 20px 0;
+    padding: 10px 0 10px 0;
   }
   .DialogButton {
     margin-top: 0px;

@@ -11,6 +11,7 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
+  MagnifyingGlassIcon,
 } from '@heroicons/react/24/solid';
 
 type Analysis = {
@@ -40,13 +41,16 @@ export default function Calendar() {
   const [userId, setUserId] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [formData, setFormData] = useState({ titleId: '', description: '' });
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editData, setEditData] = useState({ id: 0, titleId: '', description: '' });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [, setDeleteId] = useState<number | null>(null);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
+  const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
+  const [searchQuery] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [showNoResultMessage, setShowNoResultMessage] = useState(false);
 
   const {
     register,
@@ -98,6 +102,7 @@ export default function Calendar() {
             description
           `,
           )
+          .ilike('title_id.title', `%${searchQuery}%`)
           .eq('supabaseauth_id', userId);
 
         if (error) {
@@ -117,6 +122,8 @@ export default function Calendar() {
           sort: item.title_id?.sort || 0,
         }));
 
+        setFilteredAnalyses(formattedData);
+
         const sortedData = formattedData.sort((a, b) => a.sort - b.sort);
 
         setAnalyses(sortedData);
@@ -126,7 +133,7 @@ export default function Calendar() {
     };
 
     fetchAnalyses();
-  }, [userId]);
+  }, [userId, searchQuery]);
 
   // AnalysisTitle データ取得
   useEffect(() => {
@@ -187,8 +194,8 @@ export default function Calendar() {
         const title =
           analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
         setAnalyses((prev) => [
-          ...prev,
           { id: addedAnalysis.id, title, description: formValues.description },
+          ...prev,
         ]);
       } else {
         console.warn('No data returned from insert.');
@@ -199,7 +206,6 @@ export default function Calendar() {
         description: '',
       });
       setIsModalOpen(false);
-      window.location.reload();
     } catch (error) {
       console.error('Error adding analysis:', error);
     }
@@ -285,6 +291,14 @@ export default function Calendar() {
     setIsDeleteModalOpen(true);
   };
 
+  // 検索処理
+  useEffect(() => {
+    const results = analyses.filter((analysis) =>
+      analysis.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
+    setFilteredAnalyses(results);
+  }, [searchTerm, analyses]);
+
   return (
     <>
       <div>
@@ -293,70 +307,73 @@ export default function Calendar() {
           <main className="">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
-              <div className="flex items-center justify-between TitleBanner">
-                <div className="min-w-0 flex-1">
-                  <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                    自己分析
-                  </h2>
+              <div>
+                <div className="flex items-center justify-between TitleBanner">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                      自己分析
+                    </h2>
+                  </div>
+                  <div className="flex ml-4 mt-0">
+                    <button
+                      type="button"
+                      onClick={() => setIsModalOpen(true)}
+                      className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                    >
+                      追加
+                    </button>
+                  </div>
                 </div>
-                <div className="flex ml-4 mt-0">
-                  <button
-                    type="button"
-                    onClick={() => setIsModalOpen(true)}
-                    className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                  >
-                    追加
-                  </button>
+              </div>
+              <div className="pb-5">
+                <div className="Search relative mt-2 rounded-md shadow-sm">
+                  <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
+                    <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="検索"
+                    className="block w-full rounded-md border-0 py-1.5 pl-10 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                  />
                 </div>
               </div>
             </div>
 
             {/* メインコンテンツ */}
-            <div className="px-4 sm:px-6 lg:px-8 mt-10">
-              {analyses.length > 0 ? (
-                analyses.map((analysis) => (
-                  <div
-                    key={analysis.id}
-                    className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
-                  >
-                    <div>
-                      <div className="px-4 py-3 sm:px-6 flex">
-                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
-                        <div className="flex ml-auto">
-                          <button
-                            type="button"
-                            onClick={() => openEditModal(analysis)}
-                            className="hover:text-blue-600"
-                          >
-                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => openDeleteModal(analysis)}
-                            className="ml-3 hover:text-blue-600"
-                          >
-                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
-                          </button>
-                        </div>
-                      </div>
-                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
-                        <p className="whitespace-pre-wrap">{analysis.description}</p>
-                      </div>
-                    </div>
-                  </div>
-                ))
-              ) : (
-                <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5">
+            <div className="px-4 sm:px-6 lg:px-8 mt-5">
+              {filteredAnalyses.map((analysis) => (
+                <div
+                  key={analysis.id}
+                  className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
+                >
                   <div>
                     <div className="px-4 py-3 sm:px-6 flex">
-                      <h3 className="text-base/7 font-semibold">データがありません。</h3>
+                      <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                      <div className="flex ml-auto">
+                        <button
+                          type="button"
+                          onClick={() => openEditModal(analysis)}
+                          className="hover:text-blue-600"
+                        >
+                          <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => openDeleteModal(analysis)}
+                          className="ml-3 hover:text-blue-600"
+                        >
+                          <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                      </div>
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
-                      <p className="">追加ボタンから自己分析を行ってみましょう。</p>
+                      <p className="whitespace-pre-wrap">{analysis.description}</p>
                     </div>
                   </div>
                 </div>
-              )}
+              ))}
             </div>
           </main>
         </div>
