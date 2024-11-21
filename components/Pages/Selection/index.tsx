@@ -236,7 +236,7 @@ export default function Template() {
                     <div className="flex">
                       <BuildingOffice2Icon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                        選考企業
+                        選考中の企業
                       </h2>
                     </div>
                   </div>

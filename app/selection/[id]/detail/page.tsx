@@ -13,7 +13,7 @@ import {
   PencilIcon,
   TrashIcon,
   MagnifyingGlassIcon,
-  ChartBarIcon,
+  BuildingOfficeIcon,
 } from '@heroicons/react/24/solid';
 
 type Analysis = {
@@ -57,6 +57,7 @@ export default function Detail() {
   const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
+  const [pageTitle, setPageTitle] = useState<string>('');
 
   const {
     register,
@@ -299,6 +300,34 @@ export default function Detail() {
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
+  useEffect(() => {
+    const fetchPageTitle = async () => {
+      try {
+        if (typeof id !== 'string') {
+          console.error('Invalid id:', id);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('selection')
+          .select('title')
+          .eq('id', parseInt(id))
+          .single();
+
+        if (error) {
+          console.error('Error fetching page title:', error.message);
+          return;
+        }
+
+        setPageTitle(data?.title || 'Untitled');
+      } catch (error) {
+        console.error('Error fetching page title:', error);
+      }
+    };
+
+    fetchPageTitle();
+  }, [id]);
+
   return (
     <>
       <div>
@@ -311,9 +340,9 @@ export default function Detail() {
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
                     <div className="flex">
-                      <ChartBarIcon className="TitleIcon mr-1" aria-hidden="true" />
+                      <BuildingOfficeIcon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                        自己分析
+                        {pageTitle}
                       </h2>
                     </div>
                   </div>
