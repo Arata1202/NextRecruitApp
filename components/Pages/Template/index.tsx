@@ -12,8 +12,8 @@ import {
   PencilIcon,
   TrashIcon,
   MagnifyingGlassIcon,
+  ClipboardDocumentListIcon,
 } from '@heroicons/react/24/solid';
-import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 
 type Analysis = {
   id: number;
@@ -51,6 +51,7 @@ export default function Template() {
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
   const [searchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [descriptionLength, setDescriptionLength] = useState(0);
 
   const {
     register,
@@ -261,6 +262,7 @@ export default function Template() {
       titleId,
       description: analysis.description,
     });
+    setDescriptionLength(analysis.description.length);
     reset({
       titleId,
       description: analysis.description,
@@ -379,6 +381,9 @@ export default function Template() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
                       <p className="whitespace-pre-wrap">{analysis.description}</p>
+                      <p className="flex justify-end text-gray-500 text-sm mt-1">
+                        {analysis.description.length} 文字
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -444,7 +449,11 @@ export default function Template() {
                           placeholder="内容"
                           rows={10}
                           className="w-full rounded-md border border-gray-300 p-2"
+                          onChange={(e) => setDescriptionLength(e.target.value.length)}
                         />
+                        <p className="flex justify-end text-gray-500 text-sm mt-1">
+                          {descriptionLength} 文字
+                        </p>
                         {errors.description && (
                           <p className="text-red-500 text-left">{errors.description.message}</p>
                         )}
@@ -456,6 +465,7 @@ export default function Template() {
                       type="button"
                       onClick={() => {
                         setIsModalOpen(false);
+                        setDescriptionLength(0);
                         reset({
                           titleId: '',
                           description: '',
@@ -513,11 +523,16 @@ export default function Template() {
                           placeholder="内容"
                           rows={10}
                           value={editData.description}
-                          onChange={(e) =>
-                            setEditData({ ...editData, description: e.target.value })
-                          }
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setEditData({ ...editData, description: value });
+                            setDescriptionLength(value.length);
+                          }}
                           className="w-full rounded-md border border-gray-300 p-2"
                         />
+                        <p className="flex justify-end text-gray-500 text-sm mt-1">
+                          {descriptionLength} 文字
+                        </p>
                         {errors.description && (
                           <p className="text-red-500 text-left">{errors.description.message}</p>
                         )}
@@ -529,6 +544,7 @@ export default function Template() {
                       type="button"
                       onClick={() => {
                         setIsEditModalOpen(false);
+                        setDescriptionLength(0);
                         reset({
                           titleId: '',
                           description: '',
