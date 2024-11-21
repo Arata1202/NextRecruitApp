@@ -171,7 +171,7 @@ export default function Calendar() {
         const { data, error } = await supabase
           .from('analysistitle')
           .select('id, title')
-          .order('id', { ascending: true });
+          .order('sort', { ascending: true });
 
         if (error) throw error;
 

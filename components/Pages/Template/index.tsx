@@ -145,7 +145,7 @@ export default function Template() {
         const { data, error } = await supabase
           .from('templatetitle')
           .select('id, title')
-          .order('id', { ascending: true });
+          .order('sort', { ascending: true });
 
         if (error) throw error;
 
