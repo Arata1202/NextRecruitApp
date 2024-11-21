@@ -12,6 +12,7 @@ import {
   BuildingOffice2Icon,
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
+  ClipboardDocumentListIcon,
 } from '@heroicons/react/24/outline';
 import {
   Dialog,
@@ -32,6 +33,7 @@ export default function MainLayout() {
     { name: 'カレンダー', href: '/calendar', icon: CalendarDaysIcon },
     { name: '選考企業', href: '/selection', icon: BuildingOffice2Icon },
     { name: '自己分析', href: '/analysis', icon: ChartBarIcon },
+    { name: 'テンプレート', href: '/template', icon: ClipboardDocumentListIcon },
     { name: '設定', href: '/settings', icon: Cog6ToothIcon },
   ].map((item) => ({
     ...item,
