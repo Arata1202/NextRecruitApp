@@ -12,7 +12,7 @@ import {
   PencilIcon,
   TrashIcon,
   MagnifyingGlassIcon,
-  ClipboardDocumentListIcon,
+  ChartBarIcon,
 } from '@heroicons/react/24/solid';
 
 type Analysis = {
@@ -36,7 +36,7 @@ type AnalysisRawData = {
   description: string;
 };
 
-export default function Template() {
+export default function Detail() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
@@ -51,6 +51,8 @@ export default function Template() {
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
   const [searchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
+  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
 
   const {
@@ -88,64 +90,68 @@ export default function Template() {
   useEffect(() => {
     if (!userId) return;
 
-    const fetchAnalyses = async () => {
+    const fetchSelectionDetails = async () => {
       try {
-        const query = supabase
-          .from('template')
-          .select(
-            `
+        const query = supabase.from('selectiondetail').select(
+          `
             id,
             title_id (
               id,
-              title,
-              sort
+              title
             ),
             description
           `,
-          )
-          .ilike('title_id.title', `%${searchQuery}%`)
-          .eq('supabaseauth_id', userId);
+        );
 
         const { data, error } = await query;
 
         if (error) {
-          console.error('Error fetching analyses:', error.message, error.details, error.hint);
+          console.error('Error fetching selection details:', error.message);
           return;
         }
 
-        if (!data) {
-          console.error('No data fetched');
-          return;
-        }
-
-        const filteredData = data.filter((item: any) => item.title_id && item.title_id.title);
-
-        const formattedData = filteredData.map((item: any) => ({
+        const formattedData = (data || []).map((item: any) => ({
           id: item.id,
           title: item.title_id?.title || 'Untitled',
           description: item.description,
-          sort: item.title_id?.sort || 0,
         }));
 
+        setAnalyses(formattedData);
         setFilteredAnalyses(formattedData);
-
-        const sortedData = formattedData.sort((a, b) => a.sort - b.sort);
-
-        setAnalyses(sortedData);
       } catch (error) {
-        console.error('Error fetching analyses:', error);
+        console.error('Error fetching selection details:', error);
       }
     };
 
-    fetchAnalyses();
-  }, [userId, searchQuery]);
+    fetchSelectionDetails();
+  }, [userId]);
+
+  // analysisgroup データを取得
+  useEffect(() => {
+    const fetchAnalysisGroups = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('analysisgroup')
+          .select('id, title')
+          .order('id', { ascending: true });
+
+        if (error) throw error;
+
+        setAnalysisGroups(data || []);
+      } catch (error) {
+        console.error('Error fetching analysis groups:', error);
+      }
+    };
+
+    fetchAnalysisGroups();
+  }, []);
 
   // AnalysisTitle データ取得
   useEffect(() => {
     const fetchAnalysisTitles = async () => {
       try {
         const { data, error } = await supabase
-          .from('templatetitle')
+          .from('selectiondetailtitle')
           .select('id, title')
           .order('sort', { ascending: true });
 
@@ -162,21 +168,10 @@ export default function Template() {
 
   // データ追加
   const handleAddAnalysis = async (formValues: { titleId: string; description: string }) => {
-    const { data: titleData } = await supabase
-      .from('templatetitle')
-      .select('id')
-      .eq('id', formValues.titleId);
-
-    if (!titleData || titleData.length === 0) {
-      console.error('Invalid title_id: Does not exist in analysistitle table.');
-      return;
-    }
-
     const { data, error } = await supabase
-      .from('template')
+      .from('selectiondetail')
       .insert([
         {
-          supabaseauth_id: userId,
           title_id: parseInt(formValues.titleId),
           description: formValues.description,
         },
@@ -184,64 +179,60 @@ export default function Template() {
       .select();
 
     if (error) {
-      console.error('Supabase error:', error.message);
+      console.error('Error adding selection detail:', error.message);
       return;
     }
 
-    if (data && data.length > 0) {
-      const addedAnalysis = data[0];
-      const title = analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
-      setAnalyses((prev) => [
-        { id: addedAnalysis.id, title, description: formValues.description },
-        ...prev,
-      ]);
-    } else {
-      console.warn('No data returned from insert.');
-    }
+    if (data) {
+      const addedDetail = {
+        id: data[0]?.id,
+        title:
+          analysisTitles.find((title) => title.id === parseInt(formValues.titleId))?.title ||
+          'Untitled',
+        description: formValues.description,
+      };
 
-    reset({
-      titleId: '',
-      description: '',
-    });
-    setIsModalOpen(false);
+      setAnalyses((prev) => [addedDetail, ...prev]);
+      setIsModalOpen(false);
+      reset();
+    }
   };
 
   const handleEditAnalysis = async () => {
     try {
-      const { data, error } = await supabase
-        .from('template')
+      const { error } = await supabase
+        .from('selectiondetail')
         .update({
           title_id: parseInt(editData.titleId),
           description: editData.description,
         })
-        .eq('id', editData.id)
-        .select();
+        .eq('id', editData.id);
 
       if (error) {
-        console.error('Error editing analysis:', error);
+        console.error('Error editing selection detail:', error.message);
         return;
       }
 
       setAnalyses((prev) =>
-        prev.map((analysis) =>
-          analysis.id === editData.id
+        prev.map((detail) =>
+          detail.id === editData.id
             ? {
                 id: editData.id,
-                title: analysisTitles.find((t) => t.id === parseInt(editData.titleId))?.title || '',
+                title:
+                  analysisTitles.find((title) => title.id === parseInt(editData.titleId))?.title ||
+                  'Untitled',
                 description: editData.description,
               }
-            : analysis,
+            : detail,
         ),
       );
-
-      setEditData({ id: 0, titleId: '', description: '' });
       setIsEditModalOpen(false);
       reset({
         titleId: '',
         description: '',
       });
     } catch (error) {
-      console.error('Error editing analysis:', error);
+      console.error('Error editing selection detail:', error);
     }
   };
 
@@ -262,23 +253,20 @@ export default function Template() {
   };
 
   const handleDeleteAnalysis = async () => {
-    if (!deleteData?.id) return;
+    if (!deleteData) return;
 
     try {
-      const { error } = await supabase.from('template').delete().eq('id', deleteData.id);
+      const { error } = await supabase.from('selectiondetail').delete().eq('id', deleteData.id);
 
       if (error) {
-        console.error('Error deleting analysis:', error);
+        console.error('Error deleting selection detail:', error.message);
         return;
       }
 
-      // データをローカル状態から削除
-      setAnalyses((prev) => prev.filter((analysis) => analysis.id !== deleteData.id));
-      setDeleteId(null);
-      setDeleteData(null);
+      setAnalyses((prev) => prev.filter((detail) => detail.id !== deleteData.id));
       setIsDeleteModalOpen(false);
     } catch (error) {
-      console.error('Error deleting analysis:', error);
+      console.error('Error deleting selection detail:', error);
     }
   };
 
@@ -307,9 +295,9 @@ export default function Template() {
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
                     <div className="flex">
-                      <ClipboardDocumentListIcon className="TitleIcon mr-1" aria-hidden="true" />
+                      <ChartBarIcon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                        テンプレート
+                        自己分析
                       </h2>
                     </div>
                   </div>
@@ -326,7 +314,7 @@ export default function Template() {
               </div>
               <div>
                 <div className="pb-5 flex">
-                  <div className="w-full Search relative mt-2 rounded-md shadow-sm">
+                  <div className="w-2/3 Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-400" />
                     </div>
@@ -337,6 +325,25 @@ export default function Template() {
                       placeholder="検索"
                       className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
                     />
+                  </div>
+
+                  <div className="w-1/3 ml-2">
+                    <select
+                      value={selectedGroupId || ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setSelectedGroupId(value ? parseInt(value) : null);
+                      }}
+                      style={{ height: '36px' }}
+                      className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                    >
+                      <option>全て</option>
+                      {analysisGroups.map((group) => (
+                        <option key={group.id} value={group.id}>
+                          {group.title}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
