@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Layouts/MainLayout';
@@ -39,6 +39,7 @@ type AnalysisRawData = {
 
 export default function Detail() {
   const { id } = useParams();
+  const router = useRouter();
 
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
@@ -58,6 +59,7 @@ export default function Detail() {
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
   const [pageTitle, setPageTitle] = useState<string>('');
+  const [isLoading, setIsLoading] = useState(true);
 
   const {
     register,
@@ -81,6 +83,7 @@ export default function Detail() {
 
       if (error) {
         console.error('Error fetching session:', error);
+        setIsLoading(false);
         return;
       }
 
@@ -89,6 +92,35 @@ export default function Detail() {
 
     fetchUser();
   }, []);
+
+  // 認証チェック
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      if (!userId || typeof id !== 'string') {
+        setIsLoading(false); //
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase
+          .from('selection')
+          .select('supabaseauth_id')
+          .eq('id', parseInt(id))
+          .single();
+
+        if (error || !data || data.supabaseauth_id !== userId) {
+          router.push('/404');
+        } else {
+          setIsLoading(false);
+        }
+      } catch (error) {
+        console.error('Authorization check failed:', error);
+        router.push('/404');
+      }
+    };
+
+    if (userId) checkAuthorization();
+  }, [userId, id, router]);
 
   // データ取得
   useEffect(() => {
@@ -328,6 +360,10 @@ export default function Detail() {
     fetchPageTitle();
   }, [id]);
 
+  if (isLoading) {
+    return null;
+  }
+
   return (
     <>
       <div>
@@ -382,12 +418,9 @@ export default function Detail() {
                       style={{ height: '36px' }}
                       className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
                     >
-                      <option>全て</option>
-                      {analysisGroups.map((group) => (
-                        <option key={group.id} value={group.id}>
-                          {group.title}
-                        </option>
-                      ))}
+                      <option>企業詳細</option>
+                      <option>選考フロー</option>
+                      <option>選考対策</option>
                     </select>
                   </div>
                 </div>
