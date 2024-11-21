@@ -37,7 +37,7 @@ export default function MainLayout() {
     { name: '設定', href: '/settings', icon: Cog6ToothIcon },
   ].map((item) => ({
     ...item,
-    current: pathname === item.href,
+    current: item.href === '/' ? pathname === item.href : pathname.startsWith(item.href),
   }));
 
   const [sidebarOpen, setSidebarOpen] = useState(false);

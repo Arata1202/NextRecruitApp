@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Layouts/MainLayout';
@@ -12,7 +13,7 @@ import {
   PencilIcon,
   TrashIcon,
   MagnifyingGlassIcon,
-  ClipboardDocumentListIcon,
+  DocumentTextIcon,
   BuildingOffice2Icon,
 } from '@heroicons/react/24/solid';
 
@@ -23,6 +24,7 @@ type Analysis = {
 };
 
 export default function Template() {
+  const router = useRouter();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
 
@@ -216,6 +218,10 @@ export default function Template() {
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
+  const handleNavigateToDetail = (id: number) => {
+    router.push(`/selection/detail/${id}`);
+  };
+
   return (
     <>
       <div>
@@ -276,8 +282,15 @@ export default function Template() {
                       <div className="flex ml-auto">
                         <button
                           type="button"
-                          onClick={() => openEditModal(analysis)}
+                          onClick={() => handleNavigateToDetail(analysis.id)}
                           className="hover:text-blue-600"
+                        >
+                          <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => openEditModal(analysis)}
+                          className="ml-3 hover:text-blue-600"
                         >
                           <PencilIcon className="h-4 w-4" aria-hidden="true" />
                         </button>
