@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Layouts/MainLayout';
@@ -13,8 +13,7 @@ import {
   PencilIcon,
   TrashIcon,
   MagnifyingGlassIcon,
-  DocumentTextIcon,
-  BuildingOffice2Icon,
+  ChartBarIcon,
 } from '@heroicons/react/24/solid';
 
 type Analysis = {
@@ -23,20 +22,40 @@ type Analysis = {
   description: string;
 };
 
-export default function Template() {
-  const router = useRouter();
+type AnalysisTitle = {
+  id: number;
+  title: string;
+};
+
+type AnalysisRawData = {
+  id: number;
+  title_id: {
+    id: number;
+    title: string;
+    sort: number;
+  };
+  description: string;
+};
+
+export default function Detail() {
+  const { id } = useParams();
+
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
+  const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editData, setEditData] = useState({ id: 0, title: '', description: '' });
+  const [editData, setEditData] = useState({ id: 0, titleId: '', description: '' });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [, setDeleteId] = useState<number | null>(null);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
-
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
+  const [searchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
+  const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
+  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
 
   const {
@@ -46,7 +65,7 @@ export default function Template() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      title: '',
+      titleId: '',
       description: '',
     },
   });
@@ -74,134 +93,196 @@ export default function Template() {
   useEffect(() => {
     if (!userId) return;
 
-    const fetchAnalyses = async () => {
+    if (typeof id !== 'string') {
+      console.error('Invalid id:', id);
+      return;
+    }
+
+    const fetchSelectionDetails = async () => {
       try {
         const query = supabase
-          .from('selection')
-          .select('*')
-          .ilike('title', `%${searchTerm}%`)
-          .eq('supabaseauth_id', userId);
+          .from('selectiondetail')
+          .select(
+            `
+            id,
+            title_id (
+              id,
+              title
+            ),
+            description
+          `,
+          )
+          .eq('selection_id', parseInt(id));
 
         const { data, error } = await query;
 
         if (error) {
-          console.error('Error fetching selections:', error.message);
+          console.error('Error fetching selection details:', error.message);
           return;
         }
 
-        if (data) {
-          setAnalyses(data);
-        }
+        const formattedData = (data || []).map((item: any) => ({
+          id: item.id,
+          title: item.title_id?.title || 'Untitled',
+          description: item.description,
+        }));
+
+        setAnalyses(formattedData);
+        setFilteredAnalyses(formattedData);
       } catch (error) {
-        console.error('Error fetching selections:', error);
+        console.error('Error fetching selection details:', error);
       }
     };
 
-    fetchAnalyses();
-  }, [userId, searchTerm]);
+    fetchSelectionDetails();
+  }, [userId, id]);
+
+  // analysisgroup データを取得
+  useEffect(() => {
+    const fetchAnalysisGroups = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('analysisgroup')
+          .select('id, title')
+          .order('id', { ascending: true });
+
+        if (error) throw error;
+
+        setAnalysisGroups(data || []);
+      } catch (error) {
+        console.error('Error fetching analysis groups:', error);
+      }
+    };
+
+    fetchAnalysisGroups();
+  }, []);
+
+  // AnalysisTitle データ取得
+  useEffect(() => {
+    const fetchAnalysisTitles = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('selectiondetailtitle')
+          .select('id, title')
+          .order('sort', { ascending: true });
+
+        if (error) throw error;
+
+        setAnalysisTitles(data);
+      } catch (error) {
+        console.error('Error fetching analysis titles:', error);
+      }
+    };
+
+    fetchAnalysisTitles();
+  }, []);
 
   // データ追加
-  const handleAddAnalysis = async (formValues: { title: string; description: string }) => {
-    if (!userId) {
-      console.error('User ID is missing');
+  const handleAddAnalysis = async (formValues: { titleId: string; description: string }) => {
+    if (typeof id !== 'string') {
+      console.error('Invalid id:', id);
+      return;
+    }
+    const { data, error } = await supabase
+      .from('selectiondetail')
+      .insert([
+        {
+          title_id: parseInt(formValues.titleId),
+          description: formValues.description,
+          selection_id: parseInt(id),
+        },
+      ])
+      .select();
+
+    if (error) {
+      console.error('Error adding selection detail:', error.message);
       return;
     }
 
-    try {
-      const { data, error } = await supabase
-        .from('selection')
-        .insert([
-          {
-            supabaseauth_id: userId,
-            title: formValues.title,
-            description: formValues.description,
-          },
-        ])
-        .select();
+    if (data) {
+      const addedDetail = {
+        id: data[0]?.id,
+        title:
+          analysisTitles.find((title) => title.id === parseInt(formValues.titleId))?.title ||
+          'Untitled',
+        description: formValues.description,
+      };
 
-      if (error) {
-        console.error('Supabase error:', error.message);
-        return;
-      }
-
-      if (data) {
-        setAnalyses((prev) => [...data, ...prev]);
-      }
-
-      reset({
-        title: '',
-        description: '',
-      });
+      setAnalyses((prev) => [addedDetail, ...prev]);
       setIsModalOpen(false);
-    } catch (error) {
-      console.error('Error adding selection:', error);
+      reset();
     }
   };
 
   const handleEditAnalysis = async () => {
     try {
-      const { data, error } = await supabase
-        .from('selection')
+      const { error } = await supabase
+        .from('selectiondetail')
         .update({
-          title: editData.title,
+          title_id: parseInt(editData.titleId),
           description: editData.description,
         })
-        .eq('id', editData.id)
-        .select();
+        .eq('id', editData.id);
 
       if (error) {
-        console.error('Error editing selection:', error);
+        console.error('Error editing selection detail:', error.message);
         return;
       }
 
       setAnalyses((prev) =>
-        prev.map((selection) =>
-          selection.id === editData.id ? { ...selection, ...editData } : selection,
+        prev.map((detail) =>
+          detail.id === editData.id
+            ? {
+                id: editData.id,
+                title:
+                  analysisTitles.find((title) => title.id === parseInt(editData.titleId))?.title ||
+                  'Untitled',
+                description: editData.description,
+              }
+            : detail,
         ),
       );
-
-      setEditData({ id: 0, title: '', description: '' });
       setIsEditModalOpen(false);
       reset({
-        title: '',
+        titleId: '',
         description: '',
       });
     } catch (error) {
-      console.error('Error editing selection:', error);
+      console.error('Error editing selection detail:', error);
     }
   };
 
   const openEditModal = (analysis: Analysis) => {
+    const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
     setEditData({
       id: analysis.id,
-      title: analysis.title,
+      titleId,
       description: analysis.description,
     });
+    setDescriptionLength(analysis.description.length);
     reset({
-      title: analysis.title,
+      titleId,
       description: analysis.description,
     });
-    setDescriptionLength(analysis.description.replace(/\s/g, '').length);
     setInitialEditTitle(analysis.title);
     setIsEditModalOpen(true);
   };
 
   const handleDeleteAnalysis = async () => {
-    if (!deleteData?.id) return;
+    if (!deleteData) return;
 
     try {
-      const { error } = await supabase.from('selection').delete().eq('id', deleteData.id);
+      const { error } = await supabase.from('selectiondetail').delete().eq('id', deleteData.id);
 
       if (error) {
-        console.error('Error deleting selection:', error);
+        console.error('Error deleting selection detail:', error.message);
         return;
       }
 
-      setAnalyses((prev) => prev.filter((selection) => selection.id !== deleteData.id));
-      setDeleteData(null);
+      setAnalyses((prev) => prev.filter((detail) => detail.id !== deleteData.id));
       setIsDeleteModalOpen(false);
     } catch (error) {
-      console.error('Error deleting selection:', error);
+      console.error('Error deleting selection detail:', error);
     }
   };
 
@@ -218,10 +299,6 @@ export default function Template() {
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
-  const handleNavigateToDetail = (id: number) => {
-    router.push(`/selection/${id}/detail`);
-  };
-
   return (
     <>
       <div>
@@ -234,9 +311,9 @@ export default function Template() {
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
                     <div className="flex">
-                      <BuildingOffice2Icon className="TitleIcon mr-1" aria-hidden="true" />
+                      <ChartBarIcon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                        選考企業
+                        自己分析
                       </h2>
                     </div>
                   </div>
@@ -253,7 +330,7 @@ export default function Template() {
               </div>
               <div>
                 <div className="pb-5 flex">
-                  <div className="w-full Search relative mt-2 rounded-md shadow-sm">
+                  <div className="w-2/3 Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-400" />
                     </div>
@@ -264,6 +341,25 @@ export default function Template() {
                       placeholder="検索"
                       className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
                     />
+                  </div>
+
+                  <div className="w-1/3 ml-2">
+                    <select
+                      value={selectedGroupId || ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setSelectedGroupId(value ? parseInt(value) : null);
+                      }}
+                      style={{ height: '36px' }}
+                      className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                    >
+                      <option>全て</option>
+                      {analysisGroups.map((group) => (
+                        <option key={group.id} value={group.id}>
+                          {group.title}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
@@ -282,15 +378,8 @@ export default function Template() {
                       <div className="flex ml-auto">
                         <button
                           type="button"
-                          onClick={() => handleNavigateToDetail(analysis.id)}
-                          className="hover:text-blue-600"
-                        >
-                          <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
-                        <button
-                          type="button"
                           onClick={() => openEditModal(analysis)}
-                          className="ml-3 hover:text-blue-600"
+                          className="hover:text-blue-600"
                         >
                           <PencilIcon className="h-4 w-4" aria-hidden="true" />
                         </button>
@@ -340,27 +429,37 @@ export default function Template() {
                       </div>
                       <div className="mt-2 text-center sm:ml-4 sm:text-left">
                         <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
-                          企業を追加
+                          自己分析を追加
                         </Dialog.Title>
                       </div>
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
-                        <input
-                          {...register('title', { required: 'タイトルを入力してください' })}
-                          placeholder="企業名"
+                        <select
+                          {...register('titleId', { required: 'タイトルを選択してください' })}
                           className="w-full rounded-md border border-gray-300 p-2"
-                          style={{ height: '38px' }}
-                        />
-                        {errors.title && (
-                          <p className="text-red-500 mt-1 text-left">{errors.title.message}</p>
+                        >
+                          <option value="">タイトルを選択</option>
+                          {analysisTitles
+                            .filter(
+                              (title) =>
+                                !analyses.some((analysis) => analysis.title === title.title),
+                            ) // 存在するタイトルを除外
+                            .map((title) => (
+                              <option key={title.id} value={title.id}>
+                                {title.title}
+                              </option>
+                            ))}
+                        </select>
+                        {errors.titleId && (
+                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
                         )}
                       </div>
 
                       <div className="mb-4">
                         <textarea
                           {...register('description', { required: '内容を入力してください' })}
-                          placeholder="説明"
+                          placeholder="内容"
                           rows={10}
                           className="w-full rounded-md border border-gray-300 p-2"
                           onChange={(e) =>
@@ -383,7 +482,7 @@ export default function Template() {
                         setIsModalOpen(false);
                         setDescriptionLength(0);
                         reset({
-                          title: '',
+                          titleId: '',
                           description: '',
                         });
                       }}
@@ -462,7 +561,7 @@ export default function Template() {
                         setIsEditModalOpen(false);
                         setDescriptionLength(0);
                         reset({
-                          title: '',
+                          titleId: '',
                           description: '',
                         });
                       }}
