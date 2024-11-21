@@ -434,6 +434,18 @@ export default function Template() {
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
+                        <input
+                          {...register('title', { required: '企業名を入力してください' })}
+                          placeholder="企業名"
+                          value={editData.title}
+                          onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+                          className="w-full rounded-md border border-gray-300 p-2"
+                        />
+                        {errors.title && (
+                          <p className="text-red-500 mt-1 text-left">{errors.title.message}</p>
+                        )}
+                      </div>
+                      <div className="mb-4">
                         <textarea
                           {...register('description', { required: '内容を入力してください' })}
                           placeholder="内容"

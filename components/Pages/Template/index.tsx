@@ -414,7 +414,8 @@ export default function Template() {
                       <div className="mb-4">
                         <select
                           {...register('titleId', { required: 'タイトルを選択してください' })}
-                          className="w-full rounded-md border border-gray-300 p-2"
+                          style={{ height: '36px' }}
+                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
                         >
                           <option value="">タイトルを選択</option>
                           {analysisTitles
