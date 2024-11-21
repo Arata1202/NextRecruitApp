@@ -17,6 +17,9 @@
 .TitleBanner {
   padding: 20px 0 10px 0;
 }
+.TitleIcon {
+  height: 32px;
+}
 @media (max-width: 1023px) {
   .MobileHeader {
     margin-top: 64px;
@@ -32,6 +35,11 @@
   }
   .DialogButton {
     margin-top: 0px;
+  }
+}
+@media (max-width: 639px) {
+  .TitleIcon {
+    height: 25px;
   }
 }
 

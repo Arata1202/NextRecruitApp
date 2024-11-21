@@ -13,6 +13,7 @@ import {
   TrashIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/solid';
+import { ClipboardDocumentListIcon } from '@heroicons/react/24/outline';
 
 type Analysis = {
   id: number;
@@ -313,9 +314,12 @@ export default function Template() {
               <div>
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
-                    <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                      テンプレート
-                    </h2>
+                    <div className="flex">
+                      <ClipboardDocumentListIcon className="TitleIcon mr-1" aria-hidden="true" />
+                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                        テンプレート
+                      </h2>
+                    </div>
                   </div>
                   <div className="flex ml-4 mt-0">
                     <button

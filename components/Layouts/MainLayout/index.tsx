@@ -32,8 +32,8 @@ export default function MainLayout() {
     { name: 'ダッシュボード', href: '/', icon: ChartPieIcon },
     { name: 'カレンダー', href: '/calendar', icon: CalendarDaysIcon },
     { name: '選考企業', href: '/selection', icon: BuildingOffice2Icon },
-    { name: '自己分析', href: '/analysis', icon: ChartBarIcon },
     { name: 'テンプレート', href: '/template', icon: ClipboardDocumentListIcon },
+    { name: '自己分析', href: '/analysis', icon: ChartBarIcon },
     { name: '設定', href: '/settings', icon: Cog6ToothIcon },
   ].map((item) => ({
     ...item,

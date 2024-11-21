@@ -13,6 +13,7 @@ import {
   TrashIcon,
   MagnifyingGlassIcon,
 } from '@heroicons/react/24/solid';
+import { ChartBarIcon } from '@heroicons/react/24/outline';
 
 type Analysis = {
   id: number;
@@ -339,9 +340,12 @@ export default function Calendar() {
               <div>
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
-                    <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                      自己分析
-                    </h2>
+                    <div className="flex">
+                      <ChartBarIcon className="TitleIcon mr-1" aria-hidden="true" />
+                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                        自己分析
+                      </h2>
+                    </div>
                   </div>
                   <div className="flex ml-4 mt-0">
                     <button
