@@ -382,7 +382,7 @@ export default function Template() {
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
                       <p className="whitespace-pre-wrap">{analysis.description}</p>
                       <p className="flex justify-end text-gray-500 text-sm mt-1">
-                        {analysis.description.length} 文字
+                        {analysis.description.replace(/\s/g, '').length} 文字
                       </p>
                     </div>
                   </div>
@@ -449,7 +449,9 @@ export default function Template() {
                           placeholder="内容"
                           rows={10}
                           className="w-full rounded-md border border-gray-300 p-2"
-                          onChange={(e) => setDescriptionLength(e.target.value.length)}
+                          onChange={(e) =>
+                            setDescriptionLength(e.target.value.replace(/\s/g, '').length)
+                          }
                         />
                         <p className="flex justify-end text-gray-500 text-sm mt-1">
                           {descriptionLength} 文字
@@ -526,12 +528,12 @@ export default function Template() {
                           onChange={(e) => {
                             const value = e.target.value;
                             setEditData({ ...editData, description: value });
-                            setDescriptionLength(value.length);
+                            setDescriptionLength(value.replace(/\s/g, '').length);
                           }}
                           className="w-full rounded-md border border-gray-300 p-2"
                         />
                         <p className="flex justify-end text-gray-500 text-sm mt-1">
-                          {descriptionLength} 文字
+                          {editData.description.replace(/\s/g, '').length} 文字
                         </p>
                         {errors.description && (
                           <p className="text-red-500 text-left">{errors.description.message}</p>
