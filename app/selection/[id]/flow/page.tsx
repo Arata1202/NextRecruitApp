@@ -367,8 +367,8 @@ export default function Detail() {
   const handleNavigation = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const selectedValue = event.target.value;
 
-    if (selectedValue === 'flow') {
-      router.push(`/selection/${id}/flow`);
+    if (selectedValue === 'detail') {
+      router.push(`/selection/${id}/detail`);
     }
   };
 
@@ -426,8 +426,8 @@ export default function Detail() {
                       style={{ height: '36px' }}
                       className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
                     >
-                      <option value="">企業情報</option>
-                      <option value="flow">選考フロー</option>
+                      <option value="">選考フロー</option>
+                      <option value="detail">企業情報</option>
                     </select>
                   </div>
                 </div>
