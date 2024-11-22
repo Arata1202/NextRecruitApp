@@ -20,6 +20,8 @@ type Analysis = {
   id: number;
   title: string;
   description: string;
+  started_at: string;
+  ended_at: string;
 };
 
 type AnalysisTitle = {
@@ -37,7 +39,13 @@ export default function Detail() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editData, setEditData] = useState({ id: 0, titleId: '', description: '' });
+  const [editData, setEditData] = useState({
+    id: 0,
+    titleId: '',
+    description: '',
+    started_at: '',
+    ended_at: '',
+  });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
@@ -149,6 +157,8 @@ export default function Detail() {
             title: item.title_id?.title || 'Untitled',
             description: item.description,
             sort: item.title_id?.sort || 0,
+            started_at: item.started_at,
+            ended_at: item.ended_at,
           }))
           .sort((a, b) => a.sort - b.sort);
 
@@ -218,6 +228,8 @@ export default function Detail() {
           analysisTitles.find((title) => title.id === parseInt(formValues.titleId))?.title ||
           'Untitled',
         description: formValues.description,
+        started_at: formValues.started_at,
+        ended_at: formValues.ended_at,
       };
 
       setAnalyses((prev) => [addedDetail, ...prev]);
@@ -233,6 +245,8 @@ export default function Detail() {
         .update({
           title_id: parseInt(editData.titleId),
           description: editData.description,
+          started_at: editData.started_at,
+          ended_at: editData.ended_at,
         })
         .eq('id', editData.id);
 
@@ -250,6 +264,8 @@ export default function Detail() {
                   analysisTitles.find((title) => title.id === parseInt(editData.titleId))?.title ||
                   'Untitled',
                 description: editData.description,
+                started_at: editData.started_at,
+                ended_at: editData.ended_at,
               }
             : detail,
         ),
@@ -258,26 +274,57 @@ export default function Detail() {
       reset({
         titleId: '',
         description: '',
+        started_at: '',
+        ended_at: '',
       });
     } catch (error) {
       console.error('Error editing selection detail:', error);
     }
   };
 
-  const openEditModal = (analysis: Analysis) => {
-    const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
-    setEditData({
-      id: analysis.id,
-      titleId,
-      description: analysis.description,
-    });
-    setDescriptionLength(analysis.description.length);
-    reset({
-      titleId,
-      description: analysis.description,
-    });
-    setInitialEditTitle(analysis.title);
-    setIsEditModalOpen(true);
+  const openEditModal = async (analysis: Analysis) => {
+    try {
+      // データベースから詳細データを取得
+      const { data, error } = await supabase
+        .from('selectionflow') // テーブル名を指定
+        .select('description, started_at, ended_at') // 必要なカラムを指定
+        .eq('id', analysis.id) // 条件を指定
+        .single(); // 一つのデータだけ取得
+
+      if (error || !data) {
+        console.error('Error fetching data:', error);
+        return;
+      }
+
+      // titleId を取得
+      const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
+
+      // 取得したデータと既存データをフォームに反映
+      setEditData({
+        id: analysis.id,
+        titleId,
+        description: data.description || '',
+        started_at: data.started_at || '',
+        ended_at: data.ended_at || '',
+      });
+
+      setDescriptionLength((data.description || '').length);
+
+      // フォームの初期値を設定
+      reset({
+        titleId,
+        description: data.description || '',
+        started_at: data.started_at ? new Date(data.started_at).toISOString().slice(0, 16) : '',
+        ended_at: data.ended_at ? new Date(data.ended_at).toISOString().slice(0, 16) : '',
+      });
+
+      setInitialEditTitle(analysis.title);
+
+      // モーダルを開く
+      setIsEditModalOpen(true);
+    } catch (err) {
+      console.error('Error opening edit modal:', err);
+    }
   };
 
   const handleDeleteAnalysis = async () => {
@@ -622,6 +669,10 @@ export default function Detail() {
                           <input
                             type="datetime-local"
                             {...register('started_at', { required: '開始時間を選択してください' })}
+                            value={editData.started_at}
+                            onChange={(e) =>
+                              setEditData({ ...editData, started_at: e.target.value })
+                            }
                             className="block w-full rounded-md border border-gray-300 p-2"
                           />
                           {errors.started_at && (
@@ -638,7 +689,9 @@ export default function Detail() {
                           </label>
                           <input
                             type="datetime-local"
-                            {...register('ended_at', { required: '終了時間を選択してください' })}
+                            {...register('ended_at', { required: '開始時間を選択してください' })}
+                            value={editData.ended_at}
+                            onChange={(e) => setEditData({ ...editData, ended_at: e.target.value })}
                             className="block w-full rounded-md border border-gray-300 p-2"
                           />
                           {errors.ended_at && (
