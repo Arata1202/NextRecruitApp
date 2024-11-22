@@ -27,16 +27,6 @@ type AnalysisTitle = {
   title: string;
 };
 
-type AnalysisRawData = {
-  id: number;
-  title_id: {
-    id: number;
-    title: string;
-    sort: number;
-  };
-  description: string;
-};
-
 export default function Detail() {
   const { id } = useParams();
   const router = useRouter();
@@ -49,14 +39,10 @@ export default function Detail() {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editData, setEditData] = useState({ id: 0, titleId: '', description: '' });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [, setDeleteId] = useState<number | null>(null);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
-  const [searchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
-  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
   const [pageTitle, setPageTitle] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
@@ -173,26 +159,6 @@ export default function Detail() {
 
     fetchSelectionDetails();
   }, [userId, id]);
-
-  // analysisgroup データを取得
-  useEffect(() => {
-    const fetchAnalysisGroups = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('analysisgroup')
-          .select('id, title')
-          .order('id', { ascending: true });
-
-        if (error) throw error;
-
-        setAnalysisGroups(data || []);
-      } catch (error) {
-        console.error('Error fetching analysis groups:', error);
-      }
-    };
-
-    fetchAnalysisGroups();
-  }, []);
 
   // AnalysisTitle データ取得
   useEffect(() => {
