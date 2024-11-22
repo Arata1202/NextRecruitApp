@@ -56,6 +56,8 @@ export default function Detail() {
     defaultValues: {
       titleId: '',
       description: '',
+      started_at: '',
+      ended_at: '',
     },
   });
 
@@ -120,7 +122,7 @@ export default function Detail() {
     const fetchSelectionDetails = async () => {
       try {
         const query = supabase
-          .from('selectiondetail')
+          .from('selectionflow')
           .select(
             `
             id,
@@ -165,7 +167,7 @@ export default function Detail() {
     const fetchAnalysisTitles = async () => {
       try {
         const { data, error } = await supabase
-          .from('selectiondetailtitle')
+          .from('selectionflowtitle')
           .select('id, title')
           .order('sort', { ascending: true });
 
@@ -181,18 +183,25 @@ export default function Detail() {
   }, []);
 
   // データ追加
-  const handleAddAnalysis = async (formValues: { titleId: string; description: string }) => {
+  const handleAddAnalysis = async (formValues: {
+    titleId: string;
+    description: string;
+    started_at: string;
+    ended_at: string;
+  }) => {
     if (typeof id !== 'string') {
       console.error('Invalid id:', id);
       return;
     }
     const { data, error } = await supabase
-      .from('selectiondetail')
+      .from('selectionflow')
       .insert([
         {
           title_id: parseInt(formValues.titleId),
           description: formValues.description,
           selection_id: parseInt(id),
+          started_at: formValues.started_at,
+          ended_at: formValues.ended_at,
         },
       ])
       .select();
@@ -220,7 +229,7 @@ export default function Detail() {
   const handleEditAnalysis = async () => {
     try {
       const { error } = await supabase
-        .from('selectiondetail')
+        .from('selectionflow')
         .update({
           title_id: parseInt(editData.titleId),
           description: editData.description,
@@ -275,7 +284,7 @@ export default function Detail() {
     if (!deleteData) return;
 
     try {
-      const { error } = await supabase.from('selectiondetail').delete().eq('id', deleteData.id);
+      const { error } = await supabase.from('selectionflow').delete().eq('id', deleteData.id);
 
       if (error) {
         console.error('Error deleting selection detail:', error.message);
@@ -493,9 +502,43 @@ export default function Detail() {
                       </div>
 
                       <div className="mb-4">
+                        <label
+                          htmlFor="started_at"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          開始時間
+                        </label>
+                        <input
+                          type="datetime-local"
+                          {...register('started_at', { required: '開始時間を選択してください' })}
+                          className="block w-full rounded-md border border-gray-300 p-2"
+                        />
+                        {errors.started_at && (
+                          <p className="text-red-500 mt-1">{errors.started_at.message}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
+                        <label
+                          htmlFor="ended_at"
+                          className="block text-sm font-medium text-gray-700"
+                        >
+                          終了時間
+                        </label>
+                        <input
+                          type="datetime-local"
+                          {...register('ended_at', { required: '終了時間を選択してください' })}
+                          className="block w-full rounded-md border border-gray-300 p-2"
+                        />
+                        {errors.ended_at && (
+                          <p className="text-red-500 mt-1">{errors.ended_at.message}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
                         <textarea
                           {...register('description', { required: '内容を入力してください' })}
-                          placeholder="内容"
+                          placeholder="備考"
                           rows={10}
                           className="w-full rounded-md border border-gray-300 p-2"
                           onChange={(e) =>
@@ -569,6 +612,40 @@ export default function Detail() {
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
+                        <div className="mb-4">
+                          <label
+                            htmlFor="started_at"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            開始時間
+                          </label>
+                          <input
+                            type="datetime-local"
+                            {...register('started_at', { required: '開始時間を選択してください' })}
+                            className="block w-full rounded-md border border-gray-300 p-2"
+                          />
+                          {errors.started_at && (
+                            <p className="text-red-500 mt-1">{errors.started_at.message}</p>
+                          )}
+                        </div>
+
+                        <div className="mb-4">
+                          <label
+                            htmlFor="ended_at"
+                            className="block text-sm font-medium text-gray-700"
+                          >
+                            終了時間
+                          </label>
+                          <input
+                            type="datetime-local"
+                            {...register('ended_at', { required: '終了時間を選択してください' })}
+                            className="block w-full rounded-md border border-gray-300 p-2"
+                          />
+                          {errors.ended_at && (
+                            <p className="text-red-500 mt-1">{errors.ended_at.message}</p>
+                          )}
+                        </div>
+
                         <textarea
                           {...register('description', { required: '内容を入力してください' })}
                           placeholder="内容"
