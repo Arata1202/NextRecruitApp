@@ -120,14 +120,9 @@ export default function Detail() {
 
   // データ取得
   useEffect(() => {
-    if (!userId) return;
-
-    if (typeof id !== 'string') {
-      console.error('Invalid id:', id);
-      return;
-    }
-
     const fetchSelectionDetails = async () => {
+      if (!userId || typeof id !== 'string') return;
+
       try {
         const query = supabase
           .from('selectionflow')
@@ -139,8 +134,10 @@ export default function Detail() {
               title,
               sort
             ),
-            description
-          `,
+            description,
+            started_at,
+            ended_at
+            `,
           )
           .eq('selection_id', parseInt(id));
 
@@ -151,19 +148,21 @@ export default function Detail() {
           return;
         }
 
-        const formattedData = (data || [])
-          .map((item: any) => ({
-            id: item.id,
-            title: item.title_id?.title || 'Untitled',
-            description: item.description,
-            sort: item.title_id?.sort || 0,
-            started_at: item.started_at,
-            ended_at: item.ended_at,
-          }))
-          .sort((a, b) => a.sort - b.sort);
+        if (data) {
+          const formattedData = data
+            .map((item: any) => ({
+              id: item.id,
+              title: item.title_id?.title || 'Untitled',
+              description: item.description,
+              started_at: item.started_at || null,
+              ended_at: item.ended_at || null,
+              sort: item.title_id?.sort || 0,
+            }))
+            .sort((a, b) => a.sort - b.sort);
 
-        setAnalyses(formattedData);
-        setFilteredAnalyses(formattedData);
+          setAnalyses(formattedData);
+          setFilteredAnalyses(formattedData);
+        }
       } catch (error) {
         console.error('Error fetching selection details:', error);
       }
@@ -284,12 +283,11 @@ export default function Detail() {
 
   const openEditModal = async (analysis: Analysis) => {
     try {
-      // データベースから詳細データを取得
       const { data, error } = await supabase
-        .from('selectionflow') // テーブル名を指定
-        .select('description, started_at, ended_at') // 必要なカラムを指定
-        .eq('id', analysis.id) // 条件を指定
-        .single(); // 一つのデータだけ取得
+        .from('selectionflow')
+        .select('description, started_at, ended_at')
+        .eq('id', analysis.id)
+        .single();
 
       if (error || !data) {
         console.error('Error fetching data:', error);
@@ -394,6 +392,13 @@ export default function Detail() {
     }
   };
 
+  const options: Intl.DateTimeFormatOptions = {
+    month: 'long',
+    day: 'numeric',
+    hour: 'numeric',
+    minute: 'numeric',
+  };
+
   if (isLoading) {
     return null;
   }
@@ -484,10 +489,28 @@ export default function Detail() {
                       </div>
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
-                      <p className="whitespace-pre-wrap">{analysis.description}</p>
-                      <p className="flex justify-end text-gray-500 text-sm mt-1">
-                        {analysis.description.replace(/\s/g, '').length} 文字
-                      </p>
+                      {analysis.description && (
+                        <>
+                          <p className="whitespace-pre-wrap">{analysis.description}</p>
+                          <p className="flex justify-end text-gray-500 text-sm mt-1">
+                            {analysis.description.replace(/\s/g, '').length} 文字
+                          </p>
+                        </>
+                      )}
+                      <div className="text-sm text-gray-500 mt-2">
+                        <p>
+                          開始：{' '}
+                          {analysis.started_at
+                            ? new Date(analysis.started_at).toLocaleString('ja-JP', options)
+                            : '未設定'}
+                        </p>
+                        <p>
+                          終了：{' '}
+                          {analysis.ended_at
+                            ? new Date(analysis.ended_at).toLocaleString('ja-JP', options)
+                            : '未設定'}
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -520,7 +543,7 @@ export default function Detail() {
                       </div>
                       <div className="mt-2 text-center sm:ml-4 sm:text-left">
                         <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
-                          企業情報を追加
+                          選考フローを追加
                         </Dialog.Title>
                       </div>
                     </div>
@@ -584,8 +607,8 @@ export default function Detail() {
 
                       <div className="mb-4">
                         <textarea
-                          {...register('description', { required: '内容を入力してください' })}
-                          placeholder="備考"
+                          {...register('description')}
+                          placeholder="備考（任意）"
                           rows={10}
                           className="w-full rounded-md border border-gray-300 p-2"
                           onChange={(e) =>
@@ -610,6 +633,8 @@ export default function Detail() {
                         reset({
                           titleId: '',
                           description: '',
+                          started_at: '',
+                          ended_at: '',
                         });
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
@@ -700,8 +725,8 @@ export default function Detail() {
                         </div>
 
                         <textarea
-                          {...register('description', { required: '内容を入力してください' })}
-                          placeholder="内容"
+                          {...register('description')}
+                          placeholder="備考（任意）"
                           rows={10}
                           value={editData.description}
                           onChange={(e) => {
@@ -729,6 +754,8 @@ export default function Detail() {
                         reset({
                           titleId: '',
                           description: '',
+                          started_at: '',
+                          ended_at: '',
                         });
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
