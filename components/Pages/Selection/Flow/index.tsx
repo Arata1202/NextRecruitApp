@@ -202,6 +202,12 @@ export default function Detail() {
       console.error('Invalid id:', id);
       return;
     }
+    const toUTC = (localDatetime: string) => {
+      const date = new Date(localDatetime);
+      const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+      return utcDate.toISOString();
+    };
+
     const { data, error } = await supabase
       .from('selectionflow')
       .insert([
@@ -209,8 +215,8 @@ export default function Detail() {
           title_id: parseInt(formValues.titleId),
           description: formValues.description,
           selection_id: parseInt(id),
-          started_at: formValues.started_at,
-          ended_at: formValues.ended_at,
+          started_at: formValues.started_at ? toUTC(formValues.started_at) : null,
+          ended_at: formValues.ended_at ? toUTC(formValues.ended_at) : null,
         },
       ])
       .select();
@@ -294,21 +300,18 @@ export default function Detail() {
         return;
       }
 
-      // titleId を取得
       const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
 
-      // 取得したデータと既存データをフォームに反映
       setEditData({
         id: analysis.id,
         titleId,
         description: data.description || '',
-        started_at: data.started_at || '',
-        ended_at: data.ended_at || '',
+        started_at: data.started_at ? new Date(data.started_at).toISOString().slice(0, 16) : '',
+        ended_at: data.ended_at ? new Date(data.ended_at).toISOString().slice(0, 16) : '',
       });
 
       setDescriptionLength((data.description || '').length);
 
-      // フォームの初期値を設定
       reset({
         titleId,
         description: data.description || '',
@@ -317,8 +320,6 @@ export default function Detail() {
       });
 
       setInitialEditTitle(analysis.title);
-
-      // モーダルを開く
       setIsEditModalOpen(true);
     } catch (err) {
       console.error('Error opening edit modal:', err);
@@ -392,11 +393,11 @@ export default function Detail() {
     }
   };
 
-  const options: Intl.DateTimeFormatOptions = {
-    month: 'long',
-    day: 'numeric',
-    hour: 'numeric',
-    minute: 'numeric',
+  const formatDateWithoutTimezone = (datetime: string) => {
+    const [datePart, timePart] = datetime.split('T');
+    const [year, month, day] = datePart.split('-');
+    const [hours, minutes] = timePart.split(':');
+    return `${year}年${month}月${day}日 ${hours}:${minutes}`;
   };
 
   if (isLoading) {
@@ -501,13 +502,13 @@ export default function Detail() {
                         <p>
                           開始：{' '}
                           {analysis.started_at
-                            ? new Date(analysis.started_at).toLocaleString('ja-JP', options)
+                            ? formatDateWithoutTimezone(analysis.started_at)
                             : '未設定'}
                         </p>
                         <p>
                           終了：{' '}
-                          {analysis.ended_at
-                            ? new Date(analysis.ended_at).toLocaleString('ja-JP', options)
+                          {analysis.started_at
+                            ? formatDateWithoutTimezone(analysis.ended_at)
                             : '未設定'}
                         </p>
                       </div>
@@ -694,9 +695,12 @@ export default function Detail() {
                           <input
                             type="datetime-local"
                             {...register('started_at', { required: '開始時間を選択してください' })}
-                            value={editData.started_at}
+                            value={editData.started_at || ''}
                             onChange={(e) =>
-                              setEditData({ ...editData, started_at: e.target.value })
+                              setEditData((prev) => ({
+                                ...prev,
+                                started_at: e.target.value,
+                              }))
                             }
                             className="block w-full rounded-md border border-gray-300 p-2"
                           />
@@ -715,8 +719,13 @@ export default function Detail() {
                           <input
                             type="datetime-local"
                             {...register('ended_at', { required: '開始時間を選択してください' })}
-                            value={editData.ended_at}
-                            onChange={(e) => setEditData({ ...editData, ended_at: e.target.value })}
+                            value={editData.ended_at || ''}
+                            onChange={(e) =>
+                              setEditData((prev) => ({
+                                ...prev,
+                                ended_at: e.target.value,
+                              }))
+                            }
                             className="block w-full rounded-md border border-gray-300 p-2"
                           />
                           {errors.ended_at && (
