@@ -140,7 +140,8 @@ export default function Detail() {
             id,
             title_id (
               id,
-              title
+              title,
+              sort
             ),
             description
           `,
@@ -154,11 +155,14 @@ export default function Detail() {
           return;
         }
 
-        const formattedData = (data || []).map((item: any) => ({
-          id: item.id,
-          title: item.title_id?.title || 'Untitled',
-          description: item.description,
-        }));
+        const formattedData = (data || [])
+          .map((item: any) => ({
+            id: item.id,
+            title: item.title_id?.title || 'Untitled',
+            description: item.description,
+            sort: item.title_id?.sort || 0,
+          }))
+          .sort((a, b) => a.sort - b.sort);
 
         setAnalyses(formattedData);
         setFilteredAnalyses(formattedData);
