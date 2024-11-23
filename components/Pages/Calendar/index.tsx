@@ -123,6 +123,7 @@ export default function Calendar() {
                 events={events}
                 displayEventTime={false}
                 eventClick={handleEventClick}
+                height="auto"
               />
             </div>
           </main>

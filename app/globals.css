@@ -63,14 +63,29 @@
 .fc-event {
   cursor: pointer;
 }
+.fc-daygrid-event-dot {
+  display: none;
+}
 .fc-event-title-container {
   background-color: rgb(59 130 246);
 }
 .fc-event-title-container:hover {
   background-color: rgb(37 99 235);
 }
-.fc-daygrid-event-dot {
-  border-color: rgb(59 130 246);
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start {
+  color: white;
+  background-color: rgb(59, 130, 246);
+}
+
+.fc-direction-ltr .fc-daygrid-event.fc-event-end:hover,
+.fc-direction-rtl .fc-daygrid-event.fc-event-start:hover {
+  background-color: rgb(37, 99, 235);
+}
+
+.fc-daygrid-dot-event .fc-event-title {
+  font-weight: normal !important;
 }
 
 .error {
