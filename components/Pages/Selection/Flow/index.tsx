@@ -606,7 +606,7 @@ export default function Flow() {
                           className="block w-full rounded-md border border-gray-300 p-2"
                         />
                         {errors.started_at && (
-                          <p className="text-red-500 mt-1">{errors.started_at.message}</p>
+                          <p className="text-red-500 mt-1 text-left">{errors.started_at.message}</p>
                         )}
                       </div>
 
@@ -623,7 +623,7 @@ export default function Flow() {
                           className="block w-full rounded-md border border-gray-300 p-2"
                         />
                         {errors.ended_at && (
-                          <p className="text-red-500 mt-1">{errors.ended_at.message}</p>
+                          <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
                         )}
                       </div>
 
@@ -726,7 +726,9 @@ export default function Flow() {
                             className="block w-full rounded-md border border-gray-300 p-2"
                           />
                           {errors.started_at && (
-                            <p className="text-red-500 mt-1">{errors.started_at.message}</p>
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.started_at.message}
+                            </p>
                           )}
                         </div>
 
@@ -750,7 +752,7 @@ export default function Flow() {
                             className="block w-full rounded-md border border-gray-300 p-2"
                           />
                           {errors.ended_at && (
-                            <p className="text-red-500 mt-1">{errors.ended_at.message}</p>
+                            <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
                           )}
                         </div>
 
