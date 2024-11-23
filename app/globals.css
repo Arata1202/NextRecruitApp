@@ -50,6 +50,9 @@
   .fc-toolbar-title {
     margin-top: 0.5em !important;
   }
+  .fc-event-title {
+    font-size: 10px;
+  }
 }
 /* .fc-event-title {
   white-space: normal;
@@ -86,9 +89,12 @@
   font-weight: normal !important;
 }
 .fc-button {
-  background-color: rgb(59, 130, 246) !important;
-  color: white !important;
+  background-color: rgb(209 213 219) !important;
+  color: black !important;
   border: none !important;
+}
+.fc-h-event .fc-event-title {
+  display: block !important;
 }
 
 .error {
