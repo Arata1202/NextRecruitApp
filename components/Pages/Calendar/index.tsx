@@ -1,13 +1,94 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import MainLayout from '@/components/Layouts/MainLayout';
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
+import { supabase } from '@/libs/supabase';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 
+interface EventData {
+  started_at: string;
+  ended_at: string;
+  selection: {
+    id: string;
+    title: string;
+    supabaseauth_id: string;
+  };
+}
+
+interface MappedEvent {
+  title: string;
+  start: string;
+  end: string;
+  extendedProps: {
+    id: string;
+  };
+}
+
 export default function Calendar() {
+  const [events, setEvents] = useState<MappedEvent[]>([]);
+  const router = useRouter();
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      const {
+        data: { user },
+        error: userError,
+      } = await supabase.auth.getUser();
+
+      if (userError || !user) {
+        console.error('Error fetching user:', userError || 'User not logged in');
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from('selectionflow')
+        .select(
+          `
+          started_at,
+          ended_at,
+          selection (
+            id,
+            title,
+            supabaseauth_id
+          )
+        `,
+        )
+        .eq('selection.supabaseauth_id', user.id);
+
+      if (error) {
+        console.error('Error fetching events:', error);
+        return;
+      }
+
+      const mappedEvents = (data as unknown as EventData[])
+        .filter((item) => item.selection?.title)
+        .map((item, index) => ({
+          title: item.selection.title,
+          start: item.started_at,
+          end: item.ended_at,
+          extendedProps: {
+            id: item.selection.id,
+          },
+        }));
+
+      setEvents(mappedEvents);
+    };
+
+    fetchEvents();
+  }, []);
+
+  const handleEventClick = (clickInfo: any) => {
+    const eventId = clickInfo.event.extendedProps.id;
+    if (eventId) {
+      router.push(`/selection/${eventId}/flow`);
+    }
+  };
+
   return (
     <>
       <div>
@@ -26,15 +107,6 @@ export default function Calendar() {
                       </h2>
                     </div>
                   </div>
-                  {/* <div className="flex ml-4 mt-0">
-                    <button
-                      type="button"
-                      onClick={() => setIsModalOpen(true)}
-                      className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
-                    >
-                      追加
-                    </button>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -42,11 +114,15 @@ export default function Calendar() {
             <div className="px-4 sm:px-6 lg:px-8 mt-5">
               <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+                locale="ja"
                 headerToolbar={{
-                  left: 'prev, next today',
+                  left: 'prev,next today',
                   center: 'title',
-                  right: 'dayGridMonth, timeGridWeek, timeGridDay',
+                  right: 'dayGridMonth,timeGridWeek,timeGridDay',
                 }}
+                events={events}
+                displayEventTime={false}
+                eventClick={handleEventClick}
               />
             </div>
           </main>

@@ -50,6 +50,27 @@
   .TitleIcon {
     height: 25px;
   }
+  .fc-header-toolbar {
+    display: block !important;
+  }
+}
+/* .fc-event-title {
+  white-space: normal;
+  word-wrap: break-word;
+  font-size: 12px;
+  line-height: 1.4;
+} */
+.fc-event {
+  cursor: pointer;
+}
+.fc-event-title-container {
+  background-color: rgb(59 130 246);
+}
+.fc-event-title-container:hover {
+  background-color: rgb(37 99 235);
+}
+.fc-daygrid-event-dot {
+  border-color: rgb(59 130 246);
 }
 
 .error {
