@@ -29,7 +29,7 @@ type AnalysisTitle = {
   title: string;
 };
 
-export default function Detail() {
+export default function Flow() {
   const { id } = useParams();
   const router = useRouter();
 
@@ -404,6 +404,15 @@ export default function Detail() {
     return null;
   }
 
+  const tabs = [
+    { name: '企業情報', href: './detail', current: false },
+    { name: '選考状況', href: '#', current: true },
+  ];
+
+  function classNames(...classes: (string | false | null | undefined)[]): string {
+    return classes.filter(Boolean).join(' ');
+  }
+
   return (
     <>
       <div>
@@ -434,8 +443,8 @@ export default function Detail() {
                 </div>
               </div>
               <div>
-                <div className="pb-5 flex">
-                  <div className="w-2/3 Search relative mt-2 rounded-md shadow-sm">
+                <div className="pb-2 flex">
+                  <div className="w-full Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-400" />
                     </div>
@@ -447,16 +456,28 @@ export default function Detail() {
                       className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
                     />
                   </div>
-
-                  <div className="w-1/3 ml-2">
-                    <select
-                      onChange={handleNavigation}
-                      style={{ height: '36px' }}
-                      className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
-                    >
-                      <option value="">選考フロー</option>
-                      <option value="detail">企業情報</option>
-                    </select>
+                </div>
+                <div>
+                  <div className="">
+                    <div className="border-b border-gray-200">
+                      <nav aria-label="Tabs" className="-mb-px flex space-x-8">
+                        {tabs.map((tab) => (
+                          <a
+                            key={tab.name}
+                            href={tab.href}
+                            aria-current={tab.current ? 'page' : undefined}
+                            className={classNames(
+                              tab.current
+                                ? 'border-blue-500 text-blue-600'
+                                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                              'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
+                            )}
+                          >
+                            {tab.name}
+                          </a>
+                        ))}
+                      </nav>
+                    </div>
                   </div>
                 </div>
               </div>
