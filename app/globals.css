@@ -10,6 +10,15 @@
   --tw-ring-color: rgb(209 213 219);
 }
 
+.fc-button.fc--button {
+  display: none;
+}
+
+.fc-button {
+  border-top-right-radius: 0.25em !important;
+  border-bottom-right-radius: 0.25em !important;
+}
+
 /* メディアクエリ */
 .SidebarLayout {
   display: none;

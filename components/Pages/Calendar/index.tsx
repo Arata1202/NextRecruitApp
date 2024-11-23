@@ -2,6 +2,10 @@
 
 import MainLayout from '@/components/Layouts/MainLayout';
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
+import FullCalendar from '@fullcalendar/react';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import timeGridPlugin from '@fullcalendar/timegrid';
 
 export default function Calendar() {
   return (
@@ -35,7 +39,16 @@ export default function Calendar() {
               </div>
             </div>
             {/* メインコンテンツ */}
-            <div className="px-4 sm:px-6 lg:px-8 mt-5">メインエリア</div>
+            <div className="px-4 sm:px-6 lg:px-8 mt-5">
+              <FullCalendar
+                plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
+                headerToolbar={{
+                  left: 'prev, next today',
+                  center: 'title',
+                  right: 'dayGridMonth, timeGridWeek, timeGridDay',
+                }}
+              />
+            </div>
           </main>
         </div>
       </div>

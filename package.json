@@ -24,6 +24,11 @@
     "node": ">=18.x"
   },
   "dependencies": {
+    "@fullcalendar/core": "^6.1.15",
+    "@fullcalendar/daygrid": "^6.1.15",
+    "@fullcalendar/interaction": "^6.1.15",
+    "@fullcalendar/react": "^6.1.15",
+    "@fullcalendar/timegrid": "^6.1.15",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.1.5",
     "@supabase/supabase-js": "^2.2.1",
@@ -44,6 +49,7 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.2",
     "@eslint/compat": "^1.2.3",
+    "@fullcalendar/list": "^6.1.15",
     "@jest/types": "^29.6.3",
     "@storybook/addon-essentials": "^8.4.4",
     "@storybook/addon-interactions": "^8.4.4",
