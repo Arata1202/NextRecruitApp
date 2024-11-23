@@ -596,7 +596,7 @@ export default function Flow() {
                       <div className="mb-4">
                         <label
                           htmlFor="started_at"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-700 text-left"
                         >
                           開始時間
                         </label>
@@ -613,7 +613,7 @@ export default function Flow() {
                       <div className="mb-4">
                         <label
                           htmlFor="ended_at"
-                          className="block text-sm font-medium text-gray-700"
+                          className="block text-sm font-medium text-gray-700 text-left"
                         >
                           終了時間
                         </label>
@@ -709,7 +709,7 @@ export default function Flow() {
                         <div className="mb-4">
                           <label
                             htmlFor="started_at"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-gray-700 text-left"
                           >
                             開始時間
                           </label>
@@ -733,7 +733,7 @@ export default function Flow() {
                         <div className="mb-4">
                           <label
                             htmlFor="ended_at"
-                            className="block text-sm font-medium text-gray-700"
+                            className="block text-sm font-medium text-gray-700 text-left"
                           >
                             終了時間
                           </label>

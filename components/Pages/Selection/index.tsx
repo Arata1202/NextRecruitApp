@@ -278,28 +278,28 @@ export default function Template() {
                 >
                   <div>
                     <div className="px-4 py-3 sm:px-6 flex">
-                      <a
+                      {/* <a
                         href="#"
                         onClick={(event) => {
                           event.preventDefault();
                           handleNavigateToDetail(analysis.id);
                         }}
                         className="text-base/7 font-semibold text-blue-500 hover:text-blue-600"
-                      >
-                        {analysis.title}
-                      </a>
+                      > */}
+                      <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                      {/* </a> */}
                       <div className="flex ml-auto">
-                        {/* <button
+                        <button
                           type="button"
                           onClick={() => handleNavigateToDetail(analysis.id)}
                           className="hover:text-blue-600"
                         >
                           <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
-                        </button> */}
+                        </button>
                         <button
                           type="button"
                           onClick={() => openEditModal(analysis)}
-                          className="hover:text-blue-600"
+                          className="ml-3 hover:text-blue-600"
                         >
                           <PencilIcon className="h-4 w-4" aria-hidden="true" />
                         </button>
