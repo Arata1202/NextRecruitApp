@@ -118,7 +118,7 @@ export default function Calendar() {
                 headerToolbar={{
                   left: 'prev,next today',
                   center: 'title',
-                  right: 'dayGridMonth,timeGridWeek,timeGridDay',
+                  right: '',
                 }}
                 events={events}
                 displayEventTime={false}

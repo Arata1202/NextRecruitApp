@@ -10,15 +10,6 @@
   --tw-ring-color: rgb(209 213 219);
 }
 
-.fc-button.fc--button {
-  display: none;
-}
-
-.fc-button {
-  border-top-right-radius: 0.25em !important;
-  border-bottom-right-radius: 0.25em !important;
-}
-
 /* メディアクエリ */
 .SidebarLayout {
   display: none;
@@ -53,6 +44,12 @@
   .fc-header-toolbar {
     display: block !important;
   }
+  .fc .fc-toolbar.fc-header-toolbar {
+    margin-bottom: 0.5em !important;
+  }
+  .fc-toolbar-title {
+    margin-top: 0.5em !important;
+  }
 }
 /* .fc-event-title {
   white-space: normal;
@@ -60,6 +57,7 @@
   font-size: 12px;
   line-height: 1.4;
 } */
+/* カレンダー */
 .fc-event {
   cursor: pointer;
 }
@@ -86,6 +84,11 @@
 
 .fc-daygrid-dot-event .fc-event-title {
   font-weight: normal !important;
+}
+.fc-button {
+  background-color: rgb(59, 130, 246) !important;
+  color: white !important;
+  border: none !important;
 }
 
 .error {
