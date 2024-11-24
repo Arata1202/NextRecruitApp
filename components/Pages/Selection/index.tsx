@@ -27,6 +27,7 @@ export default function Template() {
   const router = useRouter();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -92,6 +93,9 @@ export default function Template() {
         if (data) {
           setAnalyses(data);
         }
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
       } catch (error) {
         console.error('Error fetching selections:', error);
       }
@@ -271,14 +275,32 @@ export default function Template() {
 
             {/* メインコンテンツ */}
             <div className="px-4 sm:px-6 lg:px-8 mt-5">
-              {filteredAnalyses.map((analysis) => (
-                <div
-                  key={analysis.id}
-                  className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
-                >
-                  <div>
-                    <div className="px-4 py-3 sm:px-6 flex">
-                      {/* <a
+              {loading ? (
+                <></>
+              ) : filteredAnalyses.length === 0 ? (
+                <div className="mt-5">
+                  <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">データがありません。</h3>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                        <p className="whitespace-pre-wrap">
+                          右上の追加ボタンから、選考中の企業を追加してみましょう！
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                filteredAnalyses.map((analysis) => (
+                  <div
+                    key={analysis.id}
+                    className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
+                  >
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        {/* <a
                         href="#"
                         onClick={(event) => {
                           event.preventDefault();
@@ -286,41 +308,42 @@ export default function Template() {
                         }}
                         className="text-base/7 font-semibold text-blue-500 hover:text-blue-600"
                       > */}
-                      <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
-                      {/* </a> */}
-                      <div className="flex ml-auto">
-                        <button
-                          type="button"
-                          onClick={() => handleNavigateToDetail(analysis.id)}
-                          className="hover:text-blue-600"
-                        >
-                          <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => openEditModal(analysis)}
-                          className="ml-3 hover:text-blue-600"
-                        >
-                          <PencilIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => openDeleteModal(analysis)}
-                          className="ml-3 hover:text-blue-600"
-                        >
-                          <TrashIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
+                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        {/* </a> */}
+                        <div className="flex ml-auto">
+                          <button
+                            type="button"
+                            onClick={() => handleNavigateToDetail(analysis.id)}
+                            className="hover:text-blue-600"
+                          >
+                            <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(analysis)}
+                            className="ml-3 hover:text-blue-600"
+                          >
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openDeleteModal(analysis)}
+                            className="ml-3 hover:text-blue-600"
+                          >
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                        <p className="whitespace-pre-wrap">{analysis.description}</p>
+                        <p className="flex justify-end text-gray-500 text-sm mt-1">
+                          {analysis.description.replace(/\s/g, '').length} 文字
+                        </p>
                       </div>
                     </div>
-                    <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
-                      <p className="whitespace-pre-wrap">{analysis.description}</p>
-                      <p className="flex justify-end text-gray-500 text-sm mt-1">
-                        {analysis.description.replace(/\s/g, '').length} 文字
-                      </p>
-                    </div>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
           </main>
         </div>

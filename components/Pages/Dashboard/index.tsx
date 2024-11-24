@@ -45,7 +45,6 @@ export default function DashBoard() {
 
       if (userError || !user) {
         console.error('Error fetching user:', userError || 'User not logged in');
-        setLoading(false);
         return;
       }
 
@@ -69,7 +68,6 @@ export default function DashBoard() {
 
       if (error) {
         console.error('Error fetching events:', error);
-        setLoading(false);
         return;
       }
 
@@ -86,7 +84,9 @@ export default function DashBoard() {
 
       setTodayEvents(filteredTodayEvents);
       setTomorrowEvents(filteredTomorrowEvents);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 100);
     };
 
     fetchEvents();
@@ -103,7 +103,7 @@ export default function DashBoard() {
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">
-                {event.selection.title} - {event.selectionflowtitle.title}
+                {event.selection?.title || '未設定'} - {event.selectionflowtitle?.title || '未設定'}
               </h3>
               <div className="flex ml-auto">
                 <button
@@ -149,7 +149,7 @@ export default function DashBoard() {
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">
-                {event.selection.title} - {event.selectionflowtitle.title}
+                {event.selection?.title || '未設定'} - {event.selectionflowtitle?.title || '未設定'}
               </h3>
               <div className="flex ml-auto">
                 <button
@@ -174,15 +174,13 @@ export default function DashBoard() {
     }
     return (
       <div className="mt-5">
-        <div className="mt-5">
-          <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
-            <div>
-              <div className="px-4 py-3 sm:px-6 flex">
-                <h3 className="text-base/7 font-semibold">明日の予定はありません。</h3>
-              </div>
-              <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
-                <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
-              </div>
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+          <div>
+            <div className="px-4 py-3 sm:px-6 flex">
+              <h3 className="text-base/7 font-semibold">明日の予定はありません。</h3>
+            </div>
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+              <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
             </div>
           </div>
         </div>

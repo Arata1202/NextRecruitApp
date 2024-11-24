@@ -53,7 +53,7 @@ export default function Flow() {
   const [searchTerm, setSearchTerm] = useState('');
   const [descriptionLength, setDescriptionLength] = useState(0);
   const [pageTitle, setPageTitle] = useState<string>('');
-  const [isLoading, setIsLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   const {
     register,
@@ -79,7 +79,6 @@ export default function Flow() {
 
       if (error) {
         console.error('Error fetching session:', error);
-        setIsLoading(false);
         return;
       }
 
@@ -93,7 +92,6 @@ export default function Flow() {
   useEffect(() => {
     const checkAuthorization = async () => {
       if (!userId || typeof id !== 'string') {
-        setIsLoading(false); //
         return;
       }
 
@@ -106,8 +104,6 @@ export default function Flow() {
 
         if (error || !data || data.supabaseauth_id !== userId) {
           router.push('/404');
-        } else {
-          setIsLoading(false);
         }
       } catch (error) {
         console.error('Authorization check failed:', error);
@@ -162,6 +158,9 @@ export default function Flow() {
 
           setAnalyses(formattedData);
           setFilteredAnalyses(formattedData);
+          setTimeout(() => {
+            setLoading(false);
+          }, 100);
         }
       } catch (error) {
         console.error('Error fetching selection details:', error);
@@ -400,10 +399,6 @@ export default function Flow() {
     return `${year}年${month}月${day}日 ${hours}:${minutes}`;
   };
 
-  if (isLoading) {
-    return null;
-  }
-
   const tabs = [
     { name: '企業情報', href: './detail', current: false },
     { name: '選考状況', href: '#', current: true },
@@ -485,58 +480,77 @@ export default function Flow() {
 
             {/* メインコンテンツ */}
             <div className="px-4 sm:px-6 lg:px-8 mt-5">
-              {filteredAnalyses.map((analysis) => (
-                <div
-                  key={analysis.id}
-                  className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
-                >
-                  <div>
-                    <div className="px-4 py-3 sm:px-6 flex">
-                      <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
-                      <div className="flex ml-auto">
-                        <button
-                          type="button"
-                          onClick={() => openEditModal(analysis)}
-                          className="hover:text-blue-600"
-                        >
-                          <PencilIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => openDeleteModal(analysis)}
-                          className="ml-3 hover:text-blue-600"
-                        >
-                          <TrashIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
+              {loading ? (
+                <></>
+              ) : filteredAnalyses.length === 0 ? (
+                <div className="mt-5">
+                  <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">データがありません。</h3>
                       </div>
-                    </div>
-                    <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
-                      {analysis.description && (
-                        <>
-                          <p className="whitespace-pre-wrap">{analysis.description}</p>
-                          <p className="flex justify-end text-gray-500 text-sm mt-1">
-                            {analysis.description.replace(/\s/g, '').length} 文字
-                          </p>
-                        </>
-                      )}
-                      <div className="text-sm text-gray-500 mt-2">
-                        <p>
-                          開始：{' '}
-                          {analysis.started_at
-                            ? formatDateWithoutTimezone(analysis.started_at)
-                            : '未設定'}
-                        </p>
-                        <p>
-                          終了：{' '}
-                          {analysis.started_at
-                            ? formatDateWithoutTimezone(analysis.ended_at)
-                            : '未設定'}
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                        <p className="whitespace-pre-wrap">
+                          右上の追加ボタンから、選考状況を追加してみましょう！
                         </p>
                       </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              ) : (
+                filteredAnalyses.map((analysis) => (
+                  <div
+                    key={analysis.id}
+                    className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
+                  >
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <div className="flex ml-auto">
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(analysis)}
+                            className="hover:text-blue-600"
+                          >
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openDeleteModal(analysis)}
+                            className="ml-3 hover:text-blue-600"
+                          >
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                        {analysis.description && (
+                          <>
+                            <p className="whitespace-pre-wrap">{analysis.description}</p>
+                            <p className="flex justify-end text-gray-500 text-sm mt-1">
+                              {analysis.description.replace(/\s/g, '').length} 文字
+                            </p>
+                          </>
+                        )}
+                        <div className="text-sm text-gray-500 mt-2">
+                          <p>
+                            開始：{' '}
+                            {analysis.started_at
+                              ? formatDateWithoutTimezone(analysis.started_at)
+                              : '未設定'}
+                          </p>
+                          <p>
+                            終了：{' '}
+                            {analysis.started_at
+                              ? formatDateWithoutTimezone(analysis.ended_at)
+                              : '未設定'}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </main>
         </div>

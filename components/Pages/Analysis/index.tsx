@@ -40,6 +40,7 @@ export default function Calendar() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -138,6 +139,9 @@ export default function Calendar() {
         const sortedData = formattedData.sort((a, b) => a.sort - b.sort);
 
         setAnalyses(sortedData);
+        setTimeout(() => {
+          setLoading(false);
+        }, 100);
       } catch (error) {
         console.error('Error fetching analyses:', error);
       }
@@ -399,40 +403,59 @@ export default function Calendar() {
 
             {/* メインコンテンツ */}
             <div className="px-4 sm:px-6 lg:px-8 mt-5">
-              {filteredAnalyses.map((analysis) => (
-                <div
-                  key={analysis.id}
-                  className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
-                >
-                  <div>
-                    <div className="px-4 py-3 sm:px-6 flex">
-                      <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
-                      <div className="flex ml-auto">
-                        <button
-                          type="button"
-                          onClick={() => openEditModal(analysis)}
-                          className="hover:text-blue-600"
-                        >
-                          <PencilIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
-                        <button
-                          type="button"
-                          onClick={() => openDeleteModal(analysis)}
-                          className="ml-3 hover:text-blue-600"
-                        >
-                          <TrashIcon className="h-4 w-4" aria-hidden="true" />
-                        </button>
+              {loading ? (
+                <></>
+              ) : filteredAnalyses.length === 0 ? (
+                <div className="mt-5">
+                  <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">データがありません。</h3>
                       </div>
-                    </div>
-                    <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
-                      <p className="whitespace-pre-wrap">{analysis.description}</p>
-                      <p className="flex justify-end text-gray-500 text-sm mt-1">
-                        {analysis.description.replace(/\s/g, '').length} 文字
-                      </p>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                        <p className="whitespace-pre-wrap">
+                          右上の追加ボタンから、自己分析を行ってみましょう！
+                        </p>
+                      </div>
                     </div>
                   </div>
                 </div>
-              ))}
+              ) : (
+                filteredAnalyses.map((analysis) => (
+                  <div
+                    key={analysis.id}
+                    className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
+                  >
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <div className="flex ml-auto">
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(analysis)}
+                            className="hover:text-blue-600"
+                          >
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openDeleteModal(analysis)}
+                            className="ml-3 hover:text-blue-600"
+                          >
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                        <p className="whitespace-pre-wrap">{analysis.description}</p>
+                        <p className="flex justify-end text-gray-500 text-sm mt-1">
+                          {analysis.description.replace(/\s/g, '').length} 文字
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
             </div>
           </main>
         </div>
