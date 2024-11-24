@@ -13,11 +13,11 @@ interface EventData {
   ended_at: string;
   description: string;
   selection: {
-    id: string; // selectionのid
-    title: string; // 株式会社アイスタイル の部分
+    id: string;
+    title: string;
   };
   selectionflowtitle: {
-    title: string; // 1次面接 の部分
+    title: string;
   };
 }
 
@@ -26,6 +26,7 @@ export default function DashBoard() {
   const [tomorrowDate, setTomorrowDate] = useState('');
   const [todayEvents, setTodayEvents] = useState<EventData[]>([]);
   const [tomorrowEvents, setTomorrowEvents] = useState<EventData[]>([]);
+  const [loading, setLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -44,6 +45,7 @@ export default function DashBoard() {
 
       if (userError || !user) {
         console.error('Error fetching user:', userError || 'User not logged in');
+        setLoading(false);
         return;
       }
 
@@ -65,12 +67,9 @@ export default function DashBoard() {
         )
         .eq('selection.supabaseauth_id', user.id);
 
-      // クエリ結果を確認
-      console.log('Fetched data:', data);
-      console.log('Fetch error:', error);
-
       if (error) {
         console.error('Error fetching events:', error);
+        setLoading(false);
         return;
       }
 
@@ -87,6 +86,7 @@ export default function DashBoard() {
 
       setTodayEvents(filteredTodayEvents);
       setTomorrowEvents(filteredTomorrowEvents);
+      setLoading(false);
     };
 
     fetchEvents();
@@ -96,34 +96,99 @@ export default function DashBoard() {
     router.push(`/selection/${id}/flow`);
   };
 
-  const renderEvents = (events: EventData[]) =>
-    events.map((event, index) => (
-      <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
-        <div>
-          <div className="px-4 py-3 sm:px-6 flex">
-            <h3 className="text-base/7 font-semibold">
-              {event.selection.title} - {event.selectionflowtitle.title}
-            </h3>
-            <div className="flex ml-auto">
-              <button
-                type="button"
-                className="hover:text-blue-600"
-                onClick={() => handleIconClick(event.selection.id)} // selectionのidを使用
-              >
-                <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
-              </button>
+  const renderTodayEvents = () => {
+    if (todayEvents.length > 0) {
+      return todayEvents.map((event, index) => (
+        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+          <div>
+            <div className="px-4 py-3 sm:px-6 flex">
+              <h3 className="text-base/7 font-semibold">
+                {event.selection.title} - {event.selectionflowtitle.title}
+              </h3>
+              <div className="flex ml-auto">
+                <button
+                  type="button"
+                  className="hover:text-blue-600"
+                  onClick={() => handleIconClick(event.selection.id)}
+                >
+                  <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+              <p className="whitespace-pre-wrap">{event.description}</p>
+              <div className="text-sm text-gray-500 mt-2">
+                <p>開始： {format(new Date(event.started_at), 'yyyy年MM月dd日 HH:mm')}</p>
+                <p>終了： {format(new Date(event.ended_at), 'yyyy年MM月dd日 HH:mm')}</p>
+              </div>
             </div>
           </div>
-          <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
-            <p className="whitespace-pre-wrap">{event.description}</p>
-            <div className="text-sm text-gray-500 mt-2">
-              <p>開始： {format(new Date(event.started_at), 'yyyy年MM月dd日 HH:mm')}</p>
-              <p>終了： {format(new Date(event.ended_at), 'yyyy年MM月dd日 HH:mm')}</p>
+        </div>
+      ));
+    }
+    return (
+      <div className="mt-5">
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+          <div>
+            <div className="px-4 py-3 sm:px-6 flex">
+              <h3 className="text-base/7 font-semibold">本日の予定はありません。</h3>
+            </div>
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+              <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
             </div>
           </div>
         </div>
       </div>
-    ));
+    );
+  };
+
+  const renderTomorrowEvents = () => {
+    if (tomorrowEvents.length > 0) {
+      return tomorrowEvents.map((event, index) => (
+        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+          <div>
+            <div className="px-4 py-3 sm:px-6 flex">
+              <h3 className="text-base/7 font-semibold">
+                {event.selection.title} - {event.selectionflowtitle.title}
+              </h3>
+              <div className="flex ml-auto">
+                <button
+                  type="button"
+                  className="hover:text-blue-600"
+                  onClick={() => handleIconClick(event.selection.id)}
+                >
+                  <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
+                </button>
+              </div>
+            </div>
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+              <p className="whitespace-pre-wrap">{event.description}</p>
+              <div className="text-sm text-gray-500 mt-2">
+                <p>開始： {format(new Date(event.started_at), 'yyyy年MM月dd日 HH:mm')}</p>
+                <p>終了： {format(new Date(event.ended_at), 'yyyy年MM月dd日 HH:mm')}</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ));
+    }
+    return (
+      <div className="mt-5">
+        <div className="mt-5">
+          <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+            <div>
+              <div className="px-4 py-3 sm:px-6 flex">
+                <h3 className="text-base/7 font-semibold">明日の予定はありません。</h3>
+              </div>
+              <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <>
@@ -147,27 +212,33 @@ export default function DashBoard() {
               </div>
             </div>
             {/* 本日のイベント */}
-            <div className="px-4 sm:px-6 lg:px-8 mt-5">
-              <div className="md:flex md:items-center md:justify-between">
-                <div className="min-w-0 flex-1">
-                  <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                    本日 {currentDate}
-                  </h2>
+            {loading ? (
+              <></>
+            ) : (
+              <>
+                <div className="px-4 sm:px-6 lg:px-8 mt-5">
+                  <div className="md:flex md:items-center md:justify-between">
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                        本日 {currentDate}
+                      </h2>
+                    </div>
+                  </div>
+                  {renderTodayEvents()}
                 </div>
-              </div>
-              {renderEvents(todayEvents)}
-            </div>
-            {/* 明日のイベント */}
-            <div className="px-4 sm:px-6 lg:px-8 mt-5">
-              <div className="md:flex md:items-center md:justify-between">
-                <div className="min-w-0 flex-1">
-                  <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                    明日 {tomorrowDate}
-                  </h2>
+                {/* 明日のイベント */}
+                <div className="px-4 sm:px-6 lg:px-8 mt-5">
+                  <div className="md:flex md:items-center md:justify-between">
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                        明日 {tomorrowDate}
+                      </h2>
+                    </div>
+                  </div>
+                  {renderTomorrowEvents()}
                 </div>
-              </div>
-              {renderEvents(tomorrowEvents)}
-            </div>
+              </>
+            )}
           </main>
         </div>
       </div>
