@@ -125,9 +125,7 @@ export default function DashBoard() {
                 <p>
                   開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
                 </p>
-                <p>
-                  終了： {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
-                </p>
+                <p>終了：{format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}</p>
               </div>
             </div>
           </div>
@@ -176,8 +174,12 @@ export default function DashBoard() {
             <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
               <p className="whitespace-pre-wrap">{event.description}</p>
               <div className="text-sm text-gray-500 mt-2">
-                <p>開始： {format(new Date(event.started_at), 'yyyy年MM月dd日 HH:mm')}</p>
-                <p>終了： {format(new Date(event.ended_at), 'yyyy年MM月dd日 HH:mm')}</p>
+                <p>
+                  開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                </p>
+                <p>
+                  終了： {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                </p>
               </div>
             </div>
           </div>
