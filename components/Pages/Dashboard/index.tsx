@@ -97,8 +97,12 @@ export default function DashBoard() {
   };
 
   const renderTodayEvents = () => {
-    if (todayEvents.length > 0) {
-      return todayEvents.map((event, index) => (
+    const validTodayEvents = todayEvents.filter(
+      (event) => event.selection && event.selection.title,
+    );
+
+    if (validTodayEvents.length > 0) {
+      return validTodayEvents.map((event, index) => (
         <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
@@ -143,8 +147,12 @@ export default function DashBoard() {
   };
 
   const renderTomorrowEvents = () => {
-    if (tomorrowEvents.length > 0) {
-      return tomorrowEvents.map((event, index) => (
+    const validTomorrowEvents = tomorrowEvents.filter(
+      (event) => event.selection && event.selection.title,
+    );
+
+    if (validTomorrowEvents.length > 0) {
+      return validTomorrowEvents.map((event, index) => (
         <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
