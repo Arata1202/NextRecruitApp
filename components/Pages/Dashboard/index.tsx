@@ -3,7 +3,7 @@
 import MainLayout from '@/components/Layouts/MainLayout';
 import { CalendarDaysIcon, DocumentTextIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
-import { format, isSameDay, addDays } from 'date-fns';
+import { format, isSameDay, addDays, subHours } from 'date-fns';
 import { ja } from 'date-fns/locale';
 import { supabase } from '@/libs/supabase';
 import { useRouter } from 'next/navigation';
@@ -30,7 +30,7 @@ export default function DashBoard() {
   const router = useRouter();
 
   useEffect(() => {
-    const now = new Date();
+    const now = subHours(new Date(), 9);
     const tomorrow = addDays(now, 1);
 
     // 日付をフォーマット
@@ -76,10 +76,10 @@ export default function DashBoard() {
       const tomorrow = addDays(today, 1);
 
       const filteredTodayEvents = events.filter((event) =>
-        isSameDay(new Date(event.started_at), today),
+        isSameDay(subHours(new Date(event.started_at), 9), today),
       );
       const filteredTomorrowEvents = events.filter((event) =>
-        isSameDay(new Date(event.started_at), tomorrow),
+        isSameDay(subHours(new Date(event.started_at), 9), tomorrow),
       );
 
       setTodayEvents(filteredTodayEvents);
@@ -122,8 +122,12 @@ export default function DashBoard() {
             <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
               <p className="whitespace-pre-wrap">{event.description}</p>
               <div className="text-sm text-gray-500 mt-2">
-                <p>開始： {format(new Date(event.started_at), 'yyyy年MM月dd日 HH:mm')}</p>
-                <p>終了： {format(new Date(event.ended_at), 'yyyy年MM月dd日 HH:mm')}</p>
+                <p>
+                  開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                </p>
+                <p>
+                  終了： {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                </p>
               </div>
             </div>
           </div>
