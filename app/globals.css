@@ -36,6 +36,19 @@
   .DialogButton {
     margin-top: 0px;
   }
+  .MobilePadding-0 {
+    padding: 0 !important;
+  }
+}
+@media (max-width: 768px) {
+  /* フッター */
+  .underLogo {
+    display: flex;
+    justify-content: center;
+  }
+  .footerMenu {
+    text-align: center;
+  }
 }
 @media (max-width: 639px) {
   .TitleIcon {
