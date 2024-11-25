@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { supabase } from '@/libs/supabase';
 import { User } from '@supabase/supabase-js';
 
-export function useAuthAuthCheck(redirectPath: string = '/') {
+export function useAuthAuthCheck(redirectPath: string = '/service') {
   const [user, setUser] = useState<User | null>(null);
   const [userChecked, setUserChecked] = useState(false);
   const router = useRouter();
