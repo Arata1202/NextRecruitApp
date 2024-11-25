@@ -1,7 +1,7 @@
 'use client';
 
 import MainLayout from '@/components/Layouts/MainLayout';
-import { CalendarDaysIcon, DocumentTextIcon } from '@heroicons/react/24/solid';
+import { ChartPieIcon, DocumentTextIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
 import { format, isSameDay, addDays, subHours } from 'date-fns';
 import { ja } from 'date-fns/locale';
@@ -93,7 +93,7 @@ export default function DashBoard() {
   }, []);
 
   const handleIconClick = (id: string) => {
-    router.push(`/selection/${id}/flow`);
+    router.push(`/service/selection/${id}/flow`);
   };
 
   const renderTodayEvents = () => {
@@ -214,7 +214,7 @@ export default function DashBoard() {
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
                     <div className="flex">
-                      <CalendarDaysIcon className="TitleIcon mr-1" aria-hidden="true" />
+                      <ChartPieIcon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
                         ダッシュボード
                       </h2>

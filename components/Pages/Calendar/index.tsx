@@ -85,7 +85,7 @@ export default function Calendar() {
   const handleEventClick = (clickInfo: any) => {
     const eventId = clickInfo.event.extendedProps.id;
     if (eventId) {
-      router.push(`/selection/${eventId}/flow`);
+      router.push(`/service/selection/${eventId}/flow`);
     }
   };
 

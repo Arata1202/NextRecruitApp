@@ -15,7 +15,7 @@ export function useAuthMainCheck() {
       } = await supabase.auth.getUser();
 
       if (!user) {
-        router.push('/auth/login');
+        router.push('/service/auth/login');
       } else {
         setUser(user);
         setUserChecked(true);

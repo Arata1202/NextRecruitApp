@@ -91,7 +91,7 @@ export default function SignUp() {
       email: data.email,
       password: data.password,
       options: {
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: `${window.location.origin}/service`,
       },
     });
     const identities = signUpData?.user?.identities;
@@ -114,7 +114,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/service`,
       },
     });
   };
@@ -123,7 +123,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/service`,
       },
     });
   };
@@ -132,7 +132,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/service`,
       },
     });
   };
@@ -141,7 +141,7 @@ export default function SignUp() {
     await supabase.auth.signInWithOAuth({
       provider: 'twitter',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/service`,
       },
     });
   };
@@ -160,7 +160,7 @@ export default function SignUp() {
             初めてご利用の方は、新規アカウント登録が必要です。
             <br />
             アカウントをお持ちの方は、こちらから
-            <a href="/auth/login" className="text-blue-500 hover:text-blue-600">
+            <a href="/service/auth/login" className="text-blue-500 hover:text-blue-600">
               ログイン
             </a>
             できます。

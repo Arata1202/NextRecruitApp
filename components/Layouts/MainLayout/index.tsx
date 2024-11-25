@@ -29,15 +29,16 @@ export default function MainLayout() {
   }
 
   const SidebarNavigation = [
-    { name: 'ダッシュボード', href: '/', icon: ChartPieIcon },
-    { name: 'カレンダー', href: '/calendar', icon: CalendarDaysIcon },
-    { name: '選考中の企業', href: '/selection', icon: BuildingOffice2Icon },
-    { name: 'テンプレート', href: '/template', icon: ClipboardDocumentListIcon },
-    { name: '自己分析', href: '/analysis', icon: ChartBarIcon },
-    { name: '設定', href: '/settings', icon: Cog6ToothIcon },
+    { name: 'ダッシュボード', href: '/service', icon: ChartPieIcon },
+    { name: 'カレンダー', href: '/service/calendar', icon: CalendarDaysIcon },
+    { name: '選考中の企業', href: '/service/selection', icon: BuildingOffice2Icon },
+    { name: 'テンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
+    { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
+    { name: '設定', href: '/service/settings', icon: Cog6ToothIcon },
   ].map((item) => ({
     ...item,
-    current: item.href === '/' ? pathname === item.href : pathname.startsWith(item.href),
+    current:
+      pathname === item.href || (pathname.startsWith(item.href + '/') && item.href !== '/service'),
   }));
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -55,7 +56,7 @@ export default function MainLayout() {
 
   const handleConfirmLogout = async () => {
     await supabase.auth.signOut();
-    router.push('/auth/login');
+    router.push('/service/auth/login');
   };
   return (
     <>

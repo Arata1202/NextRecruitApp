@@ -388,7 +388,7 @@ export default function Flow() {
     const selectedValue = event.target.value;
 
     if (selectedValue === 'detail') {
-      router.push(`/selection/${id}/detail`);
+      router.push(`service/selection/${id}/detail`);
     }
   };
 

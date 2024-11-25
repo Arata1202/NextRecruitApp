@@ -223,7 +223,7 @@ export default function Template() {
   }, [searchTerm, analyses]);
 
   const handleNavigateToDetail = (id: number) => {
-    router.push(`/selection/${id}/detail`);
+    router.push(`/service/selection/${id}/detail`);
   };
 
   return (

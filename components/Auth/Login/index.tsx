@@ -48,14 +48,14 @@ export default function Login() {
       reset();
       return;
     }
-    await router.push('/');
+    await router.push('/service');
   };
 
   const handleGoogleLogin = async () => {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/service`,
       },
     });
   };
@@ -64,7 +64,7 @@ export default function Login() {
     await supabase.auth.signInWithOAuth({
       provider: 'github',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/service`,
       },
     });
   };
@@ -73,7 +73,7 @@ export default function Login() {
     await supabase.auth.signInWithOAuth({
       provider: 'apple',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/service`,
       },
     });
   };
@@ -82,7 +82,7 @@ export default function Login() {
     await supabase.auth.signInWithOAuth({
       provider: 'twitter',
       options: {
-        redirectTo: window.location.origin,
+        redirectTo: `${window.location.origin}/service`,
       },
     });
   };
@@ -101,7 +101,7 @@ export default function Login() {
             アカウントをお持ちでない方は、
             <br />
             こちらから
-            <a href="/auth/signup" className="text-blue-500 hover:text-blue-600">
+            <a href="/service/auth/signup" className="text-blue-500 hover:text-blue-600">
               アカウントを登録
             </a>
             いただけます。
