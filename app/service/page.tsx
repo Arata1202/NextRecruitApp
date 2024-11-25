@@ -1,6 +1,6 @@
 'use client';
 
-import DashBoard from '@/components/Pages/Dashboard';
+import DashBoard from '@/components/Service/Pages/Dashboard';
 import { useAuthMainCheck } from '@/hooks/Moddleware/Main';
 
 export default function DashBoardPage() {

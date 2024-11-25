@@ -1,6 +1,6 @@
 'use client';
 
-import SignUp from '@/components/Auth/SignUp';
+import SignUp from '@/components/Service/Auth/SignUp';
 import { useAuthAuthCheck } from '@/hooks/Moddleware/Auth';
 
 export default function SignUpPage() {

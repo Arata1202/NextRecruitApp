@@ -1,6 +1,6 @@
 'use client';
 
-import Calendar from '@/components/Pages/Calendar';
+import Calendar from '@/components/Service/Pages/Calendar';
 import { useAuthMainCheck } from '@/hooks/Moddleware/Main';
 
 export default function CalendarPage() {

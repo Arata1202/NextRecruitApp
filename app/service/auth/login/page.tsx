@@ -1,6 +1,6 @@
 'use client';
 
-import Login from '@/components/Auth/Login';
+import Login from '@/components/Service/Auth/Login';
 import { useAuthAuthCheck } from '@/hooks/Moddleware/Auth';
 
 export default function LoginPage() {

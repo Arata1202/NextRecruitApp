@@ -1,6 +1,6 @@
 'use client';
 
-import Detail from '@/components/Pages/Selection/Detail';
+import Detail from '@/components/Service/Pages/Selection/Detail';
 import { useAuthMainCheck } from '@/hooks/Moddleware/Main';
 
 export default function TemplatePage() {

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
-import MainLayout from '@/components/Layouts/MainLayout';
+import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { Fragment } from 'react';
 import {
@@ -12,7 +12,7 @@ import {
   PencilIcon,
   TrashIcon,
   MagnifyingGlassIcon,
-  ChartBarIcon,
+  ClipboardDocumentListIcon,
 } from '@heroicons/react/24/solid';
 
 type Analysis = {
@@ -36,7 +36,7 @@ type AnalysisRawData = {
   description: string;
 };
 
-export default function Calendar() {
+export default function Template() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
@@ -52,8 +52,6 @@ export default function Calendar() {
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
   const [searchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
-  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
 
   const {
@@ -94,7 +92,7 @@ export default function Calendar() {
     const fetchAnalyses = async () => {
       try {
         const query = supabase
-          .from('analysis')
+          .from('template')
           .select(
             `
             id,
@@ -108,10 +106,6 @@ export default function Calendar() {
           )
           .ilike('title_id.title', `%${searchQuery}%`)
           .eq('supabaseauth_id', userId);
-
-        if (selectedGroupId) {
-          query.eq('title_id.group_id', selectedGroupId);
-        }
 
         const { data, error } = await query;
 
@@ -148,34 +142,14 @@ export default function Calendar() {
     };
 
     fetchAnalyses();
-  }, [userId, searchQuery, selectedGroupId]);
-
-  // analysisgroup データを取得
-  useEffect(() => {
-    const fetchAnalysisGroups = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('analysisgroup')
-          .select('id, title')
-          .order('sort', { ascending: true });
-
-        if (error) throw error;
-
-        setAnalysisGroups(data || []);
-      } catch (error) {
-        console.error('Error fetching analysis groups:', error);
-      }
-    };
-
-    fetchAnalysisGroups();
-  }, []);
+  }, [userId, searchQuery]);
 
   // AnalysisTitle データ取得
   useEffect(() => {
     const fetchAnalysisTitles = async () => {
       try {
         const { data, error } = await supabase
-          .from('analysistitle')
+          .from('templatetitle')
           .select('id, title')
           .order('sort', { ascending: true });
 
@@ -192,64 +166,54 @@ export default function Calendar() {
 
   // データ追加
   const handleAddAnalysis = async (formValues: { titleId: string; description: string }) => {
-    if (!userId || !formValues.titleId) {
-      console.error('User ID or Title ID is missing');
+    const { data: titleData } = await supabase
+      .from('templatetitle')
+      .select('id')
+      .eq('id', formValues.titleId);
+
+    if (!titleData || titleData.length === 0) {
+      console.error('Invalid title_id: Does not exist in analysistitle table.');
       return;
     }
 
-    try {
-      const { data: titleData } = await supabase
-        .from('analysistitle')
-        .select('id')
-        .eq('id', formValues.titleId);
+    const { data, error } = await supabase
+      .from('template')
+      .insert([
+        {
+          supabaseauth_id: userId,
+          title_id: parseInt(formValues.titleId),
+          description: formValues.description,
+        },
+      ])
+      .select();
 
-      if (!titleData || titleData.length === 0) {
-        console.error('Invalid title_id: Does not exist in analysistitle table.');
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('analysis')
-        .insert([
-          {
-            supabaseauth_id: userId,
-            title_id: parseInt(formValues.titleId),
-            description: formValues.description,
-          },
-        ])
-        .select();
-
-      if (error) {
-        console.error('Supabase error:', error.message);
-        return;
-      }
-
-      if (data && data.length > 0) {
-        const addedAnalysis = data[0];
-        const title =
-          analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
-        setAnalyses((prev) => [
-          { id: addedAnalysis.id, title, description: formValues.description },
-          ...prev,
-        ]);
-      } else {
-        console.warn('No data returned from insert.');
-      }
-
-      reset({
-        titleId: '',
-        description: '',
-      });
-      setIsModalOpen(false);
-    } catch (error) {
-      console.error('Error adding analysis:', error);
+    if (error) {
+      console.error('Supabase error:', error.message);
+      return;
     }
+
+    if (data && data.length > 0) {
+      const addedAnalysis = data[0];
+      const title = analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
+      setAnalyses((prev) => [
+        { id: addedAnalysis.id, title, description: formValues.description },
+        ...prev,
+      ]);
+    } else {
+      console.warn('No data returned from insert.');
+    }
+
+    reset({
+      titleId: '',
+      description: '',
+    });
+    setIsModalOpen(false);
   };
 
   const handleEditAnalysis = async () => {
     try {
       const { data, error } = await supabase
-        .from('analysis')
+        .from('template')
         .update({
           title_id: parseInt(editData.titleId),
           description: editData.description,
@@ -305,7 +269,7 @@ export default function Calendar() {
     if (!deleteData?.id) return;
 
     try {
-      const { error } = await supabase.from('analysis').delete().eq('id', deleteData.id);
+      const { error } = await supabase.from('template').delete().eq('id', deleteData.id);
 
       if (error) {
         console.error('Error deleting analysis:', error);
@@ -347,9 +311,9 @@ export default function Calendar() {
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
                     <div className="flex">
-                      <ChartBarIcon className="TitleIcon mr-1" aria-hidden="true" />
+                      <ClipboardDocumentListIcon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                        自己分析
+                        テンプレート
                       </h2>
                     </div>
                   </div>
@@ -366,7 +330,7 @@ export default function Calendar() {
               </div>
               <div>
                 <div className="pb-5 flex">
-                  <div className="w-2/3 Search relative mt-2 rounded-md shadow-sm">
+                  <div className="w-full Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-400" />
                     </div>
@@ -377,25 +341,6 @@ export default function Calendar() {
                       placeholder="検索"
                       className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
                     />
-                  </div>
-
-                  <div className="w-1/3 ml-2">
-                    <select
-                      value={selectedGroupId || ''}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setSelectedGroupId(value ? parseInt(value) : null);
-                      }}
-                      style={{ height: '36px' }}
-                      className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
-                    >
-                      <option>全て</option>
-                      {analysisGroups.map((group) => (
-                        <option key={group.id} value={group.id}>
-                          {group.title}
-                        </option>
-                      ))}
-                    </select>
                   </div>
                 </div>
               </div>
@@ -414,7 +359,7 @@ export default function Calendar() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、自己分析を行ってみましょう！
+                          右上の追加ボタンから、テンプレートを作成してみましょう！
                         </p>
                       </div>
                     </div>

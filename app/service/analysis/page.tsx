@@ -1,6 +1,6 @@
 'use client';
 
-import Analysis from '@/components/Pages/Analysis';
+import Analysis from '@/components/Service/Pages/Analysis';
 import { useAuthMainCheck } from '@/hooks/Moddleware/Main';
 
 export default function AnalysisPage() {

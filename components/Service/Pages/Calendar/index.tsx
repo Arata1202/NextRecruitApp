@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import MainLayout from '@/components/Layouts/MainLayout';
+import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
 import { supabase } from '@/libs/supabase';
 import FullCalendar from '@fullcalendar/react';

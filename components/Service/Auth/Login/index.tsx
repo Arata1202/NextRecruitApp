@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Switch } from '@headlessui/react';
-import ErrorAlert from '@/components/Common/Alert/ErrorAlert';
+import ErrorAlert from '@/components/Service/Common/Alert/ErrorAlert';
 
 type FormData = {
   email: string;

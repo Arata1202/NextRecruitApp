@@ -1,6 +1,6 @@
 'use client';
 
-import Settings from '@/components/Pages/Settings';
+import Settings from '@/components/Service/Pages/Settings';
 import { useAuthMainCheck } from '@/hooks/Moddleware/Main';
 
 export default function SettingsPage() {

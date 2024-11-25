@@ -7,8 +7,8 @@ import { useState, useRef, Fragment, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Transition } from '@headlessui/react';
 import { XMarkIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
-import ErrorAlert from '@/components/Common/Alert/ErrorAlert';
-import ConfirmAlert from '@/components/Common/Alert/ConfirmAlert';
+import ErrorAlert from '@/components/Service/Common/Alert/ErrorAlert';
+import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
 
 type FormData = {
   email: string;
