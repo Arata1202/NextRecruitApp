@@ -123,7 +123,7 @@ export default function Calendar() {
                 events={events}
                 displayEventTime={false}
                 eventClick={handleEventClick}
-                timeZone="UTC"
+                timeZone="Asia/Tokyo"
                 height="auto"
               />
             </div>

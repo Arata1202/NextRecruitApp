@@ -1,7 +1,7 @@
 export default function Top() {
   return (
     <>
-      <div style={{ padding: '24px 0' }} className="MobilePadding-0 overflow-hidden">
+      <div style={{ padding: '24px 0' }} className="MobilePadding-0 overflow-hidden bg-white">
         <div className="lg:flex mx-auto max-w-7xl p-6 lg:px-8">
           <div className="mx-auto max-w-2xl lg:mx-0 lg:shrink-0 lg:pt-8">
             <h1 className="DialogButton mt-10 text-pretty text-4xl font-semibold tracking-tight sm:text-7xl">
