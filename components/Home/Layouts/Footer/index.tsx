@@ -6,12 +6,12 @@ const navigation = {
   ],
   support: [{ name: 'リアル大学生', href: 'https://realunivlog.com' }],
   company: [
-    { name: 'プライバシーポリシー', href: 'https://realunivlog.com/privacy' },
-    { name: '免責事項', href: 'https://realunivlog.com/disclaimer' },
-    { name: '著作権', href: 'https://realunivlog.com/copyright' },
-    { name: 'リンク', href: 'https://realunivlog.com/link' },
+    { name: 'プライバシーポリシー', href: '/privacy' },
+    { name: '免責事項', href: '/disclaimer' },
+    { name: '著作権', href: '/copyright' },
+    { name: 'リンク', href: '/link' },
   ],
-  legal: [{ name: 'お問い合わせ', href: 'https://realunivlog.com/contact' }],
+  legal: [{ name: 'お問い合わせ', href: '/contact' }],
   social: [
     {
       name: 'X',
@@ -53,12 +53,7 @@ export default function Footer() {
             </a>
             <div className="flex gap-x-6 underLogo">
               {navigation.social.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  target="_blank"
-                  className="text-gray-700 hover:text-blue-500"
-                >
+                <a key={item.name} href={item.href} className="text-gray-700 hover:text-blue-500">
                   <span className="sr-only">{item.name}</span>
                   <item.icon aria-hidden="true" className="size-6" />
                 </a>
@@ -72,11 +67,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        className="text-sm/6 text-gray-700 hover:text-blue-500"
-                      >
+                      <a href={item.href} className="text-sm/6 text-gray-700 hover:text-blue-500">
                         {item.name}
                       </a>
                     </li>
@@ -88,11 +79,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        className="text-sm/6 text-gray-700 hover:text-blue-500"
-                      >
+                      <a href={item.href} className="text-sm/6 text-gray-700 hover:text-blue-500">
                         {item.name}
                       </a>
                     </li>
@@ -106,11 +93,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        className="text-sm/6 text-gray-700 hover:text-blue-500"
-                      >
+                      <a href={item.href} className="text-sm/6 text-gray-700 hover:text-blue-500">
                         {item.name}
                       </a>
                     </li>
@@ -122,11 +105,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        className="text-sm/6 text-gray-700 hover:text-blue-500"
-                      >
+                      <a href={item.href} className="text-sm/6 text-gray-700 hover:text-blue-500">
                         {item.name}
                       </a>
                     </li>

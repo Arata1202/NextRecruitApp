@@ -52,11 +52,7 @@ export default function Header() {
         </div>
 
         <div className="hidden lg:flex lg:gap-x-12 font-bold">
-          <a
-            href="https://realunivlog.com/contact"
-            target="_blank"
-            className={`flex text-sm leading-6 hover:text-blue-500 text-gray-700`}
-          >
+          <a href="/contact" className={`flex text-sm leading-6 hover:text-blue-500 text-gray-700`}>
             <EnvelopeIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             お問い合わせ
           </a>
@@ -139,7 +135,7 @@ export default function Header() {
                     </a>
                   </li>
                   <li>
-                    <a href="https://realunivlog.com/contact">
+                    <a href="/contact">
                       <div
                         className={`flex items-center py-1 text-base font-bold hover:text-blue-500  `}
                       >
