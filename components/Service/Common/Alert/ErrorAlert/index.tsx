@@ -36,7 +36,7 @@ const ErrorAlert: React.FC<AlertProps> = ({ show, onClose, title, message }) => 
                 </div>
                 <div className="ml-3 w-0 flex-1 pt-0.5">
                   <p className="text-sm font-bold">{title}</p>
-                  <p className="mt-1 text-sm text-gray-500">{message}</p>
+                  <p className="mt-1 text-sm">{message}</p>
                 </div>
                 <div className="ml-4 flex flex-shrink-0">
                   <button

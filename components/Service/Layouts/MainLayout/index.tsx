@@ -112,7 +112,7 @@ export default function MainLayout() {
                               className={classNames(
                                 item.current
                                   ? 'text-blue-500'
-                                  : 'text-gray-400 group-hover:text-blue-500',
+                                  : 'text-gray-700 group-hover:text-blue-500',
                                 'size-6 shrink-0',
                               )}
                             />
@@ -129,7 +129,7 @@ export default function MainLayout() {
                     >
                       <ArrowRightStartOnRectangleIcon
                         aria-hidden="true"
-                        className="size-6 shrink-0 text-gray-400 group-hover:text-blue-500"
+                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
                       />
                       ログアウト
                     </a>
@@ -142,7 +142,7 @@ export default function MainLayout() {
       </Dialog>
 
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6 pb-4">
+        <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-300 bg-white px-6 pb-4">
           <div className="flex h-16 shrink-0 items-center">
             <img
               alt="Your Company"
@@ -170,7 +170,7 @@ export default function MainLayout() {
                           className={classNames(
                             item.current
                               ? 'text-blue-500'
-                              : 'text-gray-400 group-hover:text-blue-500',
+                              : 'text-gray-700 group-hover:text-blue-500',
                             'size-6 shrink-0',
                           )}
                         />
@@ -189,7 +189,7 @@ export default function MainLayout() {
                     >
                       <ArrowRightStartOnRectangleIcon
                         aria-hidden="true"
-                        className="size-6 shrink-0 text-gray-400 group-hover:text-blue-500"
+                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
                       />
                       ログアウト
                     </button>
@@ -202,7 +202,7 @@ export default function MainLayout() {
       </div>
 
       <div className="SidebarLayout">
-        <div className="fixed top-0 z-40 w-full flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
+        <div className="fixed top-0 z-40 w-full flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-300 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
@@ -212,7 +212,7 @@ export default function MainLayout() {
             <Bars3Icon aria-hidden="true" className="size-6" />
           </button>
 
-          <div aria-hidden="true" className="h-6 w-px bg-gray-200 lg:hidden" />
+          <div aria-hidden="true" className="h-6 w-px bg-gray-300 lg:hidden" />
 
           <div className="flex ml-auto">
             <div className="flex h-16 shrink-0 items-center">
@@ -279,7 +279,7 @@ export default function MainLayout() {
                   <div className="mt-5 sm:mt-6 grid grid-flow-row-dense grid-cols-2 gap-3">
                     <button
                       type="button"
-                      className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                      className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                       onClick={handleCancel}
                       ref={cancelButtonRef}
                     >

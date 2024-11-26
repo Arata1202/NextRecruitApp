@@ -291,7 +291,11 @@ export default function SignUp() {
                     </div>
                     <div className="ml-3 text-sm/6">
                       <label htmlFor="privacy" className="font-medium">
-                        <a href="" className="text-blue-500 hover:text-blue-600">
+                        <a
+                          href="/privacy"
+                          target="_blank"
+                          className="text-blue-500 hover:text-blue-600"
+                        >
                           プライバシーポリシー
                         </a>
                         に同意します
@@ -440,9 +444,7 @@ export default function SignUp() {
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className={`text-sm font-bold`}>確認メールを送信しました。</p>
-                    <p className="mt-1 text-sm text-gray-500">
-                      メール内のリンクから登録を完了してください。
-                    </p>
+                    <p className="mt-1 text-sm">メール内のリンクから登録を完了してください。</p>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
                     <button
