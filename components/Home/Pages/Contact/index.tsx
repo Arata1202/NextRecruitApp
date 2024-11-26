@@ -9,7 +9,7 @@ import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './index.module.css';
 
-const ContactPage: React.FC<{ sidebarArticles: any }> = ({ sidebarArticles }) => {
+const ContactPage = () => {
   const [show, setContactConfirmShow] = useState(false);
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const [formData, setContactFormData] = useState<FormData | null>(null);
