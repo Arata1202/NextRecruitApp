@@ -430,7 +430,7 @@ export default function Flow() {
                     <button
                       type="button"
                       onClick={() => setIsModalOpen(true)}
-                      className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                      className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
                     >
                       追加
                     </button>
@@ -441,14 +441,14 @@ export default function Flow() {
                 <div className="pb-2 flex">
                   <div className="w-full Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-400" />
+                      <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-500" />
                     </div>
                     <input
                       type="text"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       placeholder="検索"
-                      className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                      className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
                     />
                   </div>
                 </div>
@@ -463,8 +463,8 @@ export default function Flow() {
                             aria-current={tab.current ? 'page' : undefined}
                             className={classNames(
                               tab.current
-                                ? 'border-blue-500 text-blue-600'
-                                : 'border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700',
+                                ? 'border-blue-500 text-blue-500'
+                                : 'border-transparent text-gray-700 hover:border-blue-500 hover:text-blue-500',
                               'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
                             )}
                           >
@@ -489,7 +489,7 @@ export default function Flow() {
                       <div className="px-4 py-3 sm:px-6 flex">
                         <h3 className="text-base/7 font-semibold">データがありません。</h3>
                       </div>
-                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
                           右上の追加ボタンから、選考状況を追加してみましょう！
                         </p>
@@ -510,29 +510,29 @@ export default function Flow() {
                           <button
                             type="button"
                             onClick={() => openEditModal(analysis)}
-                            className="hover:text-blue-600"
+                            className="hover:text-blue-500"
                           >
                             <PencilIcon className="h-4 w-4" aria-hidden="true" />
                           </button>
                           <button
                             type="button"
                             onClick={() => openDeleteModal(analysis)}
-                            className="ml-3 hover:text-blue-600"
+                            className="ml-3 hover:text-blue-500"
                           >
                             <TrashIcon className="h-4 w-4" aria-hidden="true" />
                           </button>
                         </div>
                       </div>
-                      <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         {analysis.description && (
                           <>
                             <p className="whitespace-pre-wrap">{analysis.description}</p>
-                            <p className="flex justify-end text-gray-500 text-sm mt-1">
+                            <p className="flex justify-end text-sm mt-1">
                               {analysis.description.replace(/\s/g, '').length} 文字
                             </p>
                           </>
                         )}
-                        <div className="text-sm text-gray-500 mt-2">
+                        <div className="text-sm mt-2">
                           <p>
                             開始：{' '}
                             {analysis.started_at
@@ -608,16 +608,13 @@ export default function Flow() {
                       </div>
 
                       <div className="mb-4">
-                        <label
-                          htmlFor="started_at"
-                          className="block text-sm font-medium text-gray-700 text-left"
-                        >
+                        <label htmlFor="started_at" className="block text-sm font-medium text-left">
                           開始時間
                         </label>
                         <input
                           type="datetime-local"
                           {...register('started_at', { required: '開始時間を選択してください' })}
-                          className="block w-full rounded-md border border-gray-300 p-2"
+                          className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
                         {errors.started_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.started_at.message}</p>
@@ -625,16 +622,13 @@ export default function Flow() {
                       </div>
 
                       <div className="mb-4">
-                        <label
-                          htmlFor="ended_at"
-                          className="block text-sm font-medium text-gray-700 text-left"
-                        >
+                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
                           終了時間
                         </label>
                         <input
                           type="datetime-local"
                           {...register('ended_at', { required: '終了時間を選択してください' })}
-                          className="block w-full rounded-md border border-gray-300 p-2"
+                          className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
                         {errors.ended_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
@@ -646,14 +640,12 @@ export default function Flow() {
                           {...register('description')}
                           placeholder="備考（任意）"
                           rows={10}
-                          className="w-full rounded-md border border-gray-300 p-2"
+                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                           onChange={(e) =>
                             setDescriptionLength(e.target.value.replace(/\s/g, '').length)
                           }
                         />
-                        <p className="flex justify-end text-gray-500 text-sm mt-1">
-                          {descriptionLength} 文字
-                        </p>
+                        <p className="flex justify-end text-sm mt-1">{descriptionLength} 文字</p>
                         {errors.description && (
                           <p className="text-red-500 text-left">{errors.description.message}</p>
                         )}
@@ -723,7 +715,7 @@ export default function Flow() {
                         <div className="mb-4">
                           <label
                             htmlFor="started_at"
-                            className="block text-sm font-medium text-gray-700 text-left"
+                            className="block text-sm font-medium text-left"
                           >
                             開始時間
                           </label>
@@ -737,7 +729,7 @@ export default function Flow() {
                                 started_at: e.target.value,
                               }))
                             }
-                            className="block w-full rounded-md border border-gray-300 p-2"
+                            className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                           />
                           {errors.started_at && (
                             <p className="text-red-500 mt-1 text-left">
@@ -747,10 +739,7 @@ export default function Flow() {
                         </div>
 
                         <div className="mb-4">
-                          <label
-                            htmlFor="ended_at"
-                            className="block text-sm font-medium text-gray-700 text-left"
-                          >
+                          <label htmlFor="ended_at" className="block text-sm font-medium text-left">
                             終了時間
                           </label>
                           <input
@@ -763,7 +752,7 @@ export default function Flow() {
                                 ended_at: e.target.value,
                               }))
                             }
-                            className="block w-full rounded-md border border-gray-300 p-2"
+                            className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                           />
                           {errors.ended_at && (
                             <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
@@ -780,9 +769,9 @@ export default function Flow() {
                             setEditData({ ...editData, description: value });
                             setDescriptionLength(value.replace(/\s/g, '').length);
                           }}
-                          className="w-full rounded-md border border-gray-300 p-2"
+                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
-                        <p className="flex justify-end text-gray-500 text-sm mt-1">
+                        <p className="flex justify-end text-sm mt-1">
                           {editData.description.replace(/\s/g, '').length} 文字
                         </p>
                         {errors.description && (

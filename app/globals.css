@@ -103,11 +103,14 @@
 }
 .fc-button {
   background-color: rgb(209 213 219) !important;
-  color: black !important;
+  color: rgb(55 65 81) !important;
   border: none !important;
 }
 .fc-h-event .fc-event-title {
   display: block !important;
+}
+.fc .fc-view-harness {
+  background-color: white;
 }
 
 .error {

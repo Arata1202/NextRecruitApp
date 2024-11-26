@@ -112,16 +112,16 @@ export default function DashBoard() {
               <div className="flex ml-auto">
                 <button
                   type="button"
-                  className="hover:text-blue-600"
+                  className="hover:text-blue-500"
                   onClick={() => handleIconClick(event.selection.id)}
                 >
                   <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
               <p className="whitespace-pre-wrap">{event.description}</p>
-              <div className="text-sm text-gray-500 mt-2">
+              <div className="text-sm mt-2">
                 <p>
                   開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
                 </p>
@@ -139,7 +139,7 @@ export default function DashBoard() {
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">本日の予定はありません。</h3>
             </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
               <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
             </div>
           </div>
@@ -164,16 +164,16 @@ export default function DashBoard() {
               <div className="flex ml-auto">
                 <button
                   type="button"
-                  className="hover:text-blue-600"
+                  className="hover:text-blue-500"
                   onClick={() => handleIconClick(event.selection.id)}
                 >
                   <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
                 </button>
               </div>
             </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
               <p className="whitespace-pre-wrap">{event.description}</p>
-              <div className="text-sm text-gray-500 mt-2">
+              <div className="text-sm mt-2">
                 <p>
                   開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
                 </p>
@@ -193,7 +193,7 @@ export default function DashBoard() {
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">明日の予定はありません。</h3>
             </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-100">
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
               <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
             </div>
           </div>
