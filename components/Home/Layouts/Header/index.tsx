@@ -31,7 +31,7 @@ export default function Header() {
           {mobileMenuOpen ? (
             <button
               type="button"
-              className={`-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700`}
+              className={`-m-2.5 inline-flex items-center justify-center rounded-md p-2.5`}
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Close main menu</span>
@@ -41,7 +41,7 @@ export default function Header() {
             <div className="flex">
               <button
                 type="button"
-                className={`-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 ml-1 text-gray-700`}
+                className={`-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 ml-1`}
                 onClick={() => setMobileMenuOpen(true)}
               >
                 <span className="sr-only">Open main menu</span>
@@ -52,14 +52,14 @@ export default function Header() {
         </div>
 
         <div className="hidden lg:flex lg:gap-x-12 font-bold">
-          <a href="/contact" className={`flex text-sm leading-6 hover:text-blue-500 text-gray-700`}>
+          <a href="/contact" className={`flex text-sm leading-6 hover:text-blue-500`}>
             <EnvelopeIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             お問い合わせ
           </a>
           <a
             href="/service/auth/signup"
             target="_blank"
-            className={`flex text-sm leading-6 hover:text-blue-500 text-gray-700`}
+            className={`flex text-sm leading-6 hover:text-blue-500`}
           >
             <UserPlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             アカウント登録
@@ -67,7 +67,7 @@ export default function Header() {
           <a
             href="/service/auth/login"
             target="_blank"
-            className={`flex text-sm leading-6 hover:text-blue-500 text-gray-700`}
+            className={`flex text-sm leading-6 hover:text-blue-500`}
           >
             <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             ログイン
@@ -112,9 +112,9 @@ export default function Header() {
                 <div className={`text-center py-2 text-xl font-bold bg-gray-300`}>Menu</div>
                 <ul className="mt-5 space-y-6">
                   <li>
-                    <a href="/service/auth/signup">
+                    <a href="/service/auth/signup" target="_blank">
                       <div
-                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500  `}
+                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500`}
                       >
                         <UserPlusIcon className="h-6 w-6 mr-2 ml-2" aria-hidden="true" />
                         アカウント登録
@@ -122,9 +122,9 @@ export default function Header() {
                     </a>
                   </li>
                   <li>
-                    <a href="/service/auth/signup">
+                    <a href="/service/auth/login" target="_blank">
                       <div
-                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500  `}
+                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500`}
                       >
                         <ArrowRightEndOnRectangleIcon
                           className="h-6 w-6 mr-2 ml-2"
@@ -137,7 +137,7 @@ export default function Header() {
                   <li>
                     <a href="/contact">
                       <div
-                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500  `}
+                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500`}
                       >
                         <EnvelopeIcon className="h-6 w-6 mr-2 ml-2" aria-hidden="true" />
                         お問い合わせ

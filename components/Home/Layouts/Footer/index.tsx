@@ -51,23 +51,27 @@ export default function Footer() {
                 className="h-9 hover:scale-110 transition-transform"
               />
             </a>
-            <div className="flex gap-x-6 underLogo">
+            {/* <div className="flex gap-x-6 underLogo">
               {navigation.social.map((item) => (
-                <a key={item.name} href={item.href} className="text-gray-700 hover:text-blue-500">
+                <a key={item.name} href={item.href} className=" hover:text-blue-500">
                   <span className="sr-only">{item.name}</span>
                   <item.icon aria-hidden="true" className="size-6" />
                 </a>
               ))}
-            </div>
+            </div> */}
           </div>
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div className="footerMenu">
-                <h3 className="text-sm/6 font-semibold text-gray-700">「アプリ名」</h3>
+                <h3 className="text-sm/6 font-semibold ">「アプリ名」</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6 text-gray-700 hover:text-blue-500">
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        className="text-sm/6  hover:text-blue-500"
+                      >
                         {item.name}
                       </a>
                     </li>
@@ -75,11 +79,15 @@ export default function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0 footerMenu">
-                <h3 className="text-sm/6 font-semibold text-gray-700">デベロッパー</h3>
+                <h3 className="text-sm/6 font-semibold ">デベロッパー</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6 text-gray-700 hover:text-blue-500">
+                      <a
+                        href={item.href}
+                        target="_blank"
+                        className="text-sm/6  hover:text-blue-500"
+                      >
                         {item.name}
                       </a>
                     </li>
@@ -89,11 +97,11 @@ export default function Footer() {
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8 footerMenu">
               <div>
-                <h3 className="text-sm/6 font-semibold text-gray-700">利用規約</h3>
+                <h3 className="text-sm/6 font-semibold ">利用規約</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6 text-gray-700 hover:text-blue-500">
+                      <a href={item.href} className="text-sm/6  hover:text-blue-500">
                         {item.name}
                       </a>
                     </li>
@@ -101,11 +109,11 @@ export default function Footer() {
                 </ul>
               </div>
               <div className="mt-10 md:mt-0 footerMenu">
-                <h3 className="text-sm/6 font-semibold text-gray-700">お問い合わせ</h3>
+                <h3 className="text-sm/6 font-semibold ">お問い合わせ</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6 text-gray-700 hover:text-blue-500">
+                      <a href={item.href} className="text-sm/6  hover:text-blue-500">
                         {item.name}
                       </a>
                     </li>
@@ -116,9 +124,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-16 border-t border-gray-300 pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-sm/6 text-gray-700">
-            Copyright © 2024 「アプリ名」 All Rights Reserved.
-          </p>
+          <p className="text-sm/6 ">Copyright © 2024 「アプリ名」 All Rights Reserved.</p>
         </div>
       </div>
     </footer>

@@ -42,12 +42,15 @@ export default function Disclaimer() {
         <div className="mx-auto max-w-7xl p-6 lg:px-8">
           <div className="bg-white">
             <div className="mx-auto max-w-3xl text-base/7">
-              <div className={`${styles.content} mb-5`}>
+              <div className={`${styles.content}`}>
                 <div className="flex">
                   <ShieldExclamationIcon className="h-7 w-7 mr-2" aria-hidden="true" />
                   <h1 className="">免責事項</h1>
                 </div>
-                <span className={`${styles.date} flex justify-end`}>
+                <span
+                  className={`${styles.date} flex justify-end`}
+                  style={{ marginTop: '1.25rem' }}
+                >
                   <ClockIcon className="h-5 w-5" aria-hidden="true" />
                   2024年11月26日
                 </span>

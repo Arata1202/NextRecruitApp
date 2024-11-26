@@ -111,7 +111,7 @@ const ContactPage = () => {
 
   return (
     <>
-      <div className="bg-white">
+      <div className="bg-white pb-5">
         <nav aria-label="Breadcrumb" className="flex border-b border-gray-200 bg-white">
           <ol
             role="list"
@@ -158,11 +158,7 @@ const ContactPage = () => {
                 お問い合わせから2～3日中にはご返信させていただきます。
               </p>
             </div>
-            <form
-              onSubmit={handleSubmit(onSubmit)}
-              method="POST"
-              className="mx-auto mt-10 max-w-3xl"
-            >
+            <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">
               <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
                 <div className="sm:col-span-2">
                   <label htmlFor="first-name" className={`block text-sm font-semibold leading-6`}>
@@ -175,7 +171,7 @@ const ContactPage = () => {
                       name="sei"
                       id="sei"
                       autoComplete="given-name"
-                      className={`hover:border-blue-500 block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6`}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
                     />
                     {errors.sei && <p className="text-red-500">{errors.sei.message}</p>}
                   </div>
@@ -191,7 +187,7 @@ const ContactPage = () => {
                       name="mei"
                       id="mei"
                       autoComplete="family-name"
-                      className={`hover:border-blue-500 block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6`}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
                     />
                     {errors.mei && <p className="text-red-500">{errors.mei.message}</p>}
                   </div>
@@ -213,7 +209,7 @@ const ContactPage = () => {
                       name="email"
                       id="email"
                       autoComplete="email"
-                      className={`hover:border-blue-500 block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6`}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
                     />
                     {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                   </div>
@@ -228,7 +224,7 @@ const ContactPage = () => {
                       name="message"
                       id="message"
                       rows={4}
-                      className={`hover:border-blue-500 block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6`}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
                       defaultValue={''}
                     />
                     {errors.message && <p className="text-red-500">{errors.message.message}</p>}
@@ -246,7 +242,7 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   disabled={!captchaValue}
-                  className={`block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold shadow-s border hover:border-blue-500 hover:text-blue-500`}
+                  className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
                 >
                   送信
                 </button>
@@ -347,7 +343,7 @@ const ContactPage = () => {
             leaveTo="opacity-0"
           >
             <div
-              className={`pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5 mt-16 bg-white`}
+              className={`pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5 mt-16 bg-white ring-gray-300`}
             >
               <div className="p-4">
                 <div className="flex items-start">

@@ -8,7 +8,7 @@ export default function Top() {
               就活をもっとスムーズに
             </h1>
             <p className="mt-8 text-pretty text-lg font-medium text-gray-700 sm:text-xl/8">
-              就活には、ESの提出や面接の日程調整、企業の情報収集など管理すべきことが多くあります。「アプリ名」を利用して、就活に関する全てを一元管理してみませんか？
+              就活では、ESの提出や面接の日程調整、企業の情報収集など管理すべきことが多くあります。「アプリ名」を利用して、就活に関する全てを一元管理してみませんか？
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <a
