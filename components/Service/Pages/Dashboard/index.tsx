@@ -33,7 +33,6 @@ export default function DashBoard() {
     const now = subHours(new Date(), 9);
     const tomorrow = addDays(now, 1);
 
-    // 日付をフォーマット
     setCurrentDate(format(now, 'M月d日（EEE）', { locale: ja }));
     setTomorrowDate(format(tomorrow, 'M月d日（EEE）', { locale: ja }));
 
@@ -75,12 +74,21 @@ export default function DashBoard() {
       const today = new Date();
       const tomorrow = addDays(today, 1);
 
-      const filteredTodayEvents = events.filter((event) =>
-        isSameDay(subHours(new Date(event.started_at), 9), today),
-      );
-      const filteredTomorrowEvents = events.filter((event) =>
-        isSameDay(subHours(new Date(event.started_at), 9), tomorrow),
-      );
+      const filteredTodayEvents = events
+        .filter((event) => {
+          const eventStart = subHours(new Date(event.started_at), 9);
+          const eventEnd = subHours(new Date(event.ended_at), 9);
+          return isSameDay(eventStart, today) || (eventStart < today && eventEnd >= today);
+        })
+        .sort((a, b) => new Date(a.started_at).getTime() - new Date(b.started_at).getTime());
+
+      const filteredTomorrowEvents = events
+        .filter((event) => {
+          const eventStart = subHours(new Date(event.started_at), 9);
+          const eventEnd = subHours(new Date(event.ended_at), 9);
+          return isSameDay(eventStart, tomorrow) || (eventStart < tomorrow && eventEnd >= tomorrow);
+        })
+        .sort((a, b) => new Date(a.started_at).getTime() - new Date(b.started_at).getTime());
 
       setTodayEvents(filteredTodayEvents);
       setTomorrowEvents(filteredTomorrowEvents);
