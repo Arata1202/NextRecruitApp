@@ -4,10 +4,10 @@
 
 /* テーマ */
 .LightTheme {
-  background-color: rgb(229 231 235);
-  color: rgb(55 65 81);
-  border-color: rgb(209 213 219);
-  --tw-ring-color: rgb(209 213 219);
+  background-color: rgb(229 231 235) !important;
+  color: rgb(55 65 81) !important;
+  border-color: rgb(209 213 219) !important;
+  --tw-ring-color: rgb(209 213 219) !important;
 }
 
 /* メディアクエリ */

@@ -351,7 +351,7 @@ export default function Template() {
 
       {/* 追加モーダル */}
       <Transition.Root show={isModalOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => {}}>
+        <Dialog as="div" className="text-gray-700 relative z-50" onClose={() => {}}>
           <DialogBackdrop
             transition
             className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -437,7 +437,7 @@ export default function Template() {
 
       {/* 編集モーダル */}
       <Transition.Root show={isEditModalOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => {}}>
+        <Dialog as="div" className="text-gray-700 relative z-50" onClose={() => {}}>
           <DialogBackdrop
             transition
             className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
@@ -528,7 +528,7 @@ export default function Template() {
 
       {/* 削除モーダル */}
       <Transition.Root show={isDeleteModalOpen} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={() => {}}>
+        <Dialog as="div" className="text-gray-700 relative z-50" onClose={() => {}}>
           <DialogBackdrop
             transition
             className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
