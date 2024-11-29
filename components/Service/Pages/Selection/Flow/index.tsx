@@ -37,6 +37,7 @@ export default function Flow() {
   const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [isAllDay, setIsAllDay] = useState(false);
+  const [editIsAllDay, setEditIsAllDay] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -212,10 +213,8 @@ export default function Flow() {
     let startedAt = formValues.started_at ? toUTC(formValues.started_at) : null;
     let endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
 
-    if (!startedAt && endedAt) {
-      const endDate = new Date(formValues.ended_at);
-      startedAt = toUTC(new Date(endDate.setHours(0, 0, 0, 0)).toISOString());
-      endedAt = toUTC(new Date(endDate.setHours(23, 59, 59, 999)).toISOString());
+    if (isAllDay) {
+      startedAt = endedAt;
     }
 
     const { data, error } = await supabase
@@ -249,6 +248,7 @@ export default function Flow() {
 
       setAnalyses((prev) => [addedDetail, ...prev]);
       setIsModalOpen(false);
+      setIsAllDay(false);
       reset();
     }
   };
@@ -258,10 +258,8 @@ export default function Flow() {
       let startedAt = editData.started_at ? toUTC(editData.started_at) : null;
       let endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
 
-      if (!startedAt && endedAt) {
-        const endDate = new Date(editData.ended_at);
-        startedAt = toUTC(new Date(endDate.setHours(0, 0, 0, 0)).toISOString());
-        endedAt = toUTC(new Date(endDate.setHours(23, 59, 59, 999)).toISOString());
+      if (editIsAllDay) {
+        startedAt = endedAt;
       }
 
       const { error } = await supabase
@@ -295,6 +293,8 @@ export default function Flow() {
         ),
       );
       setIsEditModalOpen(false);
+      setDescriptionLength(0);
+      setEditIsAllDay(false);
       reset({
         titleId: '',
         description: '',
@@ -637,7 +637,7 @@ export default function Flow() {
                           </label>
                           <input
                             type="datetime-local"
-                            {...register('started_at', { required: false })}
+                            {...register('started_at', { required: '開始時間を選択してください' })}
                             className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                           />
                           {errors.started_at && (
@@ -708,6 +708,7 @@ export default function Flow() {
                           started_at: '',
                           ended_at: '',
                         });
+                        setIsAllDay(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
@@ -755,11 +756,7 @@ export default function Flow() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="mb-4">
-                        <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
-                          「ES提出締切」などの終日イベントは、終了時間のみ設定してください。自動で0:00から23:59までに設定されます。
-                        </div>
-
+                      {!editIsAllDay && (
                         <div className="mb-4 mt-2">
                           <label
                             htmlFor="started_at"
@@ -769,7 +766,7 @@ export default function Flow() {
                           </label>
                           <input
                             type="datetime-local"
-                            {...register('started_at', { required: false })}
+                            {...register('started_at', { required: '開始時間を選択してください' })}
                             value={editData.started_at || ''}
                             onChange={(e) =>
                               setEditData((prev) => ({
@@ -785,47 +782,67 @@ export default function Flow() {
                             </p>
                           )}
                         </div>
+                      )}
 
-                        <div className="mb-4">
-                          <label htmlFor="ended_at" className="block text-sm font-medium text-left">
-                            終了時間
-                          </label>
-                          <input
-                            type="datetime-local"
-                            {...register('ended_at', { required: '開始時間を選択してください' })}
-                            value={editData.ended_at || ''}
-                            onChange={(e) =>
-                              setEditData((prev) => ({
-                                ...prev,
-                                ended_at: e.target.value,
-                              }))
-                            }
-                            className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
-                          />
-                          {errors.ended_at && (
-                            <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
-                          )}
-                        </div>
-
-                        <textarea
-                          {...register('description')}
-                          placeholder="備考（任意）"
-                          rows={10}
-                          value={editData.description}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setEditData({ ...editData, description: value });
-                            setDescriptionLength(value.replace(/\s/g, '').length);
-                          }}
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                      <div className="mb-4">
+                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
+                          {editIsAllDay ? '締切日' : '終了時間'}
+                        </label>
+                        <input
+                          type="datetime-local"
+                          {...register('ended_at', { required: '開始時間を選択してください' })}
+                          value={editData.ended_at || ''}
+                          onChange={(e) =>
+                            setEditData((prev) => ({
+                              ...prev,
+                              ended_at: e.target.value,
+                            }))
+                          }
+                          className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
-                        <p className="flex justify-end text-sm mt-1">
-                          {editData.description.replace(/\s/g, '').length} 文字
-                        </p>
-                        {errors.description && (
-                          <p className="text-red-500 text-left">{errors.description.message}</p>
+                        {errors.ended_at && (
+                          <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
                         )}
                       </div>
+
+                      <div className="mb-4">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={editIsAllDay}
+                            onChange={(e) => {
+                              setEditIsAllDay(e.target.checked);
+                              if (e.target.checked) {
+                                setEditData((prev) => ({
+                                  ...prev,
+                                  started_at: '',
+                                }));
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          終日
+                        </label>
+                      </div>
+
+                      <textarea
+                        {...register('description')}
+                        placeholder="備考（任意）"
+                        rows={10}
+                        value={editData.description}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setEditData({ ...editData, description: value });
+                          setDescriptionLength(value.replace(/\s/g, '').length);
+                        }}
+                        className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                      />
+                      <p className="flex justify-end text-sm mt-1">
+                        {editData.description.replace(/\s/g, '').length} 文字
+                      </p>
+                      {errors.description && (
+                        <p className="text-red-500 text-left">{errors.description.message}</p>
+                      )}
                     </div>
                   </div>
                   <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
@@ -840,6 +857,7 @@ export default function Flow() {
                           started_at: '',
                           ended_at: '',
                         });
+                        setEditIsAllDay(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
