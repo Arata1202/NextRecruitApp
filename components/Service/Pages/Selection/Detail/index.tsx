@@ -1,5 +1,6 @@
 'use client';
 
+import React from 'react';
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -346,6 +347,27 @@ export default function Detail() {
     return null;
   }
 
+  const formatDescription = (description: string) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+    const parts = description.split(urlRegex);
+
+    return parts.map((part, index) =>
+      urlRegex.test(part) ? (
+        <a
+          key={index}
+          href={part}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="text-blue-500 hover:text-blue-600"
+        >
+          {part}
+        </a>
+      ) : (
+        <React.Fragment key={index}>{part}</React.Fragment>
+      ),
+    );
+  };
+
   const tabs = [
     { name: '企業情報', href: '#', current: true },
     { name: '選考状況', href: './flow', current: false },
@@ -482,7 +504,9 @@ export default function Detail() {
                         </div>
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-                        <p className="whitespace-pre-wrap">{analysis.description}</p>
+                        <p className="whitespace-pre-wrap">
+                          {formatDescription(analysis.description)}
+                        </p>
                         <p className="flex justify-end text-sm mt-1">
                           {analysis.description.replace(/\s/g, '').length} 文字
                         </p>
