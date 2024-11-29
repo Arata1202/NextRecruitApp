@@ -303,7 +303,7 @@ export default function Template() {
                     <div className="flex">
                       <ClipboardDocumentListIcon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                        テンプレート
+                        ESテンプレート
                       </h2>
                     </div>
                   </div>
@@ -349,7 +349,7 @@ export default function Template() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、テンプレートを作成してみましょう！
+                          右上の追加ボタンから、ESテンプレートを作成してみましょう！
                         </p>
                       </div>
                     </div>

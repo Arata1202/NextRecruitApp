@@ -36,7 +36,7 @@ const features = [
     icon: ChartBarIcon,
   },
   {
-    name: 'テンプレート',
+    name: 'ESテンプレート',
     description:
       '自己紹介やガクチカ、長所などを記録する事ができます。便利な文字数カウンター付きです。',
     icon: ClipboardDocumentListIcon,

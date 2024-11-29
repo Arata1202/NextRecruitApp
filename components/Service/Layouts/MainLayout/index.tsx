@@ -32,7 +32,7 @@ export default function MainLayout() {
     { name: 'ダッシュボード', href: '/service', icon: ChartPieIcon },
     { name: 'カレンダー', href: '/service/calendar', icon: CalendarDaysIcon },
     { name: '選考中の企業', href: '/service/selection', icon: BuildingOffice2Icon },
-    { name: 'テンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
+    { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
     { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
     { name: '設定', href: '/service/settings', icon: Cog6ToothIcon },
   ].map((item) => ({
