@@ -459,7 +459,7 @@ export default function Detail() {
             </div>
 
             {/* メインコンテンツ */}
-            <div className="px-4 sm:px-6 lg:px-8 mt-5">
+            <div className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-200 pb-1">
               {loading ? (
                 <></>
               ) : filteredAnalyses.length === 0 ? (
