@@ -258,7 +258,7 @@ export default function MainLayout() {
               >
                 <Dialog.Panel
                   style={{ width: '100%' }}
-                  className={`bg-white relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6`}
+                  className={`text-gray-700 bg-white relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6`}
                 >
                   <div className="sm:flex sm:items-start">
                     <div

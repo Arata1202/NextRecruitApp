@@ -236,7 +236,7 @@ export default function DashBoard() {
               <></>
             ) : (
               <>
-                <div className="px-4 sm:px-6 lg:px-8 mt-5">
+                <div className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-200 pb-1">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
@@ -247,7 +247,7 @@ export default function DashBoard() {
                   {renderTodayEvents()}
                 </div>
                 {/* 明日のイベント */}
-                <div className="px-4 sm:px-6 lg:px-8 mt-5">
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-200 pb-1">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
