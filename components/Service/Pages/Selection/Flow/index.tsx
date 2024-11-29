@@ -36,6 +36,7 @@ export default function Flow() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
+  const [isAllDay, setIsAllDay] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -626,27 +627,30 @@ export default function Flow() {
                         )}
                       </div>
 
-                      <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
-                        「ES提出締切」などの終日イベントは、終了時間のみ設定してください。自動で0:00から23:59までに設定されます。
-                      </div>
-
-                      <div className="mb-4 mt-2">
-                        <label htmlFor="started_at" className="block text-sm font-medium text-left">
-                          開始時間
-                        </label>
-                        <input
-                          type="datetime-local"
-                          {...register('started_at', { required: false })}
-                          className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
-                        />
-                        {errors.started_at && (
-                          <p className="text-red-500 mt-1 text-left">{errors.started_at.message}</p>
-                        )}
-                      </div>
+                      {!isAllDay && (
+                        <div className="mb-4 mt-2">
+                          <label
+                            htmlFor="started_at"
+                            className="block text-sm font-medium text-left"
+                          >
+                            開始時間
+                          </label>
+                          <input
+                            type="datetime-local"
+                            {...register('started_at', { required: false })}
+                            className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                          {errors.started_at && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.started_at.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
 
                       <div className="mb-4">
                         <label htmlFor="ended_at" className="block text-sm font-medium text-left">
-                          終了時間
+                          {isAllDay ? '締切日' : '終了時間'}
                         </label>
                         <input
                           type="datetime-local"
@@ -656,6 +660,23 @@ export default function Flow() {
                         {errors.ended_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
                         )}
+                      </div>
+
+                      <div className="mb-4">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={isAllDay}
+                            onChange={(e) => {
+                              setIsAllDay(e.target.checked);
+                              reset({
+                                started_at: '',
+                              });
+                            }}
+                            className="mr-2"
+                          />
+                          終日
+                        </label>
                       </div>
 
                       <div className="mb-4">
