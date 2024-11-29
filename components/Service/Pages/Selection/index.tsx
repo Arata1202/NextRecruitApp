@@ -20,7 +20,7 @@ import {
 type Analysis = {
   id: number;
   title: string;
-  description: string;
+  star_id: string;
 };
 
 export default function Template() {
@@ -31,14 +31,15 @@ export default function Template() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editData, setEditData] = useState({ id: 0, title: '', description: '' });
+  const [editData, setEditData] = useState({ id: 0, title: '', selectionStarId: '' });
+  const [selectionStars, setSelectionStars] = useState<{ id: number; title: string }[]>([]);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
 
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [descriptionLength, setDescriptionLength] = useState(0);
+  const [selectionStarIdLength, setselectionStarIdLength] = useState(0);
 
   const {
     register,
@@ -48,7 +49,7 @@ export default function Template() {
   } = useForm({
     defaultValues: {
       title: '',
-      description: '',
+      selectionStarId: '',
     },
   });
 
@@ -79,7 +80,16 @@ export default function Template() {
       try {
         const query = supabase
           .from('selection')
-          .select('*')
+          .select(
+            `
+            id,
+            title,
+            star_id (
+              title,
+              sort
+            )
+            `,
+          )
           .ilike('title', `%${searchTerm}%`)
           .eq('supabaseauth_id', userId);
 
@@ -90,9 +100,17 @@ export default function Template() {
           return;
         }
 
-        if (data) {
-          setAnalyses(data);
-        }
+        const formattedData = data?.map((item: any) => ({
+          id: item.id,
+          title: item.title,
+          star_id: item.star_id?.title || '未設定',
+          sort: item.star_id?.sort || Infinity,
+        }));
+
+        const sortedData = formattedData?.sort((a, b) => a.sort - b.sort) || [];
+
+        setAnalyses(sortedData);
+
         setTimeout(() => {
           setLoading(false);
         }, 100);
@@ -104,8 +122,31 @@ export default function Template() {
     fetchAnalyses();
   }, [userId, searchTerm]);
 
+  // スターデータ
+  useEffect(() => {
+    const fetchSelectionStars = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('selectionstar')
+          .select('id, title, sort')
+          .order('sort', { ascending: true });
+
+        if (error) {
+          console.error('Error fetching selection stars:', error.message);
+          return;
+        }
+
+        setSelectionStars(data || []);
+      } catch (error) {
+        console.error('Error fetching selection stars:', error);
+      }
+    };
+
+    fetchSelectionStars();
+  }, []);
+
   // データ追加
-  const handleAddAnalysis = async (formValues: { title: string; description: string }) => {
+  const handleAddAnalysis = async (formValues: { title: string; selectionStarId: string }) => {
     if (!userId) {
       console.error('User ID is missing');
       return;
@@ -118,7 +159,7 @@ export default function Template() {
           {
             supabaseauth_id: userId,
             title: formValues.title,
-            description: formValues.description,
+            star_id: Number(formValues.selectionStarId),
           },
         ])
         .select();
@@ -128,13 +169,24 @@ export default function Template() {
         return;
       }
 
-      if (data) {
-        setAnalyses((prev) => [...data, ...prev]);
+      if (data && data.length > 0) {
+        const starTitle =
+          selectionStars.find((star_id) => star_id.id === Number(formValues.selectionStarId))
+            ?.title || '未設定';
+
+        setAnalyses((prev) => [
+          {
+            id: data[0].id,
+            title: formValues.title,
+            star_id: starTitle,
+          },
+          ...prev,
+        ]);
       }
 
       reset({
         title: '',
-        description: '',
+        selectionStarId: '',
       });
       setIsModalOpen(false);
     } catch (error) {
@@ -144,11 +196,15 @@ export default function Template() {
 
   const handleEditAnalysis = async () => {
     try {
+      const selectedStar = selectionStars.find(
+        (star) => star.id === Number(editData.selectionStarId),
+      );
+
       const { data, error } = await supabase
         .from('selection')
         .update({
           title: editData.title,
-          description: editData.description,
+          star_id: editData.selectionStarId,
         })
         .eq('id', editData.id)
         .select();
@@ -160,15 +216,21 @@ export default function Template() {
 
       setAnalyses((prev) =>
         prev.map((selection) =>
-          selection.id === editData.id ? { ...selection, ...editData } : selection,
+          selection.id === editData.id
+            ? {
+                ...selection,
+                title: editData.title,
+                star_id: selectedStar ? selectedStar.title : '未設定',
+              }
+            : selection,
         ),
       );
 
-      setEditData({ id: 0, title: '', description: '' });
+      setEditData({ id: 0, title: '', selectionStarId: '' });
       setIsEditModalOpen(false);
       reset({
         title: '',
-        description: '',
+        selectionStarId: '',
       });
     } catch (error) {
       console.error('Error editing selection:', error);
@@ -176,17 +238,22 @@ export default function Template() {
   };
 
   const openEditModal = (analysis: Analysis) => {
+    const selectedStarId =
+      selectionStars.find((star_id) => star_id.title === analysis.star_id)?.id || '';
+
     setEditData({
       id: analysis.id,
       title: analysis.title,
-      description: analysis.description,
+      selectionStarId: selectedStarId.toString(),
     });
+
+    setInitialEditTitle(analysis.title);
+
     reset({
       title: analysis.title,
-      description: analysis.description,
+      selectionStarId: selectedStarId.toString(),
     });
-    setDescriptionLength(analysis.description.replace(/\s/g, '').length);
-    setInitialEditTitle(analysis.title);
+
     setIsEditModalOpen(true);
   };
 
@@ -335,10 +402,7 @@ export default function Template() {
                         </div>
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-                        <p className="whitespace-pre-wrap">{analysis.description}</p>
-                        <p className="flex justify-end text-sm mt-1">
-                          {analysis.description.replace(/\s/g, '').length} 文字
-                        </p>
+                        <p className="whitespace-pre-wrap">{analysis.star_id}</p>
                       </div>
                     </div>
                   </div>
@@ -390,18 +454,26 @@ export default function Template() {
                       </div>
 
                       <div className="mb-4">
-                        <textarea
-                          {...register('description', { required: '内容を入力してください' })}
-                          placeholder="説明"
-                          rows={10}
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
-                          onChange={(e) =>
-                            setDescriptionLength(e.target.value.replace(/\s/g, '').length)
-                          }
-                        />
-                        <p className="flex justify-end text-sm mt-1">{descriptionLength} 文字</p>
-                        {errors.description && (
-                          <p className="text-red-500 text-left">{errors.description.message}</p>
+                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
+                          志望度（企業一覧の並び順に影響します）
+                        </label>
+                        <select
+                          {...register('selectionStarId', { required: '選択してください' })}
+                          id="selectionStar"
+                          style={{ height: '36px' }}
+                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                        >
+                          <option value="">選択してください</option>
+                          {selectionStars.map((star) => (
+                            <option key={star.id} value={star.id}>
+                              {star.title}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.selectionStarId && (
+                          <p className="text-red-500 mt-1 text-left">
+                            {errors.selectionStarId.message}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -411,10 +483,10 @@ export default function Template() {
                       type="button"
                       onClick={() => {
                         setIsModalOpen(false);
-                        setDescriptionLength(0);
+                        setselectionStarIdLength(0);
                         reset({
                           title: '',
-                          description: '',
+                          selectionStarId: '',
                         });
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
@@ -476,23 +548,31 @@ export default function Template() {
                         )}
                       </div>
                       <div className="mb-4">
-                        <textarea
-                          {...register('description', { required: '内容を入力してください' })}
-                          placeholder="内容"
-                          rows={10}
-                          value={editData.description}
+                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
+                          志望度（企業一覧の並び順に影響します）
+                        </label>
+                        <select
+                          {...register('selectionStarId', { required: '選択してください' })}
+                          id="selectionStar"
+                          value={editData.selectionStarId}
                           onChange={(e) => {
                             const value = e.target.value;
-                            setEditData({ ...editData, description: value });
-                            setDescriptionLength(value.replace(/\s/g, '').length);
+                            setEditData({ ...editData, selectionStarId: value });
                           }}
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
-                        />
-                        <p className="flex justify-end text-sm mt-1">
-                          {editData.description.replace(/\s/g, '').length} 文字
-                        </p>
-                        {errors.description && (
-                          <p className="text-red-500 text-left">{errors.description.message}</p>
+                          style={{ height: '36px' }}
+                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                        >
+                          <option value="">選択してください</option>
+                          {selectionStars.map((star) => (
+                            <option key={star.id} value={star.id}>
+                              {star.title}
+                            </option>
+                          ))}
+                        </select>
+                        {errors.selectionStarId && (
+                          <p className="text-red-500 mt-1 text-left">
+                            {errors.selectionStarId.message}
+                          </p>
                         )}
                       </div>
                     </div>
@@ -502,10 +582,10 @@ export default function Template() {
                       type="button"
                       onClick={() => {
                         setIsEditModalOpen(false);
-                        setDescriptionLength(0);
+                        setselectionStarIdLength(0);
                         reset({
                           title: '',
-                          description: '',
+                          selectionStarId: '',
                         });
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
