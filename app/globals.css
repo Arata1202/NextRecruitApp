@@ -113,6 +113,20 @@
   background-color: white;
 }
 
+/* 土曜と日曜 */
+.fc-day-sat {
+  background-color: #e0f7fa;
+}
+.fc-day-sun {
+  background-color: #ffebee;
+}
+.fc-timegrid-col:nth-child(7) {
+  background-color: #e0f7fa;
+}
+.fc-timegrid-col:nth-child(8) {
+  background-color: #ffebee;
+}
+
 .error {
   margin: 0 !important;
 }

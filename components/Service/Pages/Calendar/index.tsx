@@ -31,55 +31,69 @@ interface MappedEvent {
 
 export default function Calendar() {
   const [events, setEvents] = useState<MappedEvent[]>([]);
+  const [holidays, setHolidays] = useState<string[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      const {
-        data: { user },
-        error: userError,
-      } = await supabase.auth.getUser();
+    const fetchData = async () => {
+      try {
+        const response = await fetch('https://holidays-jp.github.io/api/v1/date.json');
+        const holidayData = await response.json();
+        setHolidays(Object.keys(holidayData));
 
-      if (userError || !user) {
-        console.error('Error fetching user:', userError || 'User not logged in');
-        return;
-      }
+        const {
+          data: { user },
+          error: userError,
+        } = await supabase.auth.getUser();
 
-      const { data, error } = await supabase
-        .from('selectionflow')
-        .select(
-          `
-          started_at,
-          ended_at,
-          selection (
-            id,
-            title,
-            supabaseauth_id
+        if (userError || !user) {
+          console.error('Error fetching user:', userError || 'User not logged in');
+          setIsLoading(false);
+          return;
+        }
+
+        const { data, error } = await supabase
+          .from('selectionflow')
+          .select(
+            `
+            started_at,
+            ended_at,
+            selection (
+              id,
+              title,
+              supabaseauth_id
+            )
+          `,
           )
-        `,
-        )
-        .eq('selection.supabaseauth_id', user.id);
+          .eq('selection.supabaseauth_id', user.id);
 
-      if (error) {
-        console.error('Error fetching events:', error);
-        return;
+        if (error) {
+          console.error('Error fetching events:', error);
+          setIsLoading(false);
+          return;
+        }
+
+        const mappedEvents = (data as unknown as EventData[])
+          .filter((item) => item.selection?.title)
+          .map((item) => ({
+            title: item.selection.title,
+            start: item.started_at,
+            end: item.ended_at,
+            extendedProps: {
+              id: item.selection.id,
+            },
+          }));
+
+        setEvents(mappedEvents);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      } finally {
+        setIsLoading(false);
       }
-
-      const mappedEvents = (data as unknown as EventData[])
-        .filter((item) => item.selection?.title)
-        .map((item, index) => ({
-          title: item.selection.title,
-          start: item.started_at,
-          end: item.ended_at,
-          extendedProps: {
-            id: item.selection.id,
-          },
-        }));
-
-      setEvents(mappedEvents);
     };
 
-    fetchEvents();
+    fetchData();
   }, []);
 
   const handleEventClick = (clickInfo: any) => {
@@ -88,6 +102,17 @@ export default function Calendar() {
       router.push(`/service/selection/${eventId}/flow`);
     }
   };
+
+  const dayCellDidMount = (info: any) => {
+    const date = info.date.toISOString().split('T')[0];
+    if (holidays.includes(date)) {
+      info.el.style.backgroundColor = '#ffebee';
+    }
+  };
+
+  if (isLoading) {
+    return <></>;
+  }
 
   return (
     <>
@@ -125,6 +150,7 @@ export default function Calendar() {
                 eventClick={handleEventClick}
                 timeZone="Asia/Tokyo"
                 height="auto"
+                dayCellDidMount={dayCellDidMount}
               />
             </div>
           </main>
