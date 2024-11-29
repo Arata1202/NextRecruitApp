@@ -34,7 +34,7 @@ export default function MainLayout() {
     { name: '選考中の企業', href: '/service/selection', icon: BuildingOffice2Icon },
     { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
     { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
-    { name: '設定', href: '/service/settings', icon: Cog6ToothIcon },
+    // { name: '設定', href: '/service/settings', icon: Cog6ToothIcon },
   ].map((item) => ({
     ...item,
     current:

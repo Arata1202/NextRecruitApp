@@ -29,8 +29,8 @@ export default function RootLayout({
       <head>
         <meta name="robots" content="noindex" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased LightTheme`}>
-        {children}
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}>
+        <div className="LightTheme">{children}</div>
       </body>
     </html>
   );

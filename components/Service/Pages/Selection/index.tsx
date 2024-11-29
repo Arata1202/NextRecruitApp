@@ -231,7 +231,7 @@ export default function Template() {
       <div>
         <MainLayout />
         <div className="lg:pl-72">
-          <main className="">
+          <main className="h-screen">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>
