@@ -666,7 +666,7 @@ export default function Flow() {
                         )}
                       </div>
 
-                      <div className="mb-4">
+                      <div className="mb-4 flex">
                         <label>
                           <input
                             type="checkbox"
@@ -813,7 +813,7 @@ export default function Flow() {
                         )}
                       </div>
 
-                      <div className="mb-4">
+                      <div className="mb-4 flex">
                         <label>
                           <input
                             type="checkbox"
