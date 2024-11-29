@@ -654,7 +654,11 @@ export default function Flow() {
                         </label>
                         <input
                           type="datetime-local"
-                          {...register('ended_at', { required: '終了時間を選択してください' })}
+                          {...register('ended_at', {
+                            required: isAllDay
+                              ? '締切日を選択してください'
+                              : '終了時間を選択してください',
+                          })}
                           className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
                         {errors.ended_at && (
@@ -790,7 +794,11 @@ export default function Flow() {
                         </label>
                         <input
                           type="datetime-local"
-                          {...register('ended_at', { required: '開始時間を選択してください' })}
+                          {...register('ended_at', {
+                            required: editIsAllDay
+                              ? '締切日を選択してください'
+                              : '終了時間を選択してください',
+                          })}
                           value={editData.ended_at || ''}
                           onChange={(e) =>
                             setEditData((prev) => ({
