@@ -20,8 +20,8 @@ type Analysis = {
   id: number;
   title: string;
   description: string;
-  started_at: string;
-  ended_at: string;
+  started_at: string | null;
+  ended_at: string | null;
 };
 
 type AnalysisTitle = {
@@ -190,6 +190,12 @@ export default function Flow() {
     fetchAnalysisTitles();
   }, []);
 
+  const toUTC = (localDatetime: string) => {
+    const date = new Date(localDatetime);
+    const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return utcDate.toISOString();
+  };
+
   // データ追加
   const handleAddAnalysis = async (formValues: {
     titleId: string;
@@ -201,11 +207,15 @@ export default function Flow() {
       console.error('Invalid id:', id);
       return;
     }
-    const toUTC = (localDatetime: string) => {
-      const date = new Date(localDatetime);
-      const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
-      return utcDate.toISOString();
-    };
+
+    let startedAt = formValues.started_at ? toUTC(formValues.started_at) : null;
+    let endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
+
+    if (!startedAt && endedAt) {
+      const endDate = new Date(formValues.ended_at);
+      startedAt = toUTC(new Date(endDate.setHours(0, 0, 0, 0)).toISOString());
+      endedAt = toUTC(new Date(endDate.setHours(23, 59, 59, 999)).toISOString());
+    }
 
     const { data, error } = await supabase
       .from('selectionflow')
@@ -214,8 +224,8 @@ export default function Flow() {
           title_id: parseInt(formValues.titleId),
           description: formValues.description,
           selection_id: parseInt(id),
-          started_at: formValues.started_at ? toUTC(formValues.started_at) : null,
-          ended_at: formValues.ended_at ? toUTC(formValues.ended_at) : null,
+          started_at: startedAt,
+          ended_at: endedAt,
         },
       ])
       .select();
@@ -232,8 +242,8 @@ export default function Flow() {
           analysisTitles.find((title) => title.id === parseInt(formValues.titleId))?.title ||
           'Untitled',
         description: formValues.description,
-        started_at: formValues.started_at,
-        ended_at: formValues.ended_at,
+        started_at: startedAt,
+        ended_at: endedAt,
       };
 
       setAnalyses((prev) => [addedDetail, ...prev]);
@@ -244,13 +254,22 @@ export default function Flow() {
 
   const handleEditAnalysis = async () => {
     try {
+      let startedAt = editData.started_at ? toUTC(editData.started_at) : null;
+      let endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
+
+      if (!startedAt && endedAt) {
+        const endDate = new Date(editData.ended_at);
+        startedAt = toUTC(new Date(endDate.setHours(0, 0, 0, 0)).toISOString());
+        endedAt = toUTC(new Date(endDate.setHours(23, 59, 59, 999)).toISOString());
+      }
+
       const { error } = await supabase
         .from('selectionflow')
         .update({
           title_id: parseInt(editData.titleId),
           description: editData.description,
-          started_at: editData.started_at,
-          ended_at: editData.ended_at,
+          started_at: startedAt,
+          ended_at: endedAt,
         })
         .eq('id', editData.id);
 
@@ -268,8 +287,8 @@ export default function Flow() {
                   analysisTitles.find((title) => title.id === parseInt(editData.titleId))?.title ||
                   'Untitled',
                 description: editData.description,
-                started_at: editData.started_at,
-                ended_at: editData.ended_at,
+                started_at: startedAt,
+                ended_at: endedAt,
               }
             : detail,
         ),
@@ -541,7 +560,7 @@ export default function Flow() {
                           </p>
                           <p>
                             終了：{' '}
-                            {analysis.started_at
+                            {analysis.ended_at
                               ? formatDateWithoutTimezone(analysis.ended_at)
                               : '未設定'}
                           </p>
@@ -607,13 +626,17 @@ export default function Flow() {
                         )}
                       </div>
 
-                      <div className="mb-4">
+                      <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
+                        「ES提出締切」などの終日イベントは、終了時間のみ設定してください。自動で0:00から23:59までに設定されます。
+                      </div>
+
+                      <div className="mb-4 mt-2">
                         <label htmlFor="started_at" className="block text-sm font-medium text-left">
                           開始時間
                         </label>
                         <input
                           type="datetime-local"
-                          {...register('started_at', { required: '開始時間を選択してください' })}
+                          {...register('started_at', { required: false })}
                           className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
                         {errors.started_at && (
@@ -712,7 +735,11 @@ export default function Flow() {
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
-                        <div className="mb-4">
+                        <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
+                          「ES提出締切」などの終日イベントは、終了時間のみ設定してください。自動で0:00から23:59までに設定されます。
+                        </div>
+
+                        <div className="mb-4 mt-2">
                           <label
                             htmlFor="started_at"
                             className="block text-sm font-medium text-left"
@@ -721,7 +748,7 @@ export default function Flow() {
                           </label>
                           <input
                             type="datetime-local"
-                            {...register('started_at', { required: '開始時間を選択してください' })}
+                            {...register('started_at', { required: false })}
                             value={editData.started_at || ''}
                             onChange={(e) =>
                               setEditData((prev) => ({
