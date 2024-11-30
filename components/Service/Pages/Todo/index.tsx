@@ -34,7 +34,7 @@ export default function Todo() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editData, setEditData] = useState({ id: 0, titleId: '', description: '' });
+  const [editData, setEditData] = useState({ id: 0, title: '', description: '' });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [, setDeleteId] = useState<number | null>(null);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
@@ -51,7 +51,7 @@ export default function Todo() {
     formState: { errors },
   } = useForm({
     defaultValues: {
-      titleId: '',
+      title: '',
       description: '',
     },
   });
@@ -82,19 +82,15 @@ export default function Todo() {
     const fetchAnalyses = async () => {
       try {
         const query = supabase
-          .from('template')
+          .from('todo')
           .select(
             `
             id,
-            title_id (
-              id,
-              title,
-              sort
-            ),
+            title,
             description
           `,
           )
-          .ilike('title_id.title', `%${searchQuery}%`)
+          .ilike('title', `%${searchQuery}%`)
           .eq('supabaseauth_id', userId);
 
         const { data, error } = await query;
@@ -109,13 +105,13 @@ export default function Todo() {
           return;
         }
 
-        const filteredData = data.filter((item: any) => item.title_id && item.title_id.title);
+        const filteredData = data.filter((item: any) => item.title);
 
         const formattedData = filteredData.map((item: any) => ({
           id: item.id,
-          title: item.title_id?.title || 'Untitled',
+          title: item.title || 'Untitled',
           description: item.description,
-          sort: item.title_id?.sort || 0,
+          sort: item.title?.sort || 0,
         }));
 
         setFilteredAnalyses(formattedData);
@@ -134,44 +130,14 @@ export default function Todo() {
     fetchAnalyses();
   }, [userId, searchQuery]);
 
-  // AnalysisTitle データ取得
-  useEffect(() => {
-    const fetchAnalysisTitles = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('templatetitle')
-          .select('id, title')
-          .order('sort', { ascending: true });
-
-        if (error) throw error;
-
-        setAnalysisTitles(data);
-      } catch (error) {
-        console.error('Error fetching analysis titles:', error);
-      }
-    };
-
-    fetchAnalysisTitles();
-  }, []);
-
   // データ追加
-  const handleAddAnalysis = async (formValues: { titleId: string; description: string }) => {
-    const { data: titleData } = await supabase
-      .from('templatetitle')
-      .select('id')
-      .eq('id', formValues.titleId);
-
-    if (!titleData || titleData.length === 0) {
-      console.error('Invalid title_id: Does not exist in analysistitle table.');
-      return;
-    }
-
+  const handleAddAnalysis = async (formValues: { title: string; description: string }) => {
     const { data, error } = await supabase
-      .from('template')
+      .from('todo')
       .insert([
         {
           supabaseauth_id: userId,
-          title_id: parseInt(formValues.titleId),
+          title: formValues.title,
           description: formValues.description,
         },
       ])
@@ -184,9 +150,8 @@ export default function Todo() {
 
     if (data && data.length > 0) {
       const addedAnalysis = data[0];
-      const title = analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
       setAnalyses((prev) => [
-        { id: addedAnalysis.id, title, description: formValues.description },
+        { id: addedAnalysis.id, title: formValues.title, description: formValues.description },
         ...prev,
       ]);
     } else {
@@ -194,7 +159,7 @@ export default function Todo() {
     }
 
     reset({
-      titleId: '',
+      title: '',
       description: '',
     });
     setIsModalOpen(false);
@@ -203,9 +168,9 @@ export default function Todo() {
   const handleEditAnalysis = async () => {
     try {
       const { data, error } = await supabase
-        .from('template')
+        .from('todo')
         .update({
-          title_id: parseInt(editData.titleId),
+          title: editData.title,
           description: editData.description,
         })
         .eq('id', editData.id)
@@ -221,17 +186,17 @@ export default function Todo() {
           analysis.id === editData.id
             ? {
                 id: editData.id,
-                title: analysisTitles.find((t) => t.id === parseInt(editData.titleId))?.title || '',
+                title: editData.title,
                 description: editData.description,
               }
             : analysis,
         ),
       );
 
-      setEditData({ id: 0, titleId: '', description: '' });
+      setEditData({ id: 0, title: '', description: '' });
       setIsEditModalOpen(false);
       reset({
-        titleId: '',
+        title: '',
         description: '',
       });
     } catch (error) {
@@ -240,15 +205,14 @@ export default function Todo() {
   };
 
   const openEditModal = (analysis: Analysis) => {
-    const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
     setEditData({
       id: analysis.id,
-      titleId,
+      title: analysis.title,
       description: analysis.description,
     });
     setDescriptionLength(analysis.description.length);
     reset({
-      titleId,
+      title: analysis.title,
       description: analysis.description,
     });
     setInitialEditTitle(analysis.title);
@@ -259,7 +223,7 @@ export default function Todo() {
     if (!deleteData?.id) return;
 
     try {
-      const { error } = await supabase.from('template').delete().eq('id', deleteData.id);
+      const { error } = await supabase.from('todo').delete().eq('id', deleteData.id);
 
       if (error) {
         console.error('Error deleting analysis:', error);
@@ -318,7 +282,7 @@ export default function Todo() {
                   </div>
                 </div>
               </div>
-              <div>
+              {/* <div>
                 <div className="pb-5 flex">
                   <div className="w-full Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -333,7 +297,7 @@ export default function Todo() {
                     />
                   </div>
                 </div>
-              </div>
+              </div> */}
             </div>
 
             {/* メインコンテンツ */}
@@ -349,7 +313,7 @@ export default function Todo() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、ESテンプレートを作成してみましょう！
+                          右上の追加ボタンから、ToDoを作成してみましょう！
                         </p>
                       </div>
                     </div>
@@ -382,10 +346,14 @@ export default function Todo() {
                         </div>
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-                        <p className="whitespace-pre-wrap">{analysis.description}</p>
-                        <p className="flex justify-end text-sm mt-1">
-                          {analysis.description.replace(/\s/g, '').length} 文字
-                        </p>
+                        {analysis.description && (
+                          <>
+                            <p className="whitespace-pre-wrap">{analysis.description}</p>
+                            <p className="flex justify-end text-sm mt-1">
+                              {analysis.description.replace(/\s/g, '').length} 文字
+                            </p>
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -419,37 +387,25 @@ export default function Todo() {
                       </div>
                       <div className="mt-2 text-center sm:ml-4 sm:text-left">
                         <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
-                          自己分析を追加
+                          ToDoを追加
                         </Dialog.Title>
                       </div>
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
-                        <select
-                          {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '36px' }}
-                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
-                        >
-                          <option value="">タイトルを選択</option>
-                          {analysisTitles
-                            .filter(
-                              (title) =>
-                                !analyses.some((analysis) => analysis.title === title.title),
-                            ) // 存在するタイトルを除外
-                            .map((title) => (
-                              <option key={title.id} value={title.id}>
-                                {title.title}
-                              </option>
-                            ))}
-                        </select>
-                        {errors.titleId && (
-                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                        <input
+                          {...register('title', { required: 'タイトルを入力してください' })}
+                          placeholder="タイトル"
+                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                        />
+                        {errors.title && (
+                          <p className="text-red-500 text-left">{errors.title.message}</p>
                         )}
                       </div>
 
                       <div className="mb-4">
                         <textarea
-                          {...register('description', { required: '内容を入力してください' })}
+                          {...register('description', { required: false })}
                           placeholder="内容"
                           rows={10}
                           className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
@@ -458,9 +414,6 @@ export default function Todo() {
                           }
                         />
                         <p className="flex justify-end text-sm mt-1">{descriptionLength} 文字</p>
-                        {errors.description && (
-                          <p className="text-red-500 text-left">{errors.description.message}</p>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -471,7 +424,7 @@ export default function Todo() {
                         setIsModalOpen(false);
                         setDescriptionLength(0);
                         reset({
-                          titleId: '',
+                          title: '',
                           description: '',
                         });
                       }}
@@ -522,8 +475,24 @@ export default function Todo() {
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
+                        <input
+                          {...register('title', { required: 'タイトルを入力してください' })}
+                          placeholder="タイトル"
+                          value={editData.title}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setEditData({ ...editData, title: value });
+                          }}
+                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                        />
+                        {errors.title && (
+                          <p className="text-red-500 text-left">{errors.title.message}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
                         <textarea
-                          {...register('description', { required: '内容を入力してください' })}
+                          {...register('description', { required: false })}
                           placeholder="内容"
                           rows={10}
                           value={editData.description}
@@ -537,9 +506,6 @@ export default function Todo() {
                         <p className="flex justify-end text-sm mt-1">
                           {editData.description.replace(/\s/g, '').length} 文字
                         </p>
-                        {errors.description && (
-                          <p className="text-red-500 text-left">{errors.description.message}</p>
-                        )}
                       </div>
                     </div>
                   </div>
@@ -550,7 +516,7 @@ export default function Todo() {
                         setIsEditModalOpen(false);
                         setDescriptionLength(0);
                         reset({
-                          titleId: '',
+                          title: '',
                           description: '',
                         });
                       }}
