@@ -83,22 +83,8 @@
 .fc-daygrid-event-harness {
   padding-bottom: 5px !important;
 }
-.fc-event-title-container {
-  background-color: rgb(59 130 246);
-}
-.fc-event-title-container:hover {
-  background-color: rgb(37 99 235);
-}
-
-.fc-direction-ltr .fc-daygrid-event.fc-event-end,
-.fc-direction-rtl .fc-daygrid-event.fc-event-start {
-  color: white;
-  background-color: rgb(59, 130, 246);
-}
-
-.fc-direction-ltr .fc-daygrid-event.fc-event-end:hover,
-.fc-direction-rtl .fc-daygrid-event.fc-event-start:hover {
-  background-color: rgb(37, 99, 235);
+.fc-h-event {
+  border: none;
 }
 
 .fc-daygrid-dot-event .fc-event-title {

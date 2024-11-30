@@ -53,7 +53,7 @@ export default function Calendar() {
           return;
         }
 
-        const { data, error } = await supabase
+        const { data: selectionData, error: selectionError } = await supabase
           .from('selectionflow')
           .select(
             `
@@ -68,13 +68,24 @@ export default function Calendar() {
           )
           .eq('selection.supabaseauth_id', user.id);
 
-        if (error) {
-          console.error('Error fetching events:', error);
+        if (selectionError) {
+          console.error('Error fetching selection events:', selectionError);
           setIsLoading(false);
           return;
         }
 
-        const mappedEvents = (data as unknown as EventData[])
+        const { data: todoData, error: todoError } = await supabase
+          .from('todo')
+          .select('title, description, started_at, ended_at')
+          .eq('supabaseauth_id', user.id);
+
+        if (todoError) {
+          console.error('Error fetching todo events:', todoError);
+          setIsLoading(false);
+          return;
+        }
+
+        const mappedSelectionEvents = (selectionData as unknown as EventData[])
           .filter((item) => item.selection?.title)
           .map((item) => ({
             title: item.selection.title,
@@ -82,10 +93,23 @@ export default function Calendar() {
             end: item.ended_at,
             extendedProps: {
               id: item.selection.id,
+              type: 'selection',
             },
+            className: 'bg-blue-500 text-white hover:bg-blue-600',
           }));
 
-        setEvents(mappedEvents);
+        const mappedTodoEvents = (todoData || []).map((item, index) => ({
+          title: item.title,
+          start: item.started_at || item.ended_at,
+          end: item.ended_at,
+          extendedProps: {
+            id: `todo-${index}`,
+            type: 'todo',
+          },
+          className: 'bg-red-400 text-white hover:bg-red-500',
+        }));
+
+        setEvents([...mappedSelectionEvents, ...mappedTodoEvents]);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -97,9 +121,11 @@ export default function Calendar() {
   }, []);
 
   const handleEventClick = (clickInfo: any) => {
-    const eventId = clickInfo.event.extendedProps.id;
-    if (eventId) {
-      router.push(`/service/selection/${eventId}/flow`);
+    const { id, type } = clickInfo.event.extendedProps;
+    if (type === 'selection' && id) {
+      router.push(`/service/selection/${id}/flow`);
+    } else if (type === 'todo') {
+      router.push('/service/todo');
     }
   };
 

@@ -7,12 +7,13 @@ import {
   Bars3Icon,
   CalendarDaysIcon,
   ChartBarIcon,
-  ChartPieIcon,
+  InformationCircleIcon,
   Cog6ToothIcon,
   BuildingOffice2Icon,
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
   ClipboardDocumentListIcon,
+  NumberedListIcon,
 } from '@heroicons/react/24/outline';
 import {
   Dialog,
@@ -29,11 +30,12 @@ export default function MainLayout() {
   }
 
   const SidebarNavigation = [
-    { name: 'ダッシュボード', href: '/service', icon: ChartPieIcon },
+    { name: '就活イベント', href: '/service', icon: InformationCircleIcon },
     { name: 'カレンダー', href: '/service/calendar', icon: CalendarDaysIcon },
     { name: '選考中の企業', href: '/service/selection', icon: BuildingOffice2Icon },
     { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
     { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
+    { name: 'ToDoリスト', href: '/service/todo', icon: NumberedListIcon },
     // { name: '設定', href: '/service/settings', icon: Cog6ToothIcon },
   ].map((item) => ({
     ...item,
