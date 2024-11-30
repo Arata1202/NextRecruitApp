@@ -28,6 +28,7 @@ export default function Template() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [selectedStarTitle, setSelectedStarTitle] = useState<string | null>(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -283,11 +284,15 @@ export default function Template() {
 
   // 検索処理
   useEffect(() => {
-    const results = analyses.filter((analysis) =>
-      analysis.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+    const results = analyses.filter((analysis) => {
+      const matchesSearchTerm = analysis.title.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesStarTitle = !selectedStarTitle || analysis.star_id === selectedStarTitle;
+
+      return matchesSearchTerm && matchesStarTitle;
+    });
+
     setFilteredAnalyses(results);
-  }, [searchTerm, analyses]);
+  }, [searchTerm, selectedStarTitle, analyses]);
 
   const handleNavigateToDetail = (id: number) => {
     router.push(`/service/selection/${id}/detail`);
@@ -324,7 +329,7 @@ export default function Template() {
               </div>
               <div>
                 <div className="pb-5 flex">
-                  <div className="w-full Search relative mt-2 rounded-md shadow-sm">
+                  <div className="w-2/3 Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-500" />
                     </div>
@@ -335,6 +340,24 @@ export default function Template() {
                       placeholder="検索"
                       className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
                     />
+                  </div>
+                  <div className="w-1/3 ml-2">
+                    <select
+                      value={selectedStarTitle || ''}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        setSelectedStarTitle(value !== '' ? value : null);
+                      }}
+                      style={{ height: '36px' }}
+                      className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                    >
+                      <option value="">全て</option>
+                      {selectionStars.map((star) => (
+                        <option key={star.id} value={star.title}>
+                          {star.title}
+                        </option>
+                      ))}
+                    </select>
                   </div>
                 </div>
               </div>
