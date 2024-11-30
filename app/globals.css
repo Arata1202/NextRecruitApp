@@ -82,6 +82,7 @@
 }
 .fc-event-title-container {
   background-color: rgb(59 130 246);
+  margin-top: 1px;
 }
 .fc-event-title-container:hover {
   background-color: rgb(37 99 235);
