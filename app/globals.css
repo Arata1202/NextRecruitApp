@@ -81,7 +81,7 @@
   display: none;
 }
 .fc-daygrid-event-harness {
-  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }
 .fc-event-title-container {
   background-color: rgb(59 130 246);
