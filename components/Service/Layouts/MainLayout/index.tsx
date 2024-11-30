@@ -7,7 +7,7 @@ import {
   Bars3Icon,
   CalendarDaysIcon,
   ChartBarIcon,
-  ChartPieIcon,
+  InformationCircleIcon,
   Cog6ToothIcon,
   BuildingOffice2Icon,
   XMarkIcon,
@@ -30,7 +30,7 @@ export default function MainLayout() {
   }
 
   const SidebarNavigation = [
-    { name: 'ダッシュボード', href: '/service', icon: ChartPieIcon },
+    { name: '就活イベント', href: '/service', icon: InformationCircleIcon },
     { name: 'カレンダー', href: '/service/calendar', icon: CalendarDaysIcon },
     { name: '選考中の企業', href: '/service/selection', icon: BuildingOffice2Icon },
     { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },

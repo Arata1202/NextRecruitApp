@@ -76,7 +76,8 @@ export default function Calendar() {
 
         const { data: todoData, error: todoError } = await supabase
           .from('todo')
-          .select('title, description, started_at, ended_at');
+          .select('title, description, started_at, ended_at')
+          .eq('supabaseauth_id', user.id);
 
         if (todoError) {
           console.error('Error fetching todo events:', todoError);
