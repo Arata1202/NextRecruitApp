@@ -78,7 +78,7 @@ export default function Calendar() {
           .filter((item) => item.selection?.title)
           .map((item) => ({
             title: item.selection.title,
-            start: item.started_at,
+            start: item.started_at || item.ended_at,
             end: item.ended_at,
             extendedProps: {
               id: item.selection.id,
