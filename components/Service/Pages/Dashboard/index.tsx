@@ -113,11 +113,11 @@ export default function DashBoard() {
       return validTodayEvents.map((event, index) => (
         <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
           <div>
-            <div className="px-4 py-3 sm:px-6 flex">
+            <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
               <h3 className="text-base/7 font-semibold">
                 {event.selection?.title || '未設定'} - {event.selectionflowtitle?.title || '未設定'}
               </h3>
-              <div className="flex ml-auto">
+              {/* <div className="flex ml-auto">
                 <button
                   type="button"
                   className="hover:text-blue-500"
@@ -125,7 +125,14 @@ export default function DashBoard() {
                 >
                   <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
                 </button>
-              </div>
+              </div> */}
+              <button
+                type="button"
+                onClick={() => handleIconClick(event.selection.id)}
+                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+              >
+                詳細
+              </button>
             </div>
             <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
               <p className="whitespace-pre-wrap">{event.description}</p>
@@ -165,11 +172,11 @@ export default function DashBoard() {
       return validTomorrowEvents.map((event, index) => (
         <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
           <div>
-            <div className="px-4 py-3 sm:px-6 flex">
+            <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
               <h3 className="text-base/7 font-semibold">
                 {event.selection?.title || '未設定'} - {event.selectionflowtitle?.title || '未設定'}
               </h3>
-              <div className="flex ml-auto">
+              {/* <div className="flex ml-auto">
                 <button
                   type="button"
                   className="hover:text-blue-500"
@@ -177,7 +184,14 @@ export default function DashBoard() {
                 >
                   <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
                 </button>
-              </div>
+              </div> */}
+              <button
+                type="button"
+                onClick={() => handleIconClick(event.selection.id)}
+                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+              >
+                詳細
+              </button>
             </div>
             <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
               <p className="whitespace-pre-wrap">{event.description}</p>

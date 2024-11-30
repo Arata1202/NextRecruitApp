@@ -378,17 +378,17 @@ export default function Template() {
                         <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
                         {/* </a> */}
                         <div className="flex ml-auto">
-                          <button
+                          {/* <button
                             type="button"
                             onClick={() => handleNavigateToDetail(analysis.id)}
                             className="hover:text-blue-500"
                           >
                             <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
-                          </button>
+                          </button> */}
                           <button
                             type="button"
                             onClick={() => openEditModal(analysis)}
-                            className="ml-3 hover:text-blue-500"
+                            className="hover:text-blue-500"
                           >
                             <PencilIcon className="h-4 w-4" aria-hidden="true" />
                           </button>
@@ -401,8 +401,15 @@ export default function Template() {
                           </button>
                         </div>
                       </div>
-                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                      <div className="flex justify-between items-center px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">{analysis.star_id}</p>
+                        <button
+                          type="button"
+                          onClick={() => handleNavigateToDetail(analysis.id)}
+                          className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                        >
+                          詳細
+                        </button>
                       </div>
                     </div>
                   </div>
