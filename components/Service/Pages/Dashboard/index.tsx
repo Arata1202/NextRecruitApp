@@ -30,9 +30,13 @@ export default function DashBoard() {
   const router = useRouter();
 
   useEffect(() => {
-    const now = subHours(new Date(), 9);
+    const convertToJST = (date: Date) => {
+      const offset = 9 * 60;
+      const utc = date.getTime() + date.getTimezoneOffset() * 60000;
+      return new Date(utc + offset * 60000);
+    };
+    const now = convertToJST(new Date());
     const tomorrow = addDays(now, 1);
-
     setCurrentDate(format(now, 'M月d日（EEE）', { locale: ja }));
     setTomorrowDate(format(tomorrow, 'M月d日（EEE）', { locale: ja }));
 
