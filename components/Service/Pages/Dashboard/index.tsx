@@ -76,19 +76,29 @@ export default function DashBoard() {
 
       const filteredTodayEvents = events
         .filter((event) => {
-          const eventStart = subHours(new Date(event.started_at), 9);
+          const eventStart = event.started_at ? subHours(new Date(event.started_at), 9) : null;
           const eventEnd = subHours(new Date(event.ended_at), 9);
-          return isSameDay(eventStart, today) || (eventStart < today && eventEnd >= today);
+          return (
+            (eventStart && isSameDay(eventStart, today)) ||
+            (!eventStart && isSameDay(eventEnd, today)) ||
+            (eventStart && eventStart < today && eventEnd >= today) ||
+            isSameDay(eventEnd, today)
+          );
         })
-        .sort((a, b) => new Date(a.started_at).getTime() - new Date(b.started_at).getTime());
+        .sort((a, b) => new Date(a.ended_at).getTime() - new Date(b.ended_at).getTime());
 
       const filteredTomorrowEvents = events
         .filter((event) => {
-          const eventStart = subHours(new Date(event.started_at), 9);
+          const eventStart = event.started_at ? subHours(new Date(event.started_at), 9) : null;
           const eventEnd = subHours(new Date(event.ended_at), 9);
-          return isSameDay(eventStart, tomorrow) || (eventStart < tomorrow && eventEnd >= tomorrow);
+          return (
+            (eventStart && isSameDay(eventStart, tomorrow)) ||
+            (!eventStart && isSameDay(eventEnd, tomorrow)) ||
+            (eventStart && eventStart < tomorrow && eventEnd >= tomorrow) ||
+            isSameDay(eventEnd, tomorrow)
+          );
         })
-        .sort((a, b) => new Date(a.started_at).getTime() - new Date(b.started_at).getTime());
+        .sort((a, b) => new Date(a.ended_at).getTime() - new Date(b.ended_at).getTime());
 
       setTodayEvents(filteredTodayEvents);
       setTomorrowEvents(filteredTomorrowEvents);
@@ -137,10 +147,15 @@ export default function DashBoard() {
             <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
               <p className="whitespace-pre-wrap">{event.description}</p>
               <div className="text-sm mt-2">
+                {event.started_at && (
+                  <p>
+                    開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                  </p>
+                )}
                 <p>
-                  開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                  {event.started_at ? '終了： ' : '締切： '}
+                  {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
                 </p>
-                <p>終了：{format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}</p>
               </div>
             </div>
           </div>
@@ -196,11 +211,14 @@ export default function DashBoard() {
             <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
               <p className="whitespace-pre-wrap">{event.description}</p>
               <div className="text-sm mt-2">
+                {event.started_at && (
+                  <p>
+                    開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                  </p>
+                )}
                 <p>
-                  開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
-                </p>
-                <p>
-                  終了： {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                  {event.started_at ? '終了： ' : '締切： '}
+                  {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
                 </p>
               </div>
             </div>

@@ -213,10 +213,6 @@ export default function Flow() {
     let startedAt = formValues.started_at ? toUTC(formValues.started_at) : null;
     let endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
 
-    if (isAllDay) {
-      startedAt = endedAt;
-    }
-
     const { data, error } = await supabase
       .from('selectionflow')
       .insert([
@@ -257,10 +253,6 @@ export default function Flow() {
     try {
       let startedAt = editData.started_at ? toUTC(editData.started_at) : null;
       let endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
-
-      if (editIsAllDay) {
-        startedAt = endedAt;
-      }
 
       const { error } = await supabase
         .from('selectionflow')
@@ -320,6 +312,8 @@ export default function Flow() {
       }
 
       const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
+
+      setEditIsAllDay(!data.started_at);
 
       setEditData({
         id: analysis.id,
@@ -553,14 +547,16 @@ export default function Flow() {
                           </>
                         )}
                         <div className="text-sm mt-2">
+                          {analysis.started_at && (
+                            <p>
+                              開始：
+                              {analysis.started_at
+                                ? formatDateWithoutTimezone(analysis.started_at)
+                                : '未設定'}
+                            </p>
+                          )}
                           <p>
-                            開始：{' '}
-                            {analysis.started_at
-                              ? formatDateWithoutTimezone(analysis.started_at)
-                              : '未設定'}
-                          </p>
-                          <p>
-                            終了：{' '}
+                            {analysis.started_at ? '終了：' : '締切：'}
                             {analysis.ended_at
                               ? formatDateWithoutTimezone(analysis.ended_at)
                               : '未設定'}
@@ -637,7 +633,7 @@ export default function Flow() {
                           </label>
                           <input
                             type="datetime-local"
-                            {...register('started_at', { required: '開始時間を選択してください' })}
+                            {...register('started_at', { required: false })}
                             className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                           />
                           {errors.started_at && (
@@ -770,7 +766,7 @@ export default function Flow() {
                           </label>
                           <input
                             type="datetime-local"
-                            {...register('started_at', { required: '開始時間を選択してください' })}
+                            {...register('started_at', { required: false })}
                             value={editData.started_at || ''}
                             onChange={(e) =>
                               setEditData((prev) => ({
