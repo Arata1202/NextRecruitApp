@@ -135,8 +135,14 @@ export default function Flow() {
             ended_at: item.ended_at || null,
           }));
 
-          setAnalyses(formattedData);
-          setFilteredAnalyses(formattedData);
+          const sortedData = formattedData.sort((a, b) => {
+            const dateA = new Date(a.ended_at || 0).getTime();
+            const dateB = new Date(b.ended_at || 0).getTime();
+            return dateA - dateB;
+          });
+
+          setAnalyses(sortedData);
+          setFilteredAnalyses(sortedData);
           setTimeout(() => {
             setLoading(false);
           }, 100);
