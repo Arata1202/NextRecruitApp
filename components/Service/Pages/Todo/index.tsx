@@ -19,30 +19,33 @@ type Analysis = {
   id: number;
   title: string;
   description: string;
+  started_at: string | null;
+  ended_at: string | null;
 };
 
-type AnalysisTitle = {
-  id: number;
-  title: string;
-};
-
-export default function Todo() {
+export default function Flow() {
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
-  const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isAllDay, setIsAllDay] = useState(false);
+  const [editIsAllDay, setEditIsAllDay] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editData, setEditData] = useState({ id: 0, title: '', description: '' });
+  const [editData, setEditData] = useState({
+    id: 0,
+    title: '',
+    description: '',
+    started_at: '',
+    ended_at: '',
+  });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [, setDeleteId] = useState<number | null>(null);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
-  const [searchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
   const [descriptionLength, setDescriptionLength] = useState(0);
+  const [pageTitle, setPageTitle] = useState<string>('');
+  const [loading, setLoading] = useState(true);
 
   const {
     register,
@@ -53,6 +56,8 @@ export default function Todo() {
     defaultValues: {
       title: '',
       description: '',
+      started_at: '',
+      ended_at: '',
     },
   });
 
@@ -75,11 +80,31 @@ export default function Todo() {
     fetchUser();
   }, []);
 
+  // 認証チェック
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      if (!userId) {
+        return;
+      }
+
+      try {
+        const { data, error } = await supabase.from('todo').select('supabaseauth_id').single();
+
+        if (error || !data || data.supabaseauth_id !== userId) {
+        }
+      } catch (error) {
+        console.error('Authorization check failed:', error);
+      }
+    };
+
+    if (userId) checkAuthorization();
+  }, [userId]);
+
   // データ取得
   useEffect(() => {
-    if (!userId) return;
+    const fetchSelectionDetails = async () => {
+      if (!userId) return;
 
-    const fetchAnalyses = async () => {
       try {
         const query = supabase
           .from('todo')
@@ -87,51 +112,59 @@ export default function Todo() {
             `
             id,
             title,
-            description
-          `,
+            description,
+            started_at,
+            ended_at
+            `,
           )
-          .ilike('title', `%${searchQuery}%`)
           .eq('supabaseauth_id', userId);
 
         const { data, error } = await query;
 
         if (error) {
-          console.error('Error fetching analyses:', error.message, error.details, error.hint);
+          console.error('Error fetching selection details:', error.message);
           return;
         }
 
-        if (!data) {
-          console.error('No data fetched');
-          return;
+        if (data) {
+          const formattedData = data.map((item: any) => ({
+            id: item.id,
+            title: item.title || 'Untitled',
+            description: item.description,
+            started_at: item.started_at || null,
+            ended_at: item.ended_at || null,
+          }));
+
+          setAnalyses(formattedData);
+          setFilteredAnalyses(formattedData);
+          setTimeout(() => {
+            setLoading(false);
+          }, 100);
         }
-
-        const filteredData = data.filter((item: any) => item.title);
-
-        const formattedData = filteredData.map((item: any) => ({
-          id: item.id,
-          title: item.title || 'Untitled',
-          description: item.description,
-          sort: item.title?.sort || 0,
-        }));
-
-        setFilteredAnalyses(formattedData);
-
-        const sortedData = formattedData.sort((a, b) => a.sort - b.sort);
-
-        setAnalyses(sortedData);
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
       } catch (error) {
-        console.error('Error fetching analyses:', error);
+        console.error('Error fetching selection details:', error);
       }
     };
 
-    fetchAnalyses();
-  }, [userId, searchQuery]);
+    fetchSelectionDetails();
+  }, [userId]);
+
+  const toUTC = (localDatetime: string) => {
+    const date = new Date(localDatetime);
+    const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return utcDate.toISOString();
+  };
 
   // データ追加
-  const handleAddAnalysis = async (formValues: { title: string; description: string }) => {
+  const handleAddAnalysis = async (formValues: {
+    title: string;
+    description: string;
+    started_at: string;
+    ended_at: string;
+  }) => {
+    let startedAt = formValues.started_at ? toUTC(formValues.started_at) : null;
+    let endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
+
     const { data, error } = await supabase
       .from('todo')
       .insert([
@@ -139,104 +172,134 @@ export default function Todo() {
           supabaseauth_id: userId,
           title: formValues.title,
           description: formValues.description,
+          started_at: startedAt,
+          ended_at: endedAt,
         },
       ])
       .select();
 
     if (error) {
-      console.error('Supabase error:', error.message);
+      console.error('Error adding selection detail:', error.message);
       return;
     }
 
-    if (data && data.length > 0) {
-      const addedAnalysis = data[0];
-      setAnalyses((prev) => [
-        { id: addedAnalysis.id, title: formValues.title, description: formValues.description },
-        ...prev,
-      ]);
-    } else {
-      console.warn('No data returned from insert.');
-    }
+    if (data) {
+      const addedDetail = {
+        id: data[0]?.id,
+        title: formValues.title,
+        description: formValues.description,
+        started_at: startedAt,
+        ended_at: endedAt,
+      };
 
-    reset({
-      title: '',
-      description: '',
-    });
-    setIsModalOpen(false);
+      setAnalyses((prev) => [addedDetail, ...prev]);
+      setIsModalOpen(false);
+      setIsAllDay(false);
+      reset();
+    }
   };
 
   const handleEditAnalysis = async () => {
     try {
-      const { data, error } = await supabase
+      let startedAt = editData.started_at ? toUTC(editData.started_at) : null;
+      let endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
+
+      const { error } = await supabase
         .from('todo')
         .update({
           title: editData.title,
           description: editData.description,
+          started_at: startedAt,
+          ended_at: endedAt,
         })
-        .eq('id', editData.id)
-        .select();
+        .eq('id', editData.id);
 
       if (error) {
-        console.error('Error editing analysis:', error);
+        console.error('Error editing selection detail:', error.message);
         return;
       }
 
       setAnalyses((prev) =>
-        prev.map((analysis) =>
-          analysis.id === editData.id
+        prev.map((detail) =>
+          detail.id === editData.id
             ? {
                 id: editData.id,
                 title: editData.title,
                 description: editData.description,
+                started_at: startedAt,
+                ended_at: endedAt,
               }
-            : analysis,
+            : detail,
         ),
       );
-
-      setEditData({ id: 0, title: '', description: '' });
       setIsEditModalOpen(false);
+      setDescriptionLength(0);
+      setEditIsAllDay(false);
       reset({
         title: '',
         description: '',
+        started_at: '',
+        ended_at: '',
       });
     } catch (error) {
-      console.error('Error editing analysis:', error);
+      console.error('Error editing selection detail:', error);
     }
   };
 
-  const openEditModal = (analysis: Analysis) => {
-    setEditData({
-      id: analysis.id,
-      title: analysis.title,
-      description: analysis.description,
-    });
-    setDescriptionLength(analysis.description.length);
-    reset({
-      title: analysis.title,
-      description: analysis.description,
-    });
-    setInitialEditTitle(analysis.title);
-    setIsEditModalOpen(true);
+  const openEditModal = async (analysis: Analysis) => {
+    try {
+      const { data, error } = await supabase
+        .from('todo')
+        .select('title, description, started_at, ended_at')
+        .eq('id', analysis.id)
+        .single();
+
+      if (error || !data) {
+        console.error('Error fetching data:', error);
+        return;
+      }
+
+      setEditIsAllDay(!data.started_at);
+
+      setEditData({
+        id: analysis.id,
+        title: data.title || '',
+        description: data.description || '',
+        started_at: data.started_at ? new Date(data.started_at).toISOString().slice(0, 16) : '',
+        ended_at: data.ended_at ? new Date(data.ended_at).toISOString().slice(0, 16) : '',
+      });
+
+      setDescriptionLength((data.description || '').length);
+
+      reset({
+        title: data.title || '',
+        description: data.description || '',
+        started_at: data.started_at ? new Date(data.started_at).toISOString().slice(0, 16) : '',
+        ended_at: data.ended_at ? new Date(data.ended_at).toISOString().slice(0, 16) : '',
+      });
+
+      setInitialEditTitle(analysis.title);
+      setIsEditModalOpen(true);
+    } catch (err) {
+      console.error('Error opening edit modal:', err);
+    }
   };
 
   const handleDeleteAnalysis = async () => {
-    if (!deleteData?.id) return;
+    if (!deleteData) return;
 
     try {
       const { error } = await supabase.from('todo').delete().eq('id', deleteData.id);
 
       if (error) {
-        console.error('Error deleting analysis:', error);
+        console.error('Error deleting selection detail:', error.message);
         return;
       }
 
-      // データをローカル状態から削除
-      setAnalyses((prev) => prev.filter((analysis) => analysis.id !== deleteData.id));
-      setDeleteId(null);
-      setDeleteData(null);
+      setAnalyses((prev) => prev.filter((detail) => detail.id !== deleteData.id));
       setIsDeleteModalOpen(false);
     } catch (error) {
-      console.error('Error deleting analysis:', error);
+      console.error('Error deleting selection detail:', error);
     }
   };
 
@@ -252,6 +315,13 @@ export default function Todo() {
     );
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
+
+  const formatDateWithoutTimezone = (datetime: string) => {
+    const [datePart, timePart] = datetime.split('T');
+    const [year, month, day] = datePart.split('-');
+    const [hours, minutes] = timePart.split(':');
+    return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+  };
 
   return (
     <>
@@ -283,7 +353,7 @@ export default function Todo() {
                 </div>
               </div>
               {/* <div>
-                <div className="pb-5 flex">
+                <div className="pb-2 flex">
                   <div className="w-full Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
                       <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-500" />
@@ -313,7 +383,7 @@ export default function Todo() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、ToDoを作成してみましょう！
+                          右上の追加ボタンから、選考状況を追加してみましょう！
                         </p>
                       </div>
                     </div>
@@ -354,6 +424,22 @@ export default function Todo() {
                             </p>
                           </>
                         )}
+                        <div className="text-sm mt-2">
+                          {analysis.started_at && (
+                            <p>
+                              開始：
+                              {analysis.started_at
+                                ? formatDateWithoutTimezone(analysis.started_at)
+                                : '未設定'}
+                            </p>
+                          )}
+                          <p>
+                            {analysis.started_at ? '終了：' : '締切：'}
+                            {analysis.ended_at
+                              ? formatDateWithoutTimezone(analysis.ended_at)
+                              : '未設定'}
+                          </p>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -394,7 +480,7 @@ export default function Todo() {
                     <div className="mt-4">
                       <div className="mb-4">
                         <input
-                          {...register('title', { required: 'タイトルを入力してください' })}
+                          {...register('title')}
                           placeholder="タイトル"
                           className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
@@ -403,10 +489,66 @@ export default function Todo() {
                         )}
                       </div>
 
+                      {!isAllDay && (
+                        <div className="mb-4 mt-2">
+                          <label
+                            htmlFor="started_at"
+                            className="block text-sm font-medium text-left"
+                          >
+                            開始時間
+                          </label>
+                          <input
+                            type="datetime-local"
+                            {...register('started_at', { required: false })}
+                            className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                          {errors.started_at && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.started_at.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      <div className="mb-4">
+                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
+                          {isAllDay ? '締切日' : '終了時間'}
+                        </label>
+                        <input
+                          type="datetime-local"
+                          {...register('ended_at', {
+                            required: isAllDay
+                              ? '締切日を選択してください'
+                              : '終了時間を選択してください',
+                          })}
+                          className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                        />
+                        {errors.ended_at && (
+                          <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4 flex">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={isAllDay}
+                            onChange={(e) => {
+                              setIsAllDay(e.target.checked);
+                              reset({
+                                started_at: '',
+                              });
+                            }}
+                            className="mr-2"
+                          />
+                          終日
+                        </label>
+                      </div>
+
                       <div className="mb-4">
                         <textarea
-                          {...register('description', { required: false })}
-                          placeholder="内容"
+                          {...register('description')}
+                          placeholder="備考（任意）"
                           rows={10}
                           className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                           onChange={(e) =>
@@ -414,6 +556,9 @@ export default function Todo() {
                           }
                         />
                         <p className="flex justify-end text-sm mt-1">{descriptionLength} 文字</p>
+                        {errors.description && (
+                          <p className="text-red-500 text-left">{errors.description.message}</p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -426,7 +571,10 @@ export default function Todo() {
                         reset({
                           title: '',
                           description: '',
+                          started_at: '',
+                          ended_at: '',
                         });
+                        setIsAllDay(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
@@ -476,7 +624,7 @@ export default function Todo() {
                     <div className="mt-4">
                       <div className="mb-4">
                         <input
-                          {...register('title', { required: 'タイトルを入力してください' })}
+                          {...register('title')}
                           placeholder="タイトル"
                           value={editData.title}
                           onChange={(e) => {
@@ -490,23 +638,97 @@ export default function Todo() {
                         )}
                       </div>
 
+                      {!editIsAllDay && (
+                        <div className="mb-4 mt-2">
+                          <label
+                            htmlFor="started_at"
+                            className="block text-sm font-medium text-left"
+                          >
+                            開始時間
+                          </label>
+                          <input
+                            type="datetime-local"
+                            {...register('started_at', { required: false })}
+                            value={editData.started_at || ''}
+                            onChange={(e) =>
+                              setEditData((prev) => ({
+                                ...prev,
+                                started_at: e.target.value,
+                              }))
+                            }
+                            className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                          {errors.started_at && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.started_at.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
                       <div className="mb-4">
-                        <textarea
-                          {...register('description', { required: false })}
-                          placeholder="内容"
-                          rows={10}
-                          value={editData.description}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setEditData({ ...editData, description: value });
-                            setDescriptionLength(value.replace(/\s/g, '').length);
-                          }}
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
+                          {editIsAllDay ? '締切日' : '終了時間'}
+                        </label>
+                        <input
+                          type="datetime-local"
+                          {...register('ended_at', {
+                            required: editIsAllDay
+                              ? '締切日を選択してください'
+                              : '終了時間を選択してください',
+                          })}
+                          value={editData.ended_at || ''}
+                          onChange={(e) =>
+                            setEditData((prev) => ({
+                              ...prev,
+                              ended_at: e.target.value,
+                            }))
+                          }
+                          className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
-                        <p className="flex justify-end text-sm mt-1">
-                          {editData.description.replace(/\s/g, '').length} 文字
-                        </p>
+                        {errors.ended_at && (
+                          <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
+                        )}
                       </div>
+
+                      <div className="mb-4 flex">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={editIsAllDay}
+                            onChange={(e) => {
+                              setEditIsAllDay(e.target.checked);
+                              if (e.target.checked) {
+                                setEditData((prev) => ({
+                                  ...prev,
+                                  started_at: '',
+                                }));
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          終日
+                        </label>
+                      </div>
+
+                      <textarea
+                        {...register('description')}
+                        placeholder="備考（任意）"
+                        rows={10}
+                        value={editData.description}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setEditData({ ...editData, description: value });
+                          setDescriptionLength(value.replace(/\s/g, '').length);
+                        }}
+                        className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                      />
+                      <p className="flex justify-end text-sm mt-1">
+                        {editData.description.replace(/\s/g, '').length} 文字
+                      </p>
+                      {errors.description && (
+                        <p className="text-red-500 text-left">{errors.description.message}</p>
+                      )}
                     </div>
                   </div>
                   <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
@@ -518,7 +740,10 @@ export default function Todo() {
                         reset({
                           title: '',
                           description: '',
+                          started_at: '',
+                          ended_at: '',
                         });
+                        setEditIsAllDay(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
