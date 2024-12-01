@@ -69,23 +69,23 @@ export default function Login() {
     });
   };
 
-  const handleAppleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'apple',
-      options: {
-        redirectTo: `${window.location.origin}/service`,
-      },
-    });
-  };
+  // const handleAppleLogin = async () => {
+  //   await supabase.auth.signInWithOAuth({
+  //     provider: 'apple',
+  //     options: {
+  //       redirectTo: `${window.location.origin}/service`,
+  //     },
+  //   });
+  // };
 
-  const handleTwitterLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'twitter',
-      options: {
-        redirectTo: `${window.location.origin}/service`,
-      },
-    });
-  };
+  // const handleTwitterLogin = async () => {
+  //   await supabase.auth.signInWithOAuth({
+  //     provider: 'twitter',
+  //     options: {
+  //       redirectTo: `${window.location.origin}/service`,
+  //     },
+  //   });
+  // };
 
   return (
     <>
@@ -256,8 +256,7 @@ export default function Login() {
                   <span className="text-sm/6 font-semibold">GitHub</span>
                 </button>
               </div>
-              <div className="mt-3 grid grid-cols-2 gap-2.5">
-                {/* Apple */}
+              {/* <div className="mt-3 grid grid-cols-2 gap-2.5">
                 <button
                   onClick={handleAppleLogin}
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
@@ -277,7 +276,6 @@ export default function Login() {
                   </svg>
                   <span className="text-sm/6 font-semibold">Apple</span>
                 </button>
-                {/* X */}
                 <button
                   onClick={handleTwitterLogin}
                   className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
@@ -289,7 +287,7 @@ export default function Login() {
                   />
                   <span className="text-sm/6 font-semibold">X（旧Twitter）</span>
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>
