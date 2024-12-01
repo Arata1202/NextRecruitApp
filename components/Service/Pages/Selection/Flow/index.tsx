@@ -156,7 +156,15 @@ export default function Flow() {
               ended_at: item.ended_at || null,
               sort: item.title_id?.sort || 0,
             }))
-            .sort((a, b) => a.sort - b.sort);
+            .sort((a, b) => {
+              const dateA = a.started_at
+                ? new Date(a.started_at).getTime()
+                : new Date(a.ended_at || 0).getTime();
+              const dateB = b.started_at
+                ? new Date(b.started_at).getTime()
+                : new Date(b.ended_at || 0).getTime();
+              return dateA - dateB;
+            });
 
           setAnalyses(formattedData);
           setFilteredAnalyses(formattedData);
