@@ -17,10 +17,12 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: 'リクビジョン',
-  description: 'ディスクリプション',
+  description:
+    '就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。',
   openGraph: {
     title: 'リクビジョン',
-    description: 'ディスクリプション',
+    description:
+      '就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。',
     images: '/images/og/1.png',
     url: 'https://rikuvision.realunivlog.com',
   },
