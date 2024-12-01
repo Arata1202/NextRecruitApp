@@ -175,6 +175,10 @@ export default function Flow() {
     let startedAt = formValues.started_at ? toUTC(formValues.started_at) : null;
     let endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
 
+    if (startedAt === endedAt) {
+      startedAt = null;
+    }
+
     const { data, error } = await supabase
       .from('todo')
       .insert([
@@ -213,6 +217,10 @@ export default function Flow() {
     try {
       let startedAt = editData.started_at ? toUTC(editData.started_at) : null;
       let endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
+
+      if (startedAt === endedAt) {
+        startedAt = null;
+      }
 
       const { error } = await supabase
         .from('todo')
