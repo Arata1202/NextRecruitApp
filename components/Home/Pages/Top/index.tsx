@@ -66,7 +66,7 @@ export default function Top() {
               就活をもっとスムーズに
             </h1>
             <p className="mt-8 text-pretty text-lg font-medium sm:text-xl/8">
-              就活では、ESの提出や面接の日程調整、企業の情報収集など管理すべきことが多くあります。「アプリ名」を利用して、就活に関する全てを一元管理してみませんか？
+              就活では、ESの提出や面接の日程調整、企業の情報収集など管理すべきことが多くあります。リクビジョンを利用して、就活に関する全てを一元管理してみませんか？
             </p>
             <div className="mt-10 flex items-center gap-x-6">
               <a
@@ -141,7 +141,7 @@ export default function Top() {
                 便利な機能がたくさん
               </h1>
               <p className="mt-8 text-pretty text-lg font-medium sm:text-xl/8">
-                ESの締切いつだっけ？メモどこに書いたっけ？明日の面接の準備は大丈夫？「アプリ名」を使えば、そんな悩みを解決できます。
+                ESの締切いつだっけ？メモどこに書いたっけ？明日の面接の準備は大丈夫？リクビジョンを使えば、そんな悩みを解決できます。
               </p>
             </div>
           </div>

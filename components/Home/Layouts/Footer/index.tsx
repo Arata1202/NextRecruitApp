@@ -63,7 +63,7 @@ export default function Footer() {
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
               <div className="footerMenu">
-                <h3 className="text-sm/6 font-semibold ">「アプリ名」</h3>
+                <h3 className="text-sm/6 font-semibold ">リクビジョン</h3>
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
@@ -124,7 +124,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-16 border-t border-gray-300 pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-sm/6 ">Copyright © 2024 「アプリ名」 All Rights Reserved.</p>
+          <p className="text-sm/6 ">Copyright © 2024 リクビジョン All Rights Reserved.</p>
         </div>
       </div>
     </footer>
