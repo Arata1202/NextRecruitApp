@@ -39,11 +39,7 @@ export default function RootLayout({
       <head>
         <meta name="robots" content="noindex" />
 
-        <Script
-          async
-          strategy="lazyOnload"
-          src="https://www.googletagmanager.com/gtag/js?id=G-VGGHGRNHTM"
-        />
+        <Script async strategy="lazyOnload" src={process.env.GOOGLE_ANALYTICS_ID} />
         <Script
           id="google-analytics"
           strategy="lazyOnload"
