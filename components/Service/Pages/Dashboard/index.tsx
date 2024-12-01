@@ -89,7 +89,15 @@ export default function DashBoard() {
             isSameDay(eventEnd, today)
           );
         })
-        .sort((a, b) => new Date(a.ended_at).getTime() - new Date(b.ended_at).getTime());
+        .sort((a, b) => {
+          const dateA = a.started_at
+            ? new Date(a.started_at).getTime()
+            : new Date(a.ended_at).getTime();
+          const dateB = b.started_at
+            ? new Date(b.started_at).getTime()
+            : new Date(b.ended_at).getTime();
+          return dateA - dateB;
+        });
 
       const filteredTomorrowEvents = events
         .filter((event) => {
@@ -102,7 +110,15 @@ export default function DashBoard() {
             isSameDay(eventEnd, tomorrow)
           );
         })
-        .sort((a, b) => new Date(a.ended_at).getTime() - new Date(b.ended_at).getTime());
+        .sort((a, b) => {
+          const dateA = a.started_at
+            ? new Date(a.started_at).getTime()
+            : new Date(a.ended_at).getTime();
+          const dateB = b.started_at
+            ? new Date(b.started_at).getTime()
+            : new Date(b.ended_at).getTime();
+          return dateA - dateB;
+        });
 
       setTodayEvents(filteredTodayEvents);
       setTomorrowEvents(filteredTomorrowEvents);
