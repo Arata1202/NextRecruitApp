@@ -136,8 +136,12 @@ export default function Flow() {
           }));
 
           const sortedData = formattedData.sort((a, b) => {
-            const dateA = new Date(a.ended_at || 0).getTime();
-            const dateB = new Date(b.ended_at || 0).getTime();
+            const dateA = a.started_at
+              ? new Date(a.started_at).getTime()
+              : new Date(a.ended_at || 0).getTime();
+            const dateB = b.started_at
+              ? new Date(b.started_at).getTime()
+              : new Date(b.ended_at || 0).getTime();
             return dateA - dateB;
           });
 
