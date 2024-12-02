@@ -1,5 +1,6 @@
 import React from 'react';
 import type { Metadata } from 'next';
+import { OneSignalInitial } from '@/libs/OneSignalInitial';
 
 export const metadata: Metadata = {
   title: '就活イベント｜リクビジョン',
@@ -13,5 +14,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <>{children}</>;
+  return (
+    <>
+      <OneSignalInitial />
+      {children}
+    </>
+  );
 }
