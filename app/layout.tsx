@@ -39,6 +39,7 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="robots" content="noindex" />
 
         <Script async strategy="lazyOnload" src={process.env.GOOGLE_ANALYTICS_ID} />
@@ -57,6 +58,7 @@ export default function RootLayout({
           }}
         />
         <meta name="format-detection" content="email=no,telephone=no,address=no" />
+        <link rel="manifest" href="/manifest.json" />
         <link
           rel="icon"
           href="/images/icons/favicon/icon-16x16.png"
