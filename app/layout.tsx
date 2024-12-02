@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     url: 'https://rikuvision.realunivlog.com',
   },
   icons: {
-    icon: '/images/icons/favicon.ico',
+    icon: '/images/icons/favicon/favicon.ico',
   },
 };
 
@@ -57,11 +57,8 @@ export default function RootLayout({
           }}
         />
         <meta name="format-detection" content="email=no,telephone=no,address=no" />
-        <link rel="icon" href="/images/icons/16.jpg" sizes="16x16" type="image/jpeg" />
-        <link rel="icon" href="/images/icons/32.jpg" sizes="32x32" type="image/jpeg" />
-        <link rel="icon" href="/images/icons/48.jpg" sizes="48x48" type="image/jpeg" />
-        <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.jpg" />
-        <meta name="msapplication-TileImage" content="/images/icons/apple-touch-icon.jpg" />
+        <link rel="apple-touch-icon" href="/images/icons/pwa/icon-512x512.png" />
+        <meta name="msapplication-TileImage" content="/images/icons/pwa/icon-512x512.png" />
         <meta name="msapplication-TileColor" content="#E0CBBA" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
