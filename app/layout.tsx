@@ -57,9 +57,9 @@ export default function RootLayout({
           }}
         />
         <meta name="format-detection" content="email=no,telephone=no,address=no" />
-        <link rel="icon" href="/images/icons/16.jpg" sizes="16x16" type="image/jpeg" />
+        {/* <link rel="icon" href="/images/icons/16.jpg" sizes="16x16" type="image/jpeg" />
         <link rel="icon" href="/images/icons/32.jpg" sizes="32x32" type="image/jpeg" />
-        <link rel="icon" href="/images/icons/48.jpg" sizes="48x48" type="image/jpeg" />
+        <link rel="icon" href="/images/icons/48.jpg" sizes="48x48" type="image/jpeg" /> */}
         <link rel="apple-touch-icon" href="/images/icons/apple-touch-icon.jpg" />
         <meta name="msapplication-TileImage" content="/images/icons/apple-touch-icon.jpg" />
         <meta name="msapplication-TileColor" content="#E0CBBA" />
