@@ -26,9 +26,9 @@ export const metadata: Metadata = {
     images: '/images/og/1.png',
     url: 'https://rikuvision.realunivlog.com',
   },
-  // icons: {
-  //   icon: '/images/icons/favicon.ico',
-  // },
+  icons: {
+    icon: '/images/icons/favicon.ico',
+  },
 };
 
 export default function RootLayout({
