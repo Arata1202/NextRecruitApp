@@ -27,7 +27,7 @@ export const metadata: Metadata = {
     url: 'https://rikuvision.realunivlog.com',
   },
   icons: {
-    icon: '/images/icons/favicon.ico',
+    icon: '/favicon.ico',
   },
 };
 
