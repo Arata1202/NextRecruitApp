@@ -148,7 +148,7 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 bg-white">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
           <img
             alt="Your Company"
@@ -167,8 +167,8 @@ export default function SignUp() {
           </div>
         </div>
 
-        <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+        <div className="sm:mx-auto sm:w-full sm:max-w-[480px]">
+          <div className="bg-white px-6 py-12 sm:rounded-lg sm:px-12">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-md font-bold">
