@@ -57,6 +57,7 @@ export default function RootLayout({
           }}
         />
         <meta name="format-detection" content="email=no,telephone=no,address=no" />
+        <link rel="manifest" href="/manifest.json" />
         <link
           rel="icon"
           href="/images/icons/favicon/icon-16x16.png"
