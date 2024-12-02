@@ -39,7 +39,6 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
         <meta name="robots" content="noindex" />
 
         <Script async strategy="lazyOnload" src={process.env.GOOGLE_ANALYTICS_ID} />
@@ -86,6 +85,7 @@ export default function RootLayout({
         {/* <meta name="twitter:site" content="" /> */}
         <meta property="og:site_name" content="リクビジョン" />
         <meta property="og:locale" content="ja_JP" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}>
         <div className="LightTheme">{children}</div>
