@@ -137,14 +137,14 @@ export default function SignUp() {
   //   });
   // };
 
-  // const handleTwitterLogin = async () => {
-  //   await supabase.auth.signInWithOAuth({
-  //     provider: 'twitter',
-  //     options: {
-  //       redirectTo: `${window.location.origin}/service`,
-  //     },
-  //   });
-  // };
+  const handleTwitterLogin = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'twitter',
+      options: {
+        redirectTo: `${window.location.origin}/service`,
+      },
+    });
+  };
 
   return (
     <>
@@ -334,7 +334,7 @@ export default function SignUp() {
                 </div>
               </div>
 
-              <div className="mt-6 grid grid-cols-2 gap-2.5">
+              <div className="mt-6">
                 {/* Google */}
                 <button
                   onClick={handleGoogleLogin}
@@ -358,12 +358,12 @@ export default function SignUp() {
                       fill="#34A853"
                     />
                   </svg>
-                  <span className="text-sm/6 font-semibold">Google</span>
+                  <span className="text-sm/6 font-semibold">Googleで登録</span>
                 </button>
                 {/* GitHub */}
                 <button
                   onClick={handleGithubLogin}
-                  className="flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                  className="mt-3 flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
                 >
                   <svg
                     fill="currentColor"
@@ -377,7 +377,18 @@ export default function SignUp() {
                       fillRule="evenodd"
                     />
                   </svg>
-                  <span className="text-sm/6 font-semibold">GitHub</span>
+                  <span className="text-sm/6 font-semibold">GitHubで登録</span>
+                </button>
+                <button
+                  onClick={handleTwitterLogin}
+                  className="mt-3 flex w-full items-center justify-center gap-3 rounded-md bg-white px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 focus-visible:ring-transparent"
+                >
+                  <img
+                    width="20"
+                    height="20"
+                    src="https://cdn.qiita.com/assets/brand_icons/icon-x-23c6879a50878a0838c78bdbb3d17c16.svg"
+                  />
+                  <span className="text-sm/6 font-semibold">X（旧Twitter）で登録</span>
                 </button>
               </div>
               {/* <div className="mt-3 grid grid-cols-2 gap-2.5">
