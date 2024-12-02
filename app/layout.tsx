@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
 import Script from 'next/script';
+import type { Viewport } from 'next';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -14,6 +15,12 @@ const geistMono = localFont({
   variable: '--font-geist-mono',
   weight: '100 900',
 });
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  viewportFit: 'cover',
+};
 
 export const metadata: Metadata = {
   title: 'リクビジョン',
@@ -85,7 +92,6 @@ export default function RootLayout({
         {/* <meta name="twitter:site" content="" /> */}
         <meta property="og:site_name" content="リクビジョン" />
         <meta property="og:locale" content="ja_JP" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}>
         <div className="LightTheme">{children}</div>
