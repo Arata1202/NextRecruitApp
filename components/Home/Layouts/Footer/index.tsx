@@ -47,7 +47,7 @@ export default function Footer() {
             <a href="/" className="underLogo">
               <img
                 alt="Company name"
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=blue&shade=500"
+                src="/images/icons/app/1.png"
                 className="h-9 hover:scale-110 transition-transform"
               />
             </a>

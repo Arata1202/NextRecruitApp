@@ -91,11 +91,7 @@ export default function Login() {
     <>
       <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img
-            alt="Your Company"
-            src="https://tailwindui.com/plus/img/logos/mark.svg?color=blue&shade=500"
-            className="mx-auto h-10 w-auto"
-          />
+          <img alt="Your Company" src="/images/icons/app/2.png" className="mx-auto h-10 w-auto" />
           <h2 className="mt-6 text-center text-2xl/9 font-bold tracking-tight">ログイン</h2>
           <div className="text-center mt-5" style={{ fontSize: '14px' }}>
             アカウントをお持ちでない方は、

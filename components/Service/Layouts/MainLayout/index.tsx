@@ -88,11 +88,7 @@ export default function MainLayout() {
 
             <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
               <div className="flex h-16 shrink-0 items-center">
-                <img
-                  alt="Your Company"
-                  src="https://tailwindui.com/plus/img/logos/mark.svg?color=blue&shade=600"
-                  className="h-8 w-auto"
-                />
+                <img alt="Your Company" src="/images/icons/app/1.png" className="h-8 w-auto" />
               </div>
               <nav className="flex flex-1 flex-col">
                 <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -145,12 +141,8 @@ export default function MainLayout() {
 
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-300 bg-white px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center">
-            <img
-              alt="Your Company"
-              src="https://tailwindui.com/plus/img/logos/mark.svg?color=blue&shade=600"
-              className="h-8 w-auto"
-            />
+          <div className="flex h-16 shrink-0 items-center" style={{ marginTop: '7px' }}>
+            <img alt="Your Company" src="/images/icons/app/1.png" className="h-9 w-auto" />
           </div>
           <nav className="flex flex-1 flex-col">
             <ul role="list" className="flex flex-1 flex-col gap-y-7">
@@ -218,11 +210,7 @@ export default function MainLayout() {
 
           <div className="flex ml-auto">
             <div className="flex h-16 shrink-0 items-center">
-              <img
-                alt="Your Company"
-                src="https://tailwindui.com/plus/img/logos/mark.svg?color=blue&shade=600"
-                className="h-8 w-auto"
-              />
+              <img alt="Your Company" src="/images/icons/app/1.png" className="h-8 w-auto" />
             </div>
           </div>
         </div>
