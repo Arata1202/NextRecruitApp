@@ -34,7 +34,7 @@ export default function Manual() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap leading-8">
                           「選考中の企業」で登録した全ての企業の選考状況に基づき、当日および翌日の選考予定を一括で表示します。
                         </p>
                       </>
@@ -51,7 +51,7 @@ export default function Manual() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap leading-8">
                           「選考中の企業」で登録した全ての企業の選考予定と、「ToDoリスト」で登録したイベントが全てカレンダーに表示されます。
                         </p>
                       </>
@@ -68,7 +68,7 @@ export default function Manual() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap leading-8">
                           選考予定の企業を登録できます。
                           <br />
                           志望度は星の数で設定でき、星の数に応じて企業の並び順が自動で変わります。
@@ -96,7 +96,7 @@ export default function Manual() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap leading-8">
                           「選考中の企業」で登録した各企業ごとに、企業情報を追加できます。
                           <br />
                           あらかじめ用意された項目に従って入力することで、効率的に情報を収集できます。
@@ -119,7 +119,7 @@ export default function Manual() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap leading-8">
                           「選考中の企業」で登録した各企業ごとに、今後の選考予定を追加できます。
                           <br />
                           タイトル、日時、備考（任意）を入力することで、選考予定を効率的に管理できます。
@@ -142,7 +142,7 @@ export default function Manual() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap leading-8">
                           使い回し可能なガクチカや自己PRを保存できます。
                           <br />
                           400字以内のテンプレートを作成しておくことで、エントリーシート（ES）を提出する際に、リクビジョンからテンプレートをコピーして貼り付けるだけの簡単な作業になります。
@@ -165,7 +165,7 @@ export default function Manual() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap leading-8">
                           あらかじめ用意された項目から質問を選び、自分なりの答えを入力しましょう。
                           <br />
                           これまでの経験や考え方を整理することで、自己理解を深められます。
@@ -188,7 +188,7 @@ export default function Manual() {
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
-                        <p className="whitespace-pre-wrap">
+                        <p className="whitespace-pre-wrap leading-8">
                           就活に関するタスクや課題、やらなければならないことを記録しておくための便利な機能です。
                           <br />
                           登録した内容は「カレンダー」にも反映されるため、スケジュール管理がより簡単になります。
