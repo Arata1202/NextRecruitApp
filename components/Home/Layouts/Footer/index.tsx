@@ -67,11 +67,7 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <a
-                        href={item.href}
-                        target="_blank"
-                        className="text-sm/6  hover:text-blue-500"
-                      >
+                      <a href={item.href} className="text-sm/6  hover:text-blue-500">
                         {item.name}
                       </a>
                     </li>

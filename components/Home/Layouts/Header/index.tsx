@@ -52,19 +52,11 @@ export default function Header() {
             <EnvelopeIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             お問い合わせ
           </a>
-          <a
-            href="/service/auth/signup"
-            target="_blank"
-            className={`flex text-sm leading-6 hover:text-blue-500`}
-          >
+          <a href="/service/auth/signup" className={`flex text-sm leading-6 hover:text-blue-500`}>
             <UserPlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             アカウント登録
           </a>
-          <a
-            href="/service/auth/login"
-            target="_blank"
-            className={`flex text-sm leading-6 hover:text-blue-500`}
-          >
+          <a href="/service/auth/login" className={`flex text-sm leading-6 hover:text-blue-500`}>
             <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             ログイン
           </a>
@@ -108,7 +100,7 @@ export default function Header() {
                 <div className={`text-center py-2 text-xl font-bold bg-gray-300`}>Menu</div>
                 <ul className="mt-5 space-y-6">
                   <li>
-                    <a href="/service/auth/signup" target="_blank">
+                    <a href="/service/auth/signup">
                       <div
                         className={`flex items-center py-1 text-base font-bold hover:text-blue-500`}
                       >
@@ -118,7 +110,7 @@ export default function Header() {
                     </a>
                   </li>
                   <li>
-                    <a href="/service/auth/login" target="_blank">
+                    <a href="/service/auth/login">
                       <div
                         className={`flex items-center py-1 text-base font-bold hover:text-blue-500`}
                       >
