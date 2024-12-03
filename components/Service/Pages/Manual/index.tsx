@@ -1,15 +1,18 @@
 'use client';
 
 import MainLayout from '../../Layouts/MainLayout';
-import { StarIcon, XMarkIcon, DevicePhoneMobileIcon } from '@heroicons/react/24/solid';
+import { StarIcon, DevicePhoneMobileIcon } from '@heroicons/react/24/solid';
 import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline';
-import { Dialog, Transition } from '@headlessui/react';
+import { Dialog, Transition, DialogBackdrop, DialogPanel } from '@headlessui/react';
 import { isAndroid, isIOS } from 'react-device-detect';
 import { useA2HS } from '@/hooks/A2hs';
 import { useState, Fragment } from 'react';
 
 export default function Manual() {
   const [open, setOpen] = useState(false);
+  const handleClose = () => {
+    setOpen(false);
+  };
 
   const [, promptToInstall] = useA2HS({
     onAccepted: () => {
@@ -257,50 +260,26 @@ export default function Manual() {
       </div>
 
       <Transition.Root show={open} as={Fragment}>
-        <Dialog as="div" className="relative z-50" onClose={setOpen}>
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0 scale-95"
-            enterTo="opacity-100 scale-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100 scale-100"
-            leaveTo="opacity-0 scale-95"
-          >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-          </Transition.Child>
+        <Dialog as="div" className="text-gray-700 relative z-50" onClose={() => {}}>
+          <DialogBackdrop
+            transition
+            className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+          />
 
-          <div className="fixed inset-0 z-10 overflow-y-auto">
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
             <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                enterTo="opacity-100 translate-y-0 sm:scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              <DialogPanel
+                transition
+                style={{ width: '100%' }}
+                className="m-auto relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
               >
-                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 my-auto">
-                  <div className="absolute right-0 top-0 pr-4 pt-4 sm:block">
-                    <button
-                      type="button"
-                      onClick={() => setOpen(false)}
-                      className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
-                    >
-                      <span className="sr-only">Close</span>
-                      <XMarkIcon aria-hidden="true" className="h-6 w-6" />
-                    </button>
-                  </div>
+                <div className="mt-3 text-center sm:mt-0 sm:text-left">
                   <div className="sm:flex sm:items-start">
-                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
-                      <DevicePhoneMobileIcon aria-hidden="true" className="h-6 w-6 text-blue-700" />
+                    <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
+                      <DevicePhoneMobileIcon aria-hidden="true" className="size-6 text-blue-500" />
                     </div>
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title
-                        as="h3"
-                        className="text-base font-semibold leading-6 text-gray-900"
-                      >
+                    <div className="mt-2 text-center sm:ml-4 sm:text-left">
+                      <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
                         アプリを追加する
                       </Dialog.Title>
                       <div className="mt-2">
@@ -309,7 +288,7 @@ export default function Manual() {
                             ブラウザの
                             <div className="flex">
                               「シェアアイコン
-                              <ArrowUpOnSquareIcon aria-hidden="true" className="h-4 w-" />
+                              <ArrowUpOnSquareIcon aria-hidden="true" className="h-4 w-4" />
                               」をタップして
                             </div>
                           </div>
@@ -318,8 +297,16 @@ export default function Manual() {
                       </div>
                     </div>
                   </div>
-                </Dialog.Panel>
-              </Transition.Child>
+                </div>
+                <div className="mt-3">
+                  <button
+                    onClick={handleClose}
+                    className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                  >
+                    閉じる
+                  </button>
+                </div>
+              </DialogPanel>
             </div>
           </div>
         </Dialog>
