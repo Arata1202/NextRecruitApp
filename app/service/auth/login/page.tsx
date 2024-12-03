@@ -13,7 +13,7 @@ export default function LoginPage() {
   return (
     <>
       <Header />
-      <div style={{ marginTop: '80px' }}>
+      <div style={{ marginTop: '72px' }}>
         <Login />
       </div>
       <Footer />
