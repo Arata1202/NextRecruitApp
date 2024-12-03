@@ -148,9 +148,9 @@ export default function SignUp() {
 
   return (
     <>
-      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8">
+      <div className="flex min-h-full flex-1 flex-col justify-center py-12 sm:px-6 lg:px-8 bg-white">
         <div className="sm:mx-auto sm:w-full sm:max-w-md">
-          <img alt="Your Company" src="/images/icons/app/2.png" className="mx-auto h-10 w-auto" />
+          {/* <img alt="Your Company" src="/images/icons/app/2.png" className="mx-auto h-10 w-auto" /> */}
           <h2 className="mt-6 text-center text-2xl/9 font-bold tracking-tight">アカウント登録</h2>
           <div className="text-center mt-5" style={{ fontSize: '14px' }}>
             初めてご利用の方は、新規アカウント登録が必要です。
@@ -164,7 +164,7 @@ export default function SignUp() {
         </div>
 
         <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-          <div className="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
+          <div className="bg-white px-6 py-12 border border-gray-300 sm:rounded-lg sm:px-12">
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
               <div>
                 <label htmlFor="email" className="block text-md font-bold">

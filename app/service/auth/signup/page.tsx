@@ -2,11 +2,21 @@
 
 import SignUp from '@/components/Service/Auth/SignUp';
 import { useAuthAuthCheck } from '@/hooks/Middleware/Auth';
+import Header from '@/components/Home/Layouts/Header';
+import Footer from '@/components/Home/Layouts/Footer';
 
 export default function SignUpPage() {
   const { userChecked } = useAuthAuthCheck();
   if (!userChecked) {
     return null;
   }
-  return <SignUp />;
+  return (
+    <>
+      <Header />
+      <div style={{ marginTop: '80px' }}>
+        <SignUp />
+      </div>
+      <Footer />
+    </>
+  );
 }
