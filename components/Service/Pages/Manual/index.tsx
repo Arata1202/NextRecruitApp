@@ -1,7 +1,26 @@
+'use client';
+
 import MainLayout from '../../Layouts/MainLayout';
-import { StarIcon } from '@heroicons/react/24/solid';
+import { StarIcon, XMarkIcon, DevicePhoneMobileIcon } from '@heroicons/react/24/solid';
+import { ArrowUpOnSquareIcon } from '@heroicons/react/24/outline';
+import { Dialog, Transition } from '@headlessui/react';
+import { isAndroid, isIOS } from 'react-device-detect';
+import { useA2HS } from '@/hooks/A2hs';
+import { useState, Fragment } from 'react';
 
 export default function Manual() {
+  const [open, setOpen] = useState(false);
+
+  const [, promptToInstall] = useA2HS({
+    onAccepted: () => {
+      console.log('ホーム画面に追加が受け入れられました');
+    },
+    onDismissed: () => {
+      console.log('ホーム画面に追加が拒否されました');
+    },
+  });
+  const isPWA =
+    typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches;
   return (
     <>
       <div>
@@ -26,6 +45,40 @@ export default function Manual() {
 
             {/* メインコンテンツ */}
             <div className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-200 pb-1">
+              {(isAndroid || isIOS) && !isPWA && (
+                <div className="mt-5">
+                  <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5">
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
+                        <h3 className="text-base/7 font-semibold">アプリ化するとさらに便利！</h3>
+                        {isAndroid ? (
+                          <button
+                            onClick={promptToInstall}
+                            className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                          >
+                            追加
+                          </button>
+                        ) : isIOS ? (
+                          <button
+                            onClick={() => setOpen(true)}
+                            className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                          >
+                            追加
+                          </button>
+                        ) : null}
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                        <>
+                          <p className="whitespace-pre-wrap leading-8">
+                            リクビジョンはPWAに対応しており、アプリとしてホーム画面に設置することが可能です。追加ボタンから設置可能です。
+                          </p>
+                        </>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               <div className="mt-5">
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5">
                   <div>
@@ -202,6 +255,75 @@ export default function Manual() {
           </main>
         </div>
       </div>
+
+      <Transition.Root show={open} as={Fragment}>
+        <Dialog as="div" className="relative z-50" onClose={setOpen}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0 scale-95"
+            enterTo="opacity-100 scale-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100 scale-100"
+            leaveTo="opacity-0 scale-95"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <Dialog.Panel className="relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 my-auto">
+                  <div className="absolute right-0 top-0 pr-4 pt-4 sm:block">
+                    <button
+                      type="button"
+                      onClick={() => setOpen(false)}
+                      className="rounded-md bg-white text-gray-400 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+                    >
+                      <span className="sr-only">Close</span>
+                      <XMarkIcon aria-hidden="true" className="h-6 w-6" />
+                    </button>
+                  </div>
+                  <div className="sm:flex sm:items-start">
+                    <div className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:h-10 sm:w-10">
+                      <DevicePhoneMobileIcon aria-hidden="true" className="h-6 w-6 text-blue-700" />
+                    </div>
+                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
+                      <Dialog.Title
+                        as="h3"
+                        className="text-base font-semibold leading-6 text-gray-900"
+                      >
+                        アプリを追加する
+                      </Dialog.Title>
+                      <div className="mt-2">
+                        <div className="text-sm text-gray-500 text-left">
+                          <div className="text-left flex">
+                            ブラウザの
+                            <div className="flex">
+                              「シェアアイコン
+                              <ArrowUpOnSquareIcon aria-hidden="true" className="h-4 w-" />
+                              」をタップして
+                            </div>
+                          </div>
+                          「ホーム画面に追加」を選択してください。
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
     </>
   );
 }
