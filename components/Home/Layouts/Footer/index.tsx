@@ -48,7 +48,7 @@ export default function Footer() {
               <img
                 alt="Company name"
                 src="/images/icons/app/1.png"
-                className="h-9 hover:scale-110 transition-transform"
+                className="h-6 hover:scale-110 transition-transform"
               />
             </a>
             {/* <div className="flex gap-x-6 underLogo">
