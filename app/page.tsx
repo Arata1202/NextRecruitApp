@@ -8,7 +8,7 @@ export default function DashBoardPage() {
   return (
     <>
       <Header />
-      <div style={{ marginTop: '80px' }}>
+      <div style={{ marginTop: '72px' }}>
         <Top />
       </div>
       <Footer />

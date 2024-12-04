@@ -20,7 +20,19 @@
 .TitleIcon {
   height: 32px;
 }
+.pc {
+  display: block;
+}
+.mobile {
+  display: none;
+}
 @media (max-width: 1023px) {
+  .pc {
+    display: none;
+  }
+  .mobile {
+    display: block;
+  }
   .MobileHeader {
     margin-top: 64px;
   }
@@ -38,6 +50,9 @@
   }
   .MobilePadding-0 {
     padding: 0 !important;
+  }
+  .TopTitle {
+    margin-top: 24px;
   }
 }
 @media (max-width: 768px) {
