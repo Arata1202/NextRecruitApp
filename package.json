@@ -74,6 +74,7 @@
     "next-sitemap": "^4.2.3",
     "nodemailer": "^6.9.16",
     "postcss": "^8.4.49",
+    "preline": "^2.6.0",
     "prisma": "^5.22.0",
     "react-device-detect": "^2.2.3",
     "react-onesignal": "^3.0.1",
