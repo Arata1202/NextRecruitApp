@@ -31,7 +31,7 @@ export default function Header() {
               onClick={() => setMobileMenuOpen(false)}
             >
               <span className="sr-only">Close main menu</span>
-              <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+              <XMarkIcon className="h-6 w-6 text-gray-700" aria-hidden="true" />
             </button>
           ) : (
             <div className="flex">
@@ -41,7 +41,7 @@ export default function Header() {
                 onClick={() => setMobileMenuOpen(true)}
               >
                 <span className="sr-only">Open main menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
+                <Bars3Icon className="h-6 w-6 text-gray-700" aria-hidden="true" />
               </button>
             </div>
           )}
@@ -94,15 +94,17 @@ export default function Header() {
                   className="-ml-2 flex items-center justify-end p-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <XMarkIcon className={`h-6 w-6" aria-hidden="true  `} />
+                  <XMarkIcon className={`h-6 w-6" aria-hidden="true text-gray-700`} />
                   <span className="sr-only">Close menu</span>
                 </button>
-                <div className={`text-center py-2 text-xl font-bold bg-gray-300`}>Menu</div>
+                <div className={`text-center py-2 text-xl font-bold bg-gray-300 text-gray-700`}>
+                  Menu
+                </div>
                 <ul className="mt-5 space-y-6">
                   <li>
                     <a href="/service/auth/signup">
                       <div
-                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500`}
+                        className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
                       >
                         <UserPlusIcon className="h-6 w-6 mr-2 ml-2" aria-hidden="true" />
                         アカウント登録
@@ -112,7 +114,7 @@ export default function Header() {
                   <li>
                     <a href="/service/auth/login">
                       <div
-                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500`}
+                        className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
                       >
                         <ArrowRightEndOnRectangleIcon
                           className="h-6 w-6 mr-2 ml-2"
@@ -125,7 +127,7 @@ export default function Header() {
                   <li>
                     <a href="/contact">
                       <div
-                        className={`flex items-center py-1 text-base font-bold hover:text-blue-500`}
+                        className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
                       >
                         <EnvelopeIcon className="h-6 w-6 mr-2 ml-2" aria-hidden="true" />
                         お問い合わせ

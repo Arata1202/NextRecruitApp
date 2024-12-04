@@ -46,12 +46,12 @@ export default function Top() {
   return (
     <>
       <div style={{ padding: '24px 0' }} className="overflow-hidden bg-white">
-        <div className="overflow-hidden bg-white" style={{ marginTop: '38px' }}>
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="MobileMargin-0 overflow-hidden bg-white">
+          <div className="overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
               <div className="lg:pr-8 lg:pt-4">
                 <div className="lg:max-w-lg">
-                  <p className="TopTitle text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">
+                  <p className="text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">
                     就活をもっとスムーズに
                   </p>
                   <p className="mt-6 text-lg/8">
@@ -64,7 +64,7 @@ export default function Top() {
                     height={1442}
                     className="mobile mt-6 w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
                   />
-                  <dl className="my-6 max-w-xl space-y-8 text-base/7 lg:max-w-none">
+                  <dl className="mt-6 max-w-xl space-y-8 text-base/7 lg:max-w-none">
                     {features.map((feature) => (
                       <div key={feature.name} className="relative pl-9">
                         <dt className="inline font-semibold">
@@ -92,8 +92,8 @@ export default function Top() {
           </div>
         </div>
 
-        <div className="overflow-hidden bg-white" style={{ marginTop: '100px' }}>
-          <div className="mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="TopTitle overflow-hidden bg-white">
+          <div className="overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
               <div className="lg:ml-auto lg:pl-4 lg:pt-4">
                 <div className="lg:max-w-lg">
