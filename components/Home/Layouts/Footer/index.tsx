@@ -47,8 +47,9 @@ export default function Footer() {
             <a href="/" className="underLogo">
               <img
                 alt="Company name"
-                src="/images/icons/pwa/icon-192x192.png"
-                className="h-6 hover:scale-110 transition-transform"
+                src="/images/head/1.png"
+                className="hover:scale-110 transition-transform"
+                style={{ height: '45px' }}
               />
             </a>
             {/* <div className="flex gap-x-6 underLogo">
