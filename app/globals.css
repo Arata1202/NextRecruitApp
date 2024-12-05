@@ -29,6 +29,9 @@
 .MobileMargin-0 {
   margin-top: 38px;
 }
+.MobileMarginBottom-0 {
+  margin-bottom: 38px;
+}
 .TopTitle {
   margin-top: 100px;
 }
@@ -60,8 +63,14 @@
   .MobileMargin-0 {
     margin-top: 0 !important;
   }
+  .MobileMarginBottom-0 {
+    margin-bottom: 0 !important;
+  }
   .TopTitle {
     margin-top: 50px;
+  }
+  .BetterText {
+    text-align: left;
   }
 }
 @media (max-width: 768px) {

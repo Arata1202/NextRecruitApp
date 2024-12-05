@@ -97,7 +97,7 @@ export default function Top() {
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
               <div className="lg:ml-auto lg:pl-4 lg:pt-4">
                 <div className="lg:max-w-lg">
-                  <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight text-gray-900 sm:text-5xl">
+                  <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">
                     無料で簡単ログイン
                   </p>
                   <p className="mt-6 text-lg/8">
@@ -167,6 +167,27 @@ export default function Top() {
                   height={1442}
                   className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
                 />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="MobileMarginBottom-0 TopTitle overflow-hidden bg-white">
+          <div className="overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
+            <div className="BetterText mx-auto max-w-2xl text-center">
+              <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">
+                より良いサービスを目指して
+              </p>
+              <p className="mt-6 text-lg/8">
+                リクビジョンは、現役の就活生が就職活動中の課題を解決するために生まれたサービスです。今後さらなる成長を目指しています。ご意見やご要望がございましたら、ぜひお気軽にお問い合わせください。
+              </p>
+              <div className="mt-10 flex items-center justify-center gap-x-6">
+                <a
+                  href="/contact"
+                  className="border w-full justify-center inline-flex rounded-md px-3.5 py-3.5 text-xl font-semibold shadow-sm hover:border-blue-500 hover:text-blue-500"
+                >
+                  お問い合わせ
+                </a>
               </div>
             </div>
           </div>
