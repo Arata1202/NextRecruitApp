@@ -47,7 +47,7 @@ export default function Footer() {
             <a href="/" className="underLogo">
               <img
                 alt="Company name"
-                src="/images/icons/app/1.png"
+                src="/images/icons/pwa/icon-192x192.png"
                 className="h-6 hover:scale-110 transition-transform"
               />
             </a>
