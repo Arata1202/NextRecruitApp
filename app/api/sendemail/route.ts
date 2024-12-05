@@ -2,7 +2,6 @@ import { NextResponse } from 'next/server';
 import nodemailer from 'nodemailer';
 
 type EmailRequestBody = {
-  sei: string;
   mei: string;
   email: string;
   message: string;
@@ -22,7 +21,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ status: 'No data received' }, { status: 400 });
     }
 
-    const { sei, mei, email, message } = postData;
+    const { mei, email, message } = postData;
 
     const mailOptions = {
       from: `"${EMAIL_FROM}" <${EMAIL_FROM}>`,
@@ -30,10 +29,8 @@ export async function POST(req: Request) {
       subject: 'お問い合わせありがとうございます',
       html: `
         <p>以下の内容でお問い合わせを承りました。</p>
-        <p>数日以内にご連絡いたしますので、しばらくお待ちください。</p>
-        <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>氏名: ${sei}</p>
-        <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>題名: ${mei}</p>
         <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>メールアドレス: ${email}</p>
+        <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>題名: ${mei}</p>
         <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>お問い合わせ内容: ${message}</p>
       `,
     };

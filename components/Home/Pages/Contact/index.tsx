@@ -155,43 +155,10 @@ const ContactPage = () => {
               </div>
               <p className="mt-2 text-lg/8">
                 リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
-                お問い合わせから2～3日中にはご返信させていただきます。
               </p>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">
               <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="sm:col-span-2">
-                  <label htmlFor="first-name" className={`block text-sm font-semibold leading-6`}>
-                    氏名
-                  </label>
-                  <div className="mt-2.5">
-                    <input
-                      {...register('sei', { required: '※ 氏名を入力してください' })}
-                      type="text"
-                      name="sei"
-                      id="sei"
-                      autoComplete="given-name"
-                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
-                    />
-                    {errors.sei && <p className="text-red-500">{errors.sei.message}</p>}
-                  </div>
-                </div>
-                <div className="sm:col-span-2">
-                  <label htmlFor="last-name" className={`block text-sm font-semibold leading-6`}>
-                    題名
-                  </label>
-                  <div className="mt-2.5">
-                    <input
-                      {...register('mei', { required: '※ 題名を入力してください' })}
-                      type="text"
-                      name="mei"
-                      id="mei"
-                      autoComplete="family-name"
-                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
-                    />
-                    {errors.mei && <p className="text-red-500">{errors.mei.message}</p>}
-                  </div>
-                </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="email" className={`block text-sm font-semibold leading-6`}>
                     メールアドレス
@@ -212,6 +179,22 @@ const ContactPage = () => {
                       className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
                     />
                     {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+                  </div>
+                </div>
+                <div className="sm:col-span-2">
+                  <label htmlFor="last-name" className={`block text-sm font-semibold leading-6`}>
+                    題名
+                  </label>
+                  <div className="mt-2.5">
+                    <input
+                      {...register('mei', { required: '※ 題名を入力してください' })}
+                      type="text"
+                      name="mei"
+                      id="mei"
+                      autoComplete="family-name"
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
+                    />
+                    {errors.mei && <p className="text-red-500">{errors.mei.message}</p>}
                   </div>
                 </div>
                 <div className="sm:col-span-2">
@@ -293,17 +276,20 @@ const ContactPage = () => {
                       <EnvelopeIcon className="h-6 w-6 text-blue-500" aria-hidden="true" />
                     </div>
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
+                      <Dialog.Title
+                        as="h1"
+                        className={`text-base font-bold leading-6 text-gray-700`}
+                      >
                         お問い合わせを送信しますか？
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className={`text-sm text-gray-500`}>
+                        <p className={`text-sm text-gray-700`}>
                           送信ボタンは一度だけ押してください。送信完了まで数秒かかることがあります。
                         </p>
                       </div>
                     </div>
                   </div>
-                  <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
+                  <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
                     <button
                       type="button"
                       className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
@@ -352,9 +338,7 @@ const ContactPage = () => {
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
                     <p className={`text-sm font-medium`}>お問い合わせありがとうございます</p>
-                    <p className="mt-1 text-sm text-gray-500">
-                      数日以内にご連絡いたしますので、しばらくお待ちください。
-                    </p>
+                    <p className="mt-1 text-sm text-gray-700">正常に処理が完了しました。</p>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
                     <button
