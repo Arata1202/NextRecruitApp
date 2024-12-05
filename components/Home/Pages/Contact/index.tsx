@@ -266,7 +266,7 @@ const ContactPage = () => {
                 leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
               >
                 <Dialog.Panel
-                  className={`relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 bg-white`}
+                  className={`m-auto relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 bg-white`}
                 >
                   <div className="sm:flex sm:items-start">
                     <div
@@ -292,7 +292,7 @@ const ContactPage = () => {
                   <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
                     <button
                       type="button"
-                      className={`mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                      className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto text-gray-700`}
                       onClick={handleCancel}
                       ref={cancelButtonRef}
                     >
@@ -337,7 +337,9 @@ const ContactPage = () => {
                     <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className={`text-sm font-medium`}>お問い合わせありがとうございます</p>
+                    <p className={`text-sm font-medium text-gray-700`}>
+                      お問い合わせありがとうございます
+                    </p>
                     <p className="mt-1 text-sm text-gray-700">正常に処理が完了しました。</p>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
