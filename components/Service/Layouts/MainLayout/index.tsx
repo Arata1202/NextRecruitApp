@@ -91,8 +91,9 @@ export default function MainLayout() {
               <div className="flex h-16 shrink-0 items-center">
                 <img
                   alt="Your Company"
-                  src="/images/icons/pwa/icon-192x192.png"
-                  className="h-6 w-auto"
+                  src="/images/head/1.png"
+                  className="w-auto"
+                  style={{ height: '45px' }}
                 />
               </div>
               <nav className="flex flex-1 flex-col">
@@ -149,8 +150,9 @@ export default function MainLayout() {
           <div className="flex h-16 shrink-0 items-center" style={{ marginTop: '7px' }}>
             <img
               alt="Your Company"
-              src="/images/icons/pwa/icon-192x192.png"
-              className="h-8 w-auto"
+              src="/images/head/1.png"
+              className="w-auto"
+              style={{ height: '45px' }}
             />
           </div>
           <nav className="flex flex-1 flex-col">
@@ -221,8 +223,9 @@ export default function MainLayout() {
             <div className="flex h-16 shrink-0 items-center">
               <img
                 alt="Your Company"
-                src="/images/icons/pwa/icon-192x192.png"
-                className="h-6 w-auto"
+                src="/images/head/1.png"
+                className="w-auto"
+                style={{ height: '45px' }}
               />
             </div>
           </div>
