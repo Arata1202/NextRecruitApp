@@ -162,7 +162,7 @@ export default function Calendar() {
               </div>
             </div>
             {/* メインコンテンツ */}
-            <div className="px-4 sm:px-6 lg:px-8 mt-5 pb-5 bg-gray-200">
+            <div className="px-4 sm:px-6 lg:px-8 mt-5 pb-5 bg-gray-100">
               <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
                 locale="ja"

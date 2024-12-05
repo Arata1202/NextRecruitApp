@@ -47,7 +47,7 @@ export default function Manual() {
             </div>
 
             {/* メインコンテンツ */}
-            <div className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-200 pb-1">
+            <div className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 pb-1">
               {(isAndroid || isIOS) && !isPWA && (
                 <div className="mt-5">
                   <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5">
