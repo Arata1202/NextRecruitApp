@@ -498,7 +498,7 @@ export default function Flow() {
                     <div className="mt-4">
                       <div className="mb-4">
                         <input
-                          {...register('title')}
+                          {...register('title', { required: 'タイトルを選択してください' })}
                           placeholder="タイトル"
                           className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
@@ -642,7 +642,7 @@ export default function Flow() {
                     <div className="mt-4">
                       <div className="mb-4">
                         <input
-                          {...register('title')}
+                          {...register('title', { required: 'タイトルを選択してください' })}
                           placeholder="タイトル"
                           value={editData.title}
                           onChange={(e) => {
