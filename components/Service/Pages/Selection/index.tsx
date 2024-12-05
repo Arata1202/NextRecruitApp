@@ -312,7 +312,7 @@ export default function Template() {
                     <div className="flex">
                       <BuildingOffice2Icon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                        選考中の企業
+                        企業管理
                       </h2>
                     </div>
                   </div>
@@ -376,7 +376,7 @@ export default function Template() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、選考中の企業を追加してみましょう！
+                          右上の追加ボタンから、企業管理を追加してみましょう！
                         </p>
                       </div>
                     </div>

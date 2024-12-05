@@ -32,7 +32,7 @@ export default function MainLayout() {
   const SidebarNavigation = [
     { name: '就活イベント', href: '/service', icon: InformationCircleIcon },
     { name: 'カレンダー', href: '/service/calendar', icon: CalendarDaysIcon },
-    { name: '選考中の企業', href: '/service/selection', icon: BuildingOffice2Icon },
+    { name: '企業管理', href: '/service/selection', icon: BuildingOffice2Icon },
     { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
     { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
     { name: 'ToDoリスト', href: '/service/todo', icon: NumberedListIcon },

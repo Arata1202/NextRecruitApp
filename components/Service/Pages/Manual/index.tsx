@@ -91,7 +91,7 @@ export default function Manual() {
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
                         <p className="whitespace-pre-wrap">
-                          「選考中の企業」で登録した全ての企業の選考状況に基づき、当日および翌日の選考予定を一括で表示します。
+                          「企業管理」で登録した全ての企業の選考状況に基づき、当日および翌日の選考予定を一括で表示します。
                         </p>
                       </>
                     </div>
@@ -108,7 +108,7 @@ export default function Manual() {
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
                         <p className="whitespace-pre-wrap">
-                          「選考中の企業」で登録した全ての企業の選考予定と、「ToDoリスト」で登録したイベントが全てカレンダーに表示されます。
+                          「企業管理」で登録した全ての企業の選考予定と、「ToDoリスト」で登録したイベントが全てカレンダーに表示されます。
                         </p>
                       </>
                     </div>
@@ -120,7 +120,7 @@ export default function Manual() {
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5">
                   <div>
                     <div className="px-4 py-3 sm:px-6 flex">
-                      <h3 className="text-base/7 font-semibold">選考中の企業</h3>
+                      <h3 className="text-base/7 font-semibold">企業管理</h3>
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
@@ -148,12 +148,12 @@ export default function Manual() {
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5">
                   <div>
                     <div className="px-4 py-3 sm:px-6 flex">
-                      <h3 className="text-base/7 font-semibold">選考中の企業 - 企業情報</h3>
+                      <h3 className="text-base/7 font-semibold">企業管理 - 企業情報</h3>
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
                         <p className="whitespace-pre-wrap">
-                          「選考中の企業」で登録した各企業ごとに、企業情報を追加できます。
+                          「企業管理」で登録した各企業ごとに、企業情報を追加できます。
                           <br />
                           あらかじめ用意された項目に従って入力することで、効率的に情報を収集できます。
                           <br />
@@ -171,12 +171,12 @@ export default function Manual() {
                 <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5">
                   <div>
                     <div className="px-4 py-3 sm:px-6 flex">
-                      <h3 className="text-base/7 font-semibold">選考中の企業 - 選考状況</h3>
+                      <h3 className="text-base/7 font-semibold">企業管理 - 選考状況</h3>
                     </div>
                     <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                       <>
                         <p className="whitespace-pre-wrap">
-                          「選考中の企業」で登録した各企業ごとに、今後の選考予定を追加できます。
+                          「企業管理」で登録した各企業ごとに、今後の選考予定を追加できます。
                           <br />
                           タイトル、日時、備考（任意）を入力することで、選考予定を効率的に管理できます。
                           <br />

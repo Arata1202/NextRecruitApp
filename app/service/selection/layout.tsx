@@ -2,7 +2,7 @@ import React from 'react';
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: '選考中の企業｜リクビジョン',
+  title: '企業管理｜リクビジョン',
 };
 
 export default function RootLayout({
