@@ -202,7 +202,7 @@ export default function Template() {
 
   const handleEditAnalysis = async () => {
     try {
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('template')
         .update({
           title_id: parseInt(editData.titleId),

@@ -219,7 +219,7 @@ export default function Flow() {
     }
 
     let startedAt = formValues.started_at ? toUTC(formValues.started_at) : null;
-    let endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
+    const endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
 
     if (startedAt === endedAt) {
       startedAt = null;
@@ -264,7 +264,7 @@ export default function Flow() {
   const handleEditAnalysis = async () => {
     try {
       let startedAt = editData.started_at ? toUTC(editData.started_at) : null;
-      let endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
+      const endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
 
       if (startedAt === endedAt) {
         startedAt = null;
@@ -413,14 +413,6 @@ export default function Flow() {
 
     fetchPageTitle();
   }, [id]);
-
-  const handleNavigation = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-
-    if (selectedValue === 'detail') {
-      router.push(`service/selection/${id}/detail`);
-    }
-  };
 
   const formatDateWithoutTimezone = (datetime: string) => {
     const [datePart, timePart] = datetime.split('T');

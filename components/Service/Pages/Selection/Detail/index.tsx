@@ -335,14 +335,6 @@ export default function Detail() {
     fetchPageTitle();
   }, [id]);
 
-  const handleNavigation = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedValue = event.target.value;
-
-    if (selectedValue === 'flow') {
-      router.push(`/service/selection/${id}/flow`);
-    }
-  };
-
   if (isLoading) {
     return null;
   }

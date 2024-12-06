@@ -13,7 +13,6 @@ import {
   PencilIcon,
   TrashIcon,
   MagnifyingGlassIcon,
-  DocumentTextIcon,
   BuildingOffice2Icon,
 } from '@heroicons/react/24/solid';
 
@@ -40,7 +39,7 @@ export default function Template() {
 
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectionStarIdLength, setselectionStarIdLength] = useState(0);
+  const [, setselectionStarIdLength] = useState(0);
 
   const {
     register,
@@ -201,7 +200,7 @@ export default function Template() {
         (star) => star.id === Number(editData.selectionStarId),
       );
 
-      const { data, error } = await supabase
+      const { error } = await supabase
         .from('selection')
         .update({
           title: editData.title,

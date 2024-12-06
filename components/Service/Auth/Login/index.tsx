@@ -37,7 +37,7 @@ export default function Login() {
   }, [errorShow]);
 
   const onSubmit = async (data: FormData) => {
-    const { error: signInError, data: signInData } = await supabase.auth.signInWithPassword({
+    const { error: signInError } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
     });

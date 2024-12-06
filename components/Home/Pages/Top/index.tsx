@@ -1,13 +1,4 @@
-import {
-  BuildingOffice2Icon,
-  ChartPieIcon,
-  ChartBarIcon,
-  DocumentTextIcon,
-  CalendarDaysIcon,
-  ClipboardDocumentListIcon,
-  CurrencyYenIcon,
-  LinkIcon,
-} from '@heroicons/react/24/outline';
+import { ChartPieIcon, CalendarDaysIcon } from '@heroicons/react/24/outline';
 
 const features = [
   {
@@ -26,19 +17,6 @@ const features = [
     name: '簡単ログイン',
     description: 'GoogleやGitHub、Xアカウントであれば、わずか10秒程度でログインが完了します。',
     icon: ChartPieIcon,
-  },
-];
-const features2 = [
-  {
-    name: '完全無料',
-    description: 'アカウント登録やサービスの利用に、一切料金がかかりません。',
-    icon: CurrencyYenIcon,
-  },
-  {
-    name: 'ソーシャルログイン',
-    description:
-      'GoogleアカウントやAppleアカウント、GitHubアカウント、X（旧Twitter）アカウントでログインできます。',
-    icon: LinkIcon,
   },
 ];
 

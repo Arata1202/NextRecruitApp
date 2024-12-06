@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import https from 'https';
 
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
@@ -41,7 +42,6 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
 
 async function verifyRecaptcha(apiUrl: string, postData: string): Promise<boolean> {
   return new Promise((resolve, reject) => {
-    const https = require('https');
     const req = https.request(
       apiUrl,
       {
