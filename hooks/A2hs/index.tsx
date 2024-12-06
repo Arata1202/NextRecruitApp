@@ -66,18 +66,8 @@ export const useA2HS = (
   return [promptEvent, promptToInstall, isIOSUser];
 };
 
-const CustomIOSDialog = ({ onClose }: { onClose: () => void }) => (
-  <div className="dialog-overlay">
-    <div className="dialog-content">
-      <h2>ホーム画面に追加</h2>
-      <p>Safariの共有ボタンをタップし、「ホーム画面に追加」を選択してください。</p>
-      <button onClick={onClose}>閉じる</button>
-    </div>
-  </div>
-);
-
 export default function Page() {
-  const [promptEvent, promptToInstall, isIOSUser] = useA2HS({
+  useA2HS({
     onAccepted: () => {
       console.log('A2HSプロンプトが受け入れられました');
     },
@@ -85,16 +75,6 @@ export default function Page() {
       console.log('A2HSプロンプトが拒否されました');
     },
   });
-
-  const [showIOSDialog, setShowIOSDialog] = React.useState(false);
-
-  const handleAddToHomeClick = () => {
-    if (isIOSUser) {
-      setShowIOSDialog(true);
-    } else {
-      promptToInstall();
-    }
-  };
 
   return <></>;
 }

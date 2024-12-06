@@ -1,4 +1,5 @@
 import type { StorybookConfig } from '@storybook/nextjs';
+import postcss from 'postcss';
 
 const config: StorybookConfig = {
   stories: ['../stories/**/*.mdx', '../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
@@ -11,7 +12,7 @@ const config: StorybookConfig = {
       name: '@storybook/addon-postcss',
       options: {
         postcssLoaderOptions: {
-          implementation: require('postcss'),
+          implementation: postcss,
         },
       },
     },

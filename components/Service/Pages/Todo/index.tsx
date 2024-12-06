@@ -11,7 +11,6 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
-  MagnifyingGlassIcon,
   NumberedListIcon,
 } from '@heroicons/react/24/solid';
 
@@ -42,9 +41,8 @@ export default function Flow() {
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm] = useState('');
   const [descriptionLength, setDescriptionLength] = useState(0);
-  const [pageTitle, setPageTitle] = useState<string>('');
   const [loading, setLoading] = useState(true);
 
   const {
@@ -88,10 +86,7 @@ export default function Flow() {
       }
 
       try {
-        const { data, error } = await supabase.from('todo').select('supabaseauth_id').single();
-
-        if (error || !data || data.supabaseauth_id !== userId) {
-        }
+        await supabase.from('todo').select('supabaseauth_id').single();
       } catch (error) {
         console.error('Authorization check failed:', error);
       }
@@ -173,7 +168,7 @@ export default function Flow() {
     ended_at: string;
   }) => {
     let startedAt = formValues.started_at ? toUTC(formValues.started_at) : null;
-    let endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
+    const endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
 
     if (startedAt === endedAt) {
       startedAt = null;
@@ -216,7 +211,7 @@ export default function Flow() {
   const handleEditAnalysis = async () => {
     try {
       let startedAt = editData.started_at ? toUTC(editData.started_at) : null;
-      let endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
+      const endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
 
       if (startedAt === endedAt) {
         startedAt = null;
