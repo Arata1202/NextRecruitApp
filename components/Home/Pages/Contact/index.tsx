@@ -27,7 +27,7 @@ const ContactPage = () => {
 
   interface FormData {
     sei: string;
-    mei: string;
+    title: string;
     email: string;
     company: string;
     tel: string;
@@ -187,14 +187,14 @@ const ContactPage = () => {
                   </label>
                   <div className="mt-2.5">
                     <input
-                      {...register('mei', { required: '※ 題名を入力してください' })}
+                      {...register('title', { required: '※ 題名を入力してください' })}
                       type="text"
-                      name="mei"
-                      id="mei"
+                      name="title"
+                      id="title"
                       autoComplete="family-name"
                       className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
                     />
-                    {errors.mei && <p className="text-red-500">{errors.mei.message}</p>}
+                    {errors.title && <p className="text-red-500">{errors.title.message}</p>}
                   </div>
                 </div>
                 <div className="sm:col-span-2">
