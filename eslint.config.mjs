@@ -14,7 +14,6 @@ export default [
       '**/.next/',
       '**/public/',
       '**/libs/',
-      '**/hooks/',
       'next.config.ts',
       'next-sitemap.config.js',
     ],
