@@ -3,10 +3,8 @@
 import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { Switch } from '@headlessui/react';
-import { useState, useRef, Fragment, useEffect } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { Transition } from '@headlessui/react';
-import { XMarkIcon, CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import { HomeIcon } from '@heroicons/react/24/solid';
 import ErrorAlert from '@/components/Service/Common/Alert/ErrorAlert';
 import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
@@ -428,100 +426,6 @@ export default function SignUp() {
               </div>
             </div>
           </div>
-        </div>
-      </div>
-
-      <div
-        aria-live="assertive"
-        className="confirmAlert pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
-      >
-        <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
-          <Transition
-            show={confirmShow}
-            as={Fragment}
-            enter="transform ease-out duration-300 transition"
-            enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-            enterTo="translate-y-0 opacity-100 sm:translate-x-0"
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div
-              className={`pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5 ring-gray-300`}
-            >
-              <div className="p-4 bg-white">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <CheckCircleIcon className="h-6 w-6 text-green-500" aria-hidden="true" />
-                  </div>
-                  <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className={`text-sm font-bold`}>確認メールを送信しました。</p>
-                    <p className="mt-1 text-sm">メール内のリンクから登録を完了してください。</p>
-                  </div>
-                  <div className="ml-4 flex flex-shrink-0">
-                    <button
-                      type="button"
-                      className={`inline-flex rounded-md hover:text-blue-500`}
-                      onClick={() => {
-                        setConfirmShow(false);
-                      }}
-                    >
-                      <span className="sr-only">Close</span>
-                      <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Transition>
-        </div>
-      </div>
-
-      <div
-        aria-live="assertive"
-        className="confirmAlert pointer-events-none fixed inset-0 flex items-end px-4 py-6 sm:items-start sm:p-6"
-      >
-        <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
-          <Transition
-            show={errorShow}
-            as={Fragment}
-            enter="transform ease-out duration-300 transition"
-            enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-            enterTo="translate-y-0 opacity-100 sm:translate-x-0"
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div
-              className={`pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5 ring-gray-300`}
-            >
-              <div className="p-4 bg-white">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <ExclamationCircleIcon className="h-6 w-6 text-red-500" aria-hidden="true" />
-                  </div>
-                  <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className={`text-sm font-bold`}>reCAPTCHAの検証に失敗しました。</p>
-                    <p className="mt-1 text-sm text-gray-500">
-                      お手数ですが、もう一度やり直してください。
-                    </p>
-                  </div>
-                  <div className="ml-4 flex flex-shrink-0">
-                    <button
-                      type="button"
-                      className={`inline-flex rounded-md hover:text-blue-500`}
-                      onClick={() => {
-                        setErrorShow(false);
-                      }}
-                    >
-                      <span className="sr-only">Close</span>
-                      <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Transition>
         </div>
       </div>
 
