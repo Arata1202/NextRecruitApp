@@ -60,7 +60,7 @@ export default function Top() {
     <>
       <div style={{ padding: '24px 0' }} className="overflow-hidden bg-white">
         <div className="MobileMargin-0 overflow-hidden bg-white">
-          <div className="overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
               <div className="lg:pr-8 lg:pt-4">
                 <div className="lg:max-w-lg">
@@ -72,7 +72,7 @@ export default function Top() {
                   </p>
                   <img
                     alt="Product screenshot"
-                    src="https://tailwindui.com/plus/img/component-images/dark-project-app-screenshot.png"
+                    src="/images/top/large/2.png"
                     width={2432}
                     height={1442}
                     className="mobile mt-6 w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
@@ -96,7 +96,7 @@ export default function Top() {
               </div>
               <img
                 alt="Product screenshot"
-                src="https://tailwindui.com/plus/img/component-images/dark-project-app-screenshot.png"
+                src="/images/top/large/2.png"
                 width={2432}
                 height={1442}
                 className="pc w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem] md:-ml-4 lg:-ml-0"
@@ -106,7 +106,7 @@ export default function Top() {
         </div>
 
         <div className="TopTitle overflow-hidden bg-white">
-          <div className="overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl px-6 lg:px-8">
             <div className="mx-auto grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none lg:grid-cols-2">
               <div className="lg:ml-auto lg:pl-4 lg:pt-4">
                 <div className="lg:max-w-lg">
@@ -175,7 +175,7 @@ export default function Top() {
               <div className="flex items-start justify-end lg:order-first">
                 <img
                   alt="Product screenshot"
-                  src="https://tailwindui.com/plus/img/component-images/dark-project-app-screenshot.png"
+                  src="/images/top/large/1.png"
                   width={2432}
                   height={1442}
                   className="w-[48rem] max-w-none rounded-xl shadow-xl ring-1 ring-gray-400/10 sm:w-[57rem]"
