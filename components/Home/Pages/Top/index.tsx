@@ -1,4 +1,8 @@
-import { ChartPieIcon, CalendarDaysIcon } from '@heroicons/react/24/outline';
+import {
+  ChartPieIcon,
+  CalendarDaysIcon,
+  ClipboardDocumentListIcon,
+} from '@heroicons/react/24/outline';
 
 const features = [
   {
@@ -14,9 +18,40 @@ const features = [
     icon: ChartPieIcon,
   },
   {
-    name: '簡単ログイン',
-    description: 'GoogleやGitHub、Xアカウントであれば、わずか10秒程度でログインが完了します。',
-    icon: ChartPieIcon,
+    name: 'ESテンプレート',
+    description:
+      '文字数カウンターを活用して、ガクチカや自己PRなどの定型文を保存しておくことができます。',
+    icon: ClipboardDocumentListIcon,
+  },
+];
+const products = [
+  {
+    id: 1,
+    name: 'Basic Tee',
+    href: '#',
+    imageSrc: '/images/top/recommend/1.png',
+    imageAlt: "Front of men's Basic Tee in black.",
+  },
+  {
+    id: 2,
+    name: 'Basic Tee',
+    href: '#',
+    imageSrc: '/images/top/recommend/2.png',
+    imageAlt: "Front of men's Basic Tee in black.",
+  },
+  {
+    id: 3,
+    name: 'Basic Tee',
+    href: '#',
+    imageSrc: '/images/top/recommend/3.png',
+    imageAlt: "Front of men's Basic Tee in black.",
+  },
+  {
+    id: 4,
+    name: 'Basic Tee',
+    href: '#',
+    imageSrc: '/images/top/recommend/4.png',
+    imageAlt: "Front of men's Basic Tee in black.",
   },
 ];
 
@@ -130,7 +165,7 @@ export default function Top() {
                     </a>
                     <a
                       href="/service/auth/signup"
-                      className="mt-5 border w-full justify-center inline-flex rounded-md px-3.5 py-3.5 text-xl font-semibold shadow-sm hover:border-blue-500 hover:text-blue-500"
+                      className="mt-5 border w-full justify-center inline-flex rounded-md px-3.5 py-3.5 text-xl font-semibold shadow-sm border-blue-500 text-blue-500 hover:border-blue-600 hover:text-blue-600"
                     >
                       アカウント登録
                     </a>
@@ -150,19 +185,38 @@ export default function Top() {
           </div>
         </div>
 
+        <div className="TopTitle overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
+          <div className="mx-auto max-w-2xl gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none">
+            <p className="BetterText text-pretty text-4xl font-semibold tracking-tight sm:text-5xl text-center">
+              こんな方におすすめ
+            </p>
+            <div className="mt-6 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
+              {products.map((product) => (
+                <div key={product.id} className="group relative">
+                  <img
+                    alt={product.imageAlt}
+                    src={product.imageSrc}
+                    className="w-full rounded-md"
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+
         <div className="MobileMarginBottom-0 TopTitle overflow-hidden bg-white">
           <div className="overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
             <div className="BetterText mx-auto max-w-2xl text-center">
               <p className="mt-2 text-pretty text-4xl font-semibold tracking-tight sm:text-5xl">
-                より良いサービスを目指して
+                より良いサービスに
               </p>
               <p className="mt-6 text-lg/8">
-                リクビジョンは、現役の就活生が就職活動中の課題を解決するために生まれたサービスです。今後さらなる成長を目指しています。ご意見やご要望がございましたら、ぜひお気軽にお問い合わせください。
+                リクビジョンは、現役の大学生が実際に感じた就活の課題を解決するために、個人で開発を行っているサービスです。ご意見やご要望がございましたら、ぜひお気軽にお問い合わせください。
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
                 <a
                   href="/contact"
-                  className="border w-full justify-center inline-flex rounded-md px-3.5 py-3.5 text-xl font-semibold shadow-sm hover:border-blue-500 hover:text-blue-500"
+                  className="border w-full justify-center inline-flex rounded-md px-3.5 py-3.5 text-xl font-semibold shadow-sm border-blue-500 text-blue-500 hover:border-blue-600 hover:text-blue-600"
                 >
                   お問い合わせ
                 </a>
