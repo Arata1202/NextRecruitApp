@@ -419,7 +419,7 @@ export default function Template() {
                       </div>
                       <div className="mt-2 text-center sm:ml-4 sm:text-left">
                         <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
-                          自己分析を追加
+                          ESテンプレートを追加
                         </Dialog.Title>
                       </div>
                     </div>
