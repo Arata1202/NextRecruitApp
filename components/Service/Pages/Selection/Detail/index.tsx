@@ -638,6 +638,36 @@ export default function Detail() {
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
+                        <select
+                          {...register('titleId', { required: 'タイトルを選択してください' })}
+                          style={{ height: '36px' }}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setEditData({ ...editData, titleId: value });
+                          }}
+                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                        >
+                          <option value="">タイトルを選択</option>
+                          {analysisTitles
+                            .filter((title) => {
+                              const isCurrentTitle = title.id.toString() === editData.titleId;
+                              const isUsedTitle = analyses.some(
+                                (analysis) => analysis.title === title.title,
+                              );
+                              return isCurrentTitle || !isUsedTitle;
+                            })
+                            .map((title) => (
+                              <option key={title.id} value={title.id}>
+                                {title.title}
+                              </option>
+                            ))}
+                        </select>
+                        {errors.titleId && (
+                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                        )}
+                      </div>
+
+                      <div className="mb-4">
                         <textarea
                           {...register('description', { required: '内容を入力してください' })}
                           placeholder="内容"
