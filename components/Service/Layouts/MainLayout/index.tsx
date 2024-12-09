@@ -123,7 +123,7 @@ export default function MainLayout() {
                   style={{ height: '45px' }}
                 />
               </div>
-              <nav className="flex flex-1 flex-col">
+              <nav className="flex flex-1 flex-col HomeBar">
                 <ul role="list" className="flex flex-1 flex-col gap-y-7">
                   <li>
                     <ul role="list" className="-mx-2 space-y-1">
