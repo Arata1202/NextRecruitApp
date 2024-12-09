@@ -95,7 +95,7 @@ export default function Calendar() {
               id: item.selection.id,
               type: 'selection',
             },
-            className: 'bg-blue-500 text-white hover:bg-blue-600',
+            className: 'bg-blue-500 text-white hover:bg-blue-600 px-1',
           }));
 
         const mappedTodoEvents = (todoData || []).map((item, index) => ({
@@ -106,10 +106,22 @@ export default function Calendar() {
             id: `todo-${index}`,
             type: 'todo',
           },
-          className: 'bg-red-400 text-white hover:bg-red-500',
+          className: 'bg-green-600 text-white hover:bg-green-700 px-1',
         }));
 
-        setEvents([...mappedSelectionEvents, ...mappedTodoEvents]);
+        const mappedHolidayEvents = Object.entries(holidayData).map(([date, name]) => ({
+          title: name,
+          start: date,
+          end: date,
+          className: 'bg-red-400 text-white px-1',
+          allDay: true,
+          extendedProps: {
+            id: `holiday-${date}`,
+            type: 'holiday',
+          },
+        }));
+
+        setEvents([...mappedSelectionEvents, ...mappedTodoEvents, ...mappedHolidayEvents]);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
