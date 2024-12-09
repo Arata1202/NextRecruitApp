@@ -95,7 +95,8 @@ export default function Calendar() {
               title,
               sort
             ),
-            description
+            description,
+            customtitle
           `,
           )
           .ilike('title_id.title', `%${searchQuery}%`)
@@ -121,7 +122,10 @@ export default function Calendar() {
 
         const formattedData = filteredData.map((item: any) => ({
           id: item.id,
-          title: item.title_id?.title || 'Untitled',
+          title:
+            item.title_id?.id === 1
+              ? item.customtitle || 'Untitled'
+              : item.title_id?.title || 'Untitled',
           description: item.description,
           sort: item.title_id?.sort || 0,
         }));
@@ -183,7 +187,11 @@ export default function Calendar() {
   }, []);
 
   // データ追加
-  const handleAddAnalysis = async (formValues: { titleId: string; description: string }) => {
+  const handleAddAnalysis = async (formValues: {
+    titleId: string;
+    description: string;
+    customtitle: string;
+  }) => {
     if (!userId || !formValues.titleId) {
       console.error('User ID or Title ID is missing');
       return;
@@ -207,6 +215,7 @@ export default function Calendar() {
             supabaseauth_id: userId,
             title_id: parseInt(formValues.titleId),
             description: formValues.description,
+            customtitle: formValues.customtitle,
           },
         ])
         .select();
@@ -219,7 +228,9 @@ export default function Calendar() {
       if (data && data.length > 0) {
         const addedAnalysis = data[0];
         const title =
-          analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
+          formValues.titleId === '1'
+            ? formValues.customtitle
+            : analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
         setAnalyses((prev) => [
           { id: addedAnalysis.id, title, description: formValues.description },
           ...prev,
@@ -233,6 +244,7 @@ export default function Calendar() {
         description: '',
       });
       setIsModalOpen(false);
+      setIsCustom(false);
     } catch (error) {
       console.error('Error adding analysis:', error);
     }
@@ -522,7 +534,13 @@ export default function Calendar() {
                             type="checkbox"
                             checked={isCustom}
                             onChange={(e) => {
-                              setIsCustom(e.target.checked);
+                              const isChecked = e.target.checked;
+                              setIsCustom(isChecked);
+                              if (isChecked) {
+                                reset({ titleId: '1' });
+                              } else {
+                                reset({ titleId: '' });
+                              }
                             }}
                             className="mr-2"
                           />
@@ -557,6 +575,7 @@ export default function Calendar() {
                           titleId: '',
                           description: '',
                         });
+                        setIsCustom(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
