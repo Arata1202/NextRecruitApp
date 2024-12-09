@@ -45,6 +45,7 @@ export default function Calendar() {
   const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
+  const [isCustom, setIsCustom] = useState(false);
 
   const {
     register,
@@ -55,6 +56,7 @@ export default function Calendar() {
     defaultValues: {
       titleId: '',
       description: '',
+      customtitle: '',
     },
   });
 
@@ -479,27 +481,53 @@ export default function Calendar() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="mb-4">
-                        <select
-                          {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '36px' }}
-                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
-                        >
-                          <option value="">タイトルを選択</option>
-                          {analysisTitles
-                            .filter(
-                              (title) =>
-                                !analyses.some((analysis) => analysis.title === title.title),
-                            ) // 存在するタイトルを除外
-                            .map((title) => (
-                              <option key={title.id} value={title.id}>
-                                {title.title}
-                              </option>
-                            ))}
-                        </select>
-                        {errors.titleId && (
-                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
-                        )}
+                      {!isCustom && (
+                        <div className="mb-4">
+                          <select
+                            {...register('titleId', { required: 'タイトルを選択してください' })}
+                            style={{ height: '36px' }}
+                            className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                          >
+                            <option value="">タイトルを選択</option>
+                            {analysisTitles
+                              .filter(
+                                (title) =>
+                                  !analyses.some((analysis) => analysis.title === title.title),
+                              ) // 存在するタイトルを除外
+                              .map((title) => (
+                                <option key={title.id} value={title.id}>
+                                  {title.title}
+                                </option>
+                              ))}
+                          </select>
+                          {errors.titleId && (
+                            <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                          )}
+                        </div>
+                      )}
+
+                      {isCustom && (
+                        <div className="mb-4">
+                          <input
+                            {...register('customtitle', { required: false })}
+                            placeholder="カスタムタイトル"
+                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                        </div>
+                      )}
+
+                      <div className="mb-4 flex">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={isCustom}
+                            onChange={(e) => {
+                              setIsCustom(e.target.checked);
+                            }}
+                            className="mr-2"
+                          />
+                          カスタムタイトル
+                        </label>
                       </div>
 
                       <div className="mb-4">
