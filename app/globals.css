@@ -11,7 +11,7 @@
 }
 /* PWA ホームバー */
 .HomeBar {
-  padding-bottom: calc(env(safe-area-inset-bottom) + 10px) !important;
+  padding-bottom: calc(env(safe-area-inset-bottom)) !important;
 }
 
 /* メディアクエリ */
