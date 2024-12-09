@@ -19,6 +19,7 @@ type Analysis = {
   id: number;
   title: string;
   description: string;
+  customtitle: string;
 };
 
 type AnalysisTitle = {
@@ -34,7 +35,12 @@ export default function Calendar() {
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editData, setEditData] = useState({ id: 0, titleId: '', description: '' });
+  const [editData, setEditData] = useState({
+    id: 0,
+    titleId: '',
+    description: '',
+    customtitle: '',
+  });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [, setDeleteId] = useState<number | null>(null);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
@@ -45,6 +51,8 @@ export default function Calendar() {
   const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
   const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
+  const [isCustom, setIsCustom] = useState(false);
+  const [isEditCustom, setEditIsCustom] = useState(false);
 
   const {
     register,
@@ -55,6 +63,7 @@ export default function Calendar() {
     defaultValues: {
       titleId: '',
       description: '',
+      customtitle: '',
     },
   });
 
@@ -93,7 +102,8 @@ export default function Calendar() {
               title,
               sort
             ),
-            description
+            description,
+            customtitle
           `,
           )
           .ilike('title_id.title', `%${searchQuery}%`)
@@ -121,6 +131,7 @@ export default function Calendar() {
           id: item.id,
           title: item.title_id?.title || 'Untitled',
           description: item.description,
+          customtitle: item.customtitle,
           sort: item.title_id?.sort || 0,
         }));
 
@@ -181,7 +192,11 @@ export default function Calendar() {
   }, []);
 
   // データ追加
-  const handleAddAnalysis = async (formValues: { titleId: string; description: string }) => {
+  const handleAddAnalysis = async (formValues: {
+    titleId: string;
+    description: string;
+    customtitle: string;
+  }) => {
     if (!userId || !formValues.titleId) {
       console.error('User ID or Title ID is missing');
       return;
@@ -205,6 +220,7 @@ export default function Calendar() {
             supabaseauth_id: userId,
             title_id: parseInt(formValues.titleId),
             description: formValues.description,
+            customtitle: formValues.customtitle,
           },
         ])
         .select();
@@ -219,7 +235,12 @@ export default function Calendar() {
         const title =
           analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
         setAnalyses((prev) => [
-          { id: addedAnalysis.id, title, description: formValues.description },
+          {
+            id: addedAnalysis.id,
+            title,
+            description: formValues.description,
+            customtitle: formValues.customtitle,
+          },
           ...prev,
         ]);
       } else {
@@ -231,6 +252,7 @@ export default function Calendar() {
         description: '',
       });
       setIsModalOpen(false);
+      setIsCustom(false);
     } catch (error) {
       console.error('Error adding analysis:', error);
     }
@@ -243,6 +265,7 @@ export default function Calendar() {
         .update({
           title_id: parseInt(editData.titleId),
           description: editData.description,
+          customtitle: editData.customtitle,
         })
         .eq('id', editData.id)
         .select();
@@ -259,17 +282,19 @@ export default function Calendar() {
                 id: editData.id,
                 title: analysisTitles.find((t) => t.id === parseInt(editData.titleId))?.title || '',
                 description: editData.description,
+                customtitle: editData.customtitle,
               }
             : analysis,
         ),
       );
 
-      setEditData({ id: 0, titleId: '', description: '' });
+      setEditData({ id: 0, titleId: '', description: '', customtitle: '' });
       setIsEditModalOpen(false);
       reset({
         titleId: '',
         description: '',
       });
+      setEditIsCustom(false);
     } catch (error) {
       console.error('Error editing analysis:', error);
     }
@@ -277,15 +302,19 @@ export default function Calendar() {
 
   const openEditModal = (analysis: Analysis) => {
     const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
+    const isCustom = titleId === '1';
     setEditData({
       id: analysis.id,
       titleId,
       description: analysis.description,
+      customtitle: analysis.customtitle,
     });
     setDescriptionLength(analysis.description.length);
+    setEditIsCustom(isCustom);
     reset({
-      titleId,
+      titleId: isCustom ? '1' : titleId,
       description: analysis.description,
+      customtitle: isCustom ? analysis.customtitle : '',
     });
     setInitialEditTitle(analysis.title);
     setIsEditModalOpen(true);
@@ -418,7 +447,11 @@ export default function Calendar() {
                   >
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">
-                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <h3 className="text-base/7 font-semibold">
+                          {analysis.title === 'カスタムタイトル'
+                            ? analysis.customtitle || 'カスタムタイトルが設定されていません。'
+                            : analysis.title}
+                        </h3>
                         <div className="flex ml-auto">
                           <button
                             type="button"
@@ -479,27 +512,59 @@ export default function Calendar() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="mb-4">
-                        <select
-                          {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '36px' }}
-                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
-                        >
-                          <option value="">タイトルを選択</option>
-                          {analysisTitles
-                            .filter(
-                              (title) =>
-                                !analyses.some((analysis) => analysis.title === title.title),
-                            ) // 存在するタイトルを除外
-                            .map((title) => (
-                              <option key={title.id} value={title.id}>
-                                {title.title}
-                              </option>
-                            ))}
-                        </select>
-                        {errors.titleId && (
-                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
-                        )}
+                      {!isCustom && (
+                        <div className="mb-4">
+                          <select
+                            {...register('titleId', { required: 'タイトルを選択してください' })}
+                            style={{ height: '36px' }}
+                            className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                          >
+                            <option value="">タイトルを選択</option>
+                            {analysisTitles
+                              .filter(
+                                (title) =>
+                                  !analyses.some((analysis) => analysis.title === title.title),
+                              ) // 存在するタイトルを除外
+                              .map((title) => (
+                                <option key={title.id} value={title.id}>
+                                  {title.title}
+                                </option>
+                              ))}
+                          </select>
+                          {errors.titleId && (
+                            <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                          )}
+                        </div>
+                      )}
+
+                      {isCustom && (
+                        <div className="mb-4">
+                          <input
+                            {...register('customtitle', { required: false })}
+                            placeholder="カスタムタイトル"
+                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                        </div>
+                      )}
+
+                      <div className="mb-4 flex">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={isCustom}
+                            onChange={(e) => {
+                              const isChecked = e.target.checked;
+                              setIsCustom(isChecked);
+                              if (isChecked) {
+                                reset({ titleId: '1' });
+                              } else {
+                                reset({ titleId: '' });
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          カスタムタイトル
+                        </label>
                       </div>
 
                       <div className="mb-4">
@@ -529,6 +594,7 @@ export default function Calendar() {
                           titleId: '',
                           description: '',
                         });
+                        setIsCustom(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
@@ -576,35 +642,71 @@ export default function Calendar() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="mb-4">
-                        <select
-                          {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '36px' }}
-                          value={editData.titleId}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setEditData({ ...editData, titleId: value });
-                          }}
-                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
-                        >
-                          <option value="">タイトルを選択</option>
-                          {analysisTitles
-                            .filter((title) => {
-                              const isCurrentTitle = title.id.toString() === editData.titleId;
-                              const isUsedTitle = analyses.some(
-                                (analysis) => analysis.title === title.title,
-                              );
-                              return isCurrentTitle || !isUsedTitle;
-                            })
-                            .map((title) => (
-                              <option key={title.id} value={title.id}>
-                                {title.title}
-                              </option>
-                            ))}
-                        </select>
-                        {errors.titleId && (
-                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
-                        )}
+                      {!isEditCustom && (
+                        <div className="mb-4">
+                          <select
+                            {...register('titleId', { required: 'タイトルを選択してください' })}
+                            style={{ height: '36px' }}
+                            value={editData.titleId}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setEditData({ ...editData, titleId: value });
+                            }}
+                            className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                          >
+                            <option value="">タイトルを選択</option>
+                            {analysisTitles
+                              .filter((title) => {
+                                const isCurrentTitle = title.id.toString() === editData.titleId;
+                                const isUsedTitle = analyses.some(
+                                  (analysis) => analysis.title === title.title,
+                                );
+                                return isCurrentTitle || !isUsedTitle;
+                              })
+                              .map((title) => (
+                                <option key={title.id} value={title.id}>
+                                  {title.title}
+                                </option>
+                              ))}
+                          </select>
+                          {errors.titleId && (
+                            <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                          )}
+                        </div>
+                      )}
+
+                      {isEditCustom && (
+                        <div className="mb-4">
+                          <input
+                            {...register('customtitle', { required: false })}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setEditData({ ...editData, customtitle: value });
+                            }}
+                            placeholder="カスタムタイトル"
+                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                        </div>
+                      )}
+
+                      <div className="mb-4 flex">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={isEditCustom}
+                            onChange={(e) => {
+                              const isEditChecked = e.target.checked;
+                              setEditIsCustom(isEditChecked);
+                              if (isEditChecked) {
+                                setEditData((prev) => ({ ...prev, titleId: '1' }));
+                              } else {
+                                setEditData((prev) => ({ ...prev, titleId: '' }));
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          カスタムタイトル
+                        </label>
                       </div>
 
                       <div className="mb-4">
@@ -639,6 +741,7 @@ export default function Calendar() {
                           titleId: '',
                           description: '',
                         });
+                        setEditIsCustom(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
