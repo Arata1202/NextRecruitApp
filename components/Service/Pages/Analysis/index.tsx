@@ -348,9 +348,12 @@ export default function Calendar() {
 
   // 検索処理
   useEffect(() => {
-    const results = analyses.filter((analysis) =>
-      analysis.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+    const results = analyses.filter((analysis) => {
+      const searchLower = searchTerm.toLowerCase();
+      const titleMatch = analysis.title.toLowerCase().includes(searchLower);
+      const customTitleMatch = analysis.customtitle?.toLowerCase().includes(searchLower);
+      return titleMatch || customTitleMatch;
+    });
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
@@ -523,8 +526,9 @@ export default function Calendar() {
                             {analysisTitles
                               .filter(
                                 (title) =>
+                                  title.id !== 1 &&
                                   !analyses.some((analysis) => analysis.title === title.title),
-                              ) // 存在するタイトルを除外
+                              )
                               .map((title) => (
                                 <option key={title.id} value={title.id}>
                                   {title.title}
@@ -661,7 +665,7 @@ export default function Calendar() {
                                 const isUsedTitle = analyses.some(
                                   (analysis) => analysis.title === title.title,
                                 );
-                                return isCurrentTitle || !isUsedTitle;
+                                return title.id !== 1 && (isCurrentTitle || !isUsedTitle);
                               })
                               .map((title) => (
                                 <option key={title.id} value={title.id}>
