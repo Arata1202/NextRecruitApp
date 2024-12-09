@@ -348,9 +348,12 @@ export default function Calendar() {
 
   // 検索処理
   useEffect(() => {
-    const results = analyses.filter((analysis) =>
-      analysis.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+    const results = analyses.filter((analysis) => {
+      const searchLower = searchTerm.toLowerCase();
+      const titleMatch = analysis.title.toLowerCase().includes(searchLower);
+      const customTitleMatch = analysis.customtitle?.toLowerCase().includes(searchLower);
+      return titleMatch || customTitleMatch;
+    });
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
