@@ -14,6 +14,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   ClipboardDocumentListIcon,
   NumberedListIcon,
+  ShareIcon,
 } from '@heroicons/react/24/outline';
 import {
   Dialog,
@@ -22,6 +23,23 @@ import {
   TransitionChild,
   Transition,
 } from '@headlessui/react';
+import {
+  TwitterShareButton,
+  TwitterIcon,
+  FacebookShareButton,
+  FacebookIcon,
+  LineShareButton,
+  LineIcon,
+  HatenaShareButton,
+  HatenaIcon,
+  PinterestShareButton,
+  PinterestIcon,
+  RedditShareButton,
+  RedditIcon,
+  LinkedinShareButton,
+  LinkedinIcon,
+} from 'react-share';
+
 export default function MainLayout() {
   const pathname = usePathname();
 
@@ -48,6 +66,7 @@ export default function MainLayout() {
   const router = useRouter();
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
   const [open, setLogoutDialogOpen] = useState(false);
+  const [shareOpen, setShareDialogOpen] = useState(false);
 
   const handleLogout = () => {
     setLogoutDialogOpen(true);
@@ -55,6 +74,14 @@ export default function MainLayout() {
 
   const handleCancel = () => {
     setLogoutDialogOpen(false);
+  };
+
+  const handleShare = () => {
+    setShareDialogOpen(true);
+  };
+
+  const handleShareCancel = () => {
+    setShareDialogOpen(false);
   };
 
   const handleConfirmLogout = async () => {
@@ -127,16 +154,32 @@ export default function MainLayout() {
                     </ul>
                   </li>
                   <li className="mt-auto">
-                    <a
-                      onClick={handleLogout}
-                      className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                    >
-                      <ArrowRightStartOnRectangleIcon
-                        aria-hidden="true"
-                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                      />
-                      ログアウト
-                    </a>
+                    <ul role="list" className="-mx-2 space-y-1">
+                      <li>
+                        <a
+                          onClick={handleShare}
+                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                        >
+                          <ShareIcon
+                            aria-hidden="true"
+                            className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                          />
+                          シェアする
+                        </a>
+                      </li>
+                      <li>
+                        <a
+                          onClick={handleLogout}
+                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                        >
+                          <ArrowRightStartOnRectangleIcon
+                            aria-hidden="true"
+                            className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                          />
+                          ログアウト
+                        </a>
+                      </li>
+                    </ul>
                   </li>
                 </ul>
               </nav>
@@ -187,6 +230,18 @@ export default function MainLayout() {
               </li>
               <li className="mt-auto">
                 <ul role="list" className="-mx-2 space-y-1">
+                  <li>
+                    <button
+                      onClick={handleShare}
+                      className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                    >
+                      <ShareIcon
+                        aria-hidden="true"
+                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                      />
+                      シェアする
+                    </button>
+                  </li>
                   <li>
                     <button
                       onClick={handleLogout}
@@ -297,6 +352,136 @@ export default function MainLayout() {
                       onClick={handleConfirmLogout}
                     >
                       ログアウト
+                    </button>
+                  </div>
+                </Dialog.Panel>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
+      <Transition.Root show={shareOpen} as={Fragment}>
+        <Dialog
+          as="div"
+          className="relative z-50"
+          initialFocus={cancelButtonRef}
+          onClose={() => {}}
+        >
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <Dialog.Panel
+                  style={{ width: '100%' }}
+                  className={`m-auto text-gray-700 bg-white relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6`}
+                >
+                  <div className="sm:flex sm:items-start">
+                    <div
+                      className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10"
+                      style={{ backgroundColor: '#eaf4fc' }}
+                    >
+                      <ShareIcon className="h-6 w-6 text-blue-500" aria-hidden="true" />
+                    </div>
+                    <div className="mt-2 text-center sm:ml-4 sm:text-left">
+                      <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
+                        シェアする
+                      </Dialog.Title>
+                    </div>
+                  </div>
+                  <div className="flex justify-center mt-4">
+                    <TwitterShareButton
+                      aria-label="シェアボタン"
+                      url="https://rikuvision.realunivlog.com"
+                      title="リクビジョン"
+                      className="m-1"
+                    >
+                      <TwitterIcon size={40} round={true} />
+                    </TwitterShareButton>
+
+                    <FacebookShareButton
+                      aria-label="シェアボタン"
+                      url="https://rikuvision.realunivlog.com"
+                      title="リクビジョン"
+                      className="m-1"
+                    >
+                      <FacebookIcon size={40} round={true} />
+                    </FacebookShareButton>
+
+                    <LineShareButton
+                      aria-label="シェアボタン"
+                      url="https://rikuvision.realunivlog.com"
+                      title="リクビジョン"
+                      className="m-1"
+                    >
+                      <LineIcon size={40} round={true} />
+                    </LineShareButton>
+
+                    <HatenaShareButton
+                      aria-label="シェアボタン"
+                      url="https://rikuvision.realunivlog.com"
+                      title="リクビジョン"
+                      className="m-1"
+                    >
+                      <HatenaIcon size={40} round={true} />
+                    </HatenaShareButton>
+
+                    <PinterestShareButton
+                      aria-label="シェアボタン"
+                      url="https://rikuvision.realunivlog.com"
+                      media="/images/og/1.png"
+                      description="リクビジョン"
+                      className="m-1"
+                    >
+                      <PinterestIcon size={40} round={true} />
+                    </PinterestShareButton>
+
+                    <RedditShareButton
+                      aria-label="シェアボタン"
+                      url="https://rikuvision.realunivlog.com"
+                      title="リクビジョン"
+                      className="m-1"
+                    >
+                      <RedditIcon size={40} round={true} />
+                    </RedditShareButton>
+
+                    <LinkedinShareButton
+                      aria-label="シェアボタン"
+                      url="https://rikuvision.realunivlog.com"
+                      title="リクビジョン"
+                      summary="就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。"
+                      className="m-1"
+                    >
+                      <LinkedinIcon size={40} round={true} />
+                    </LinkedinShareButton>
+                  </div>
+                  <div className="mt-5 sm:mt-6 grid grid-flow-row-dense gap-3">
+                    <button
+                      type="button"
+                      className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                      onClick={handleShareCancel}
+                      ref={cancelButtonRef}
+                    >
+                      キャンセル
                     </button>
                   </div>
                 </Dialog.Panel>
