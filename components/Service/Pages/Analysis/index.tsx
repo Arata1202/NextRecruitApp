@@ -302,7 +302,7 @@ export default function Calendar() {
 
   const openEditModal = (analysis: Analysis) => {
     const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
-    const isCustom = titleId === '1';
+    const isEditCustom = titleId === '1';
     setEditData({
       id: analysis.id,
       titleId,
@@ -310,13 +310,16 @@ export default function Calendar() {
       customtitle: analysis.customtitle,
     });
     setDescriptionLength(analysis.description.length);
-    setEditIsCustom(isCustom);
+    setEditIsCustom(isEditCustom);
+
+    const titleForEdit = isEditCustom ? analysis.customtitle : analysis.title;
+    setInitialEditTitle(titleForEdit);
+
     reset({
-      titleId: isCustom ? '1' : titleId,
+      titleId: isEditCustom ? '1' : titleId,
       description: analysis.description,
-      customtitle: isCustom ? analysis.customtitle : '',
+      customtitle: isEditCustom ? analysis.customtitle : '',
     });
-    setInitialEditTitle(analysis.title);
     setIsEditModalOpen(true);
   };
 
@@ -342,7 +345,13 @@ export default function Calendar() {
   };
 
   const openDeleteModal = (analysis: Analysis) => {
-    setDeleteData(analysis);
+    const isCustom = analysisTitles.find((t) => t.title === analysis.title)?.id === 1;
+    const titleForDelete = isCustom ? analysis.customtitle : analysis.title;
+
+    setDeleteData({
+      ...analysis,
+      title: titleForDelete,
+    });
     setIsDeleteModalOpen(true);
   };
 
