@@ -90,7 +90,7 @@ export default function Calendar() {
           .map((item) => ({
             title: item.selection.title,
             start: item.started_at || item.ended_at,
-            end: item.ended_at,
+            end: item.ended_at ? `${item.ended_at.split('T')[0]}T23:59:59` : '',
             extendedProps: {
               id: item.selection.id,
               type: 'selection',
@@ -101,7 +101,7 @@ export default function Calendar() {
         const mappedTodoEvents = (todoData || []).map((item, index) => ({
           title: item.title,
           start: item.started_at || item.ended_at,
-          end: item.ended_at,
+          end: item.ended_at ? `${item.ended_at.split('T')[0]}T23:59:59` : '',
           extendedProps: {
             id: `todo-${index}`,
             type: 'todo',
