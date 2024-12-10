@@ -302,7 +302,7 @@ export default function Calendar() {
 
   const openEditModal = (analysis: Analysis) => {
     const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
-    const isCustom = titleId === '1';
+    const isEditCustom = titleId === '1';
     setEditData({
       id: analysis.id,
       titleId,
@@ -310,13 +310,16 @@ export default function Calendar() {
       customtitle: analysis.customtitle,
     });
     setDescriptionLength(analysis.description.length);
-    setEditIsCustom(isCustom);
+    setEditIsCustom(isEditCustom);
+
+    const titleForEdit = isEditCustom ? analysis.customtitle : analysis.title;
+    setInitialEditTitle(titleForEdit);
+
     reset({
-      titleId: isCustom ? '1' : titleId,
+      titleId: isEditCustom ? '1' : titleId,
       description: analysis.description,
-      customtitle: isCustom ? analysis.customtitle : '',
+      customtitle: isEditCustom ? analysis.customtitle : '',
     });
-    setInitialEditTitle(analysis.title);
     setIsEditModalOpen(true);
   };
 
@@ -342,7 +345,13 @@ export default function Calendar() {
   };
 
   const openDeleteModal = (analysis: Analysis) => {
-    setDeleteData(analysis);
+    const isCustom = analysisTitles.find((t) => t.title === analysis.title)?.id === 1;
+    const titleForDelete = isCustom ? analysis.customtitle : analysis.title;
+
+    setDeleteData({
+      ...analysis,
+      title: titleForDelete,
+    });
     setIsDeleteModalOpen(true);
   };
 
@@ -515,39 +524,51 @@ export default function Calendar() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      {!isCustom && (
-                        <div className="mb-4">
-                          <select
-                            {...register('titleId', { required: 'タイトルを選択してください' })}
-                            style={{ height: '36px' }}
-                            className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
-                          >
-                            <option value="">タイトルを選択</option>
-                            {analysisTitles
-                              .filter(
-                                (title) =>
-                                  title.id !== 1 &&
-                                  !analyses.some((analysis) => analysis.title === title.title),
-                              )
-                              .map((title) => (
-                                <option key={title.id} value={title.id}>
-                                  {title.title}
-                                </option>
-                              ))}
-                          </select>
-                          {errors.titleId && (
-                            <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
-                          )}
-                        </div>
-                      )}
+                      <div className="mb-4">
+                        <select
+                          {...register('titleId', { required: 'タイトルを選択してください' })}
+                          style={{ height: '36px' }}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === '1') {
+                              setIsCustom(true);
+                            } else {
+                              setIsCustom(false);
+                            }
+                          }}
+                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                        >
+                          <option value="">タイトルを選択</option>
+                          {analysisTitles
+                            .filter((title) => {
+                              if (title.id === 1) {
+                                return true;
+                              }
+                              return !analyses.some((analysis) => analysis.title === title.title);
+                            })
+                            .map((title) => (
+                              <option key={title.id} value={title.id}>
+                                {title.title}
+                              </option>
+                            ))}
+                        </select>
+                        {errors.titleId && (
+                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                        )}
+                      </div>
 
                       {isCustom && (
                         <div className="mb-4">
                           <input
-                            {...register('customtitle', { required: false })}
+                            {...register('customtitle', { required: 'タイトルを入力してください' })}
                             placeholder="カスタムタイトル"
                             className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                           />
+                          {errors.customtitle && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.customtitle.message}
+                            </p>
+                          )}
                         </div>
                       )}
 
@@ -646,43 +667,46 @@ export default function Calendar() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      {!isEditCustom && (
-                        <div className="mb-4">
-                          <select
-                            {...register('titleId', { required: 'タイトルを選択してください' })}
-                            style={{ height: '36px' }}
-                            value={editData.titleId}
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              setEditData({ ...editData, titleId: value });
-                            }}
-                            className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
-                          >
-                            <option value="">タイトルを選択</option>
-                            {analysisTitles
-                              .filter((title) => {
-                                const isCurrentTitle = title.id.toString() === editData.titleId;
-                                const isUsedTitle = analyses.some(
-                                  (analysis) => analysis.title === title.title,
-                                );
-                                return title.id !== 1 && (isCurrentTitle || !isUsedTitle);
-                              })
-                              .map((title) => (
-                                <option key={title.id} value={title.id}>
-                                  {title.title}
-                                </option>
-                              ))}
-                          </select>
-                          {errors.titleId && (
-                            <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
-                          )}
-                        </div>
-                      )}
+                      <div className="mb-4">
+                        <select
+                          {...register('titleId', { required: 'タイトルを選択してください' })}
+                          style={{ height: '36px' }}
+                          value={editData.titleId}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            setEditData({ ...editData, titleId: value });
+                            if (value === '1') {
+                              setEditIsCustom(true);
+                            } else {
+                              setEditIsCustom(false);
+                            }
+                          }}
+                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                        >
+                          <option value="">タイトルを選択</option>
+                          {analysisTitles
+                            .filter((title) => {
+                              const isCurrentTitle = title.id.toString() === editData.titleId;
+                              const isUsedTitle = analyses.some(
+                                (analysis) => analysis.title === title.title,
+                              );
+                              return isCurrentTitle || !isUsedTitle;
+                            })
+                            .map((title) => (
+                              <option key={title.id} value={title.id}>
+                                {title.title}
+                              </option>
+                            ))}
+                        </select>
+                        {errors.titleId && (
+                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                        )}
+                      </div>
 
                       {isEditCustom && (
                         <div className="mb-4">
                           <input
-                            {...register('customtitle', { required: false })}
+                            {...register('customtitle', { required: 'タイトルを入力してください' })}
                             onChange={(e) => {
                               const value = e.target.value;
                               setEditData({ ...editData, customtitle: value });
@@ -690,6 +714,11 @@ export default function Calendar() {
                             placeholder="カスタムタイトル"
                             className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                           />
+                          {errors.customtitle && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.customtitle.message}
+                            </p>
+                          )}
                         </div>
                       )}
 
