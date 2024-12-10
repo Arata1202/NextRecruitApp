@@ -20,6 +20,7 @@ type Analysis = {
   id: number;
   title: string;
   description: string;
+  customtitle: string;
   started_at: string | null;
   ended_at: string | null;
 };
@@ -45,6 +46,7 @@ export default function Flow() {
     id: 0,
     titleId: '',
     description: '',
+    customtitle: '',
     started_at: '',
     ended_at: '',
   });
@@ -56,6 +58,8 @@ export default function Flow() {
   const [descriptionLength, setDescriptionLength] = useState(0);
   const [pageTitle, setPageTitle] = useState<string>('');
   const [loading, setLoading] = useState(true);
+  const [isCustom, setIsCustom] = useState(false);
+  const [isEditCustom, setEditIsCustom] = useState(false);
 
   const {
     register,
@@ -66,6 +70,7 @@ export default function Flow() {
     defaultValues: {
       titleId: '',
       description: '',
+      customtitle: '',
       started_at: '',
       ended_at: '',
     },
@@ -133,6 +138,7 @@ export default function Flow() {
               sort
             ),
             description,
+            customtitle,
             started_at,
             ended_at
             `,
@@ -152,6 +158,7 @@ export default function Flow() {
               id: item.id,
               title: item.title_id?.title || 'Untitled',
               description: item.description,
+              customtitle: item.customtitle,
               started_at: item.started_at || null,
               ended_at: item.ended_at || null,
               sort: item.title_id?.sort || 0,
@@ -210,6 +217,7 @@ export default function Flow() {
   const handleAddAnalysis = async (formValues: {
     titleId: string;
     description: string;
+    customtitle: string;
     started_at: string;
     ended_at: string;
   }) => {
@@ -231,6 +239,7 @@ export default function Flow() {
         {
           title_id: parseInt(formValues.titleId),
           description: formValues.description,
+          customtitle: formValues.customtitle,
           selection_id: parseInt(id),
           started_at: startedAt,
           ended_at: endedAt,
@@ -249,6 +258,7 @@ export default function Flow() {
         title:
           analysisTitles.find((title) => title.id === parseInt(formValues.titleId))?.title ||
           'Untitled',
+        customtitle: formValues.customtitle,
         description: formValues.description,
         started_at: startedAt,
         ended_at: endedAt,
@@ -275,6 +285,7 @@ export default function Flow() {
         .update({
           title_id: parseInt(editData.titleId),
           description: editData.description,
+          customtitle: editData.customtitle,
           started_at: startedAt,
           ended_at: endedAt,
         })
@@ -286,18 +297,17 @@ export default function Flow() {
       }
 
       setAnalyses((prev) =>
-        prev.map((detail) =>
-          detail.id === editData.id
+        prev.map((analysis) =>
+          analysis.id === editData.id
             ? {
                 id: editData.id,
-                title:
-                  analysisTitles.find((title) => title.id === parseInt(editData.titleId))?.title ||
-                  'Untitled',
+                title: analysisTitles.find((t) => t.id === parseInt(editData.titleId))?.title || '',
                 description: editData.description,
+                customtitle: editData.customtitle,
                 started_at: startedAt,
                 ended_at: endedAt,
               }
-            : detail,
+            : analysis,
         ),
       );
       setIsEditModalOpen(false);
@@ -328,6 +338,7 @@ export default function Flow() {
       }
 
       const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
+      const isEditCustom = titleId === '1';
 
       setEditIsAllDay(!data.started_at);
 
@@ -335,20 +346,24 @@ export default function Flow() {
         id: analysis.id,
         titleId,
         description: data.description || '',
+        customtitle: analysis.customtitle,
         started_at: data.started_at ? new Date(data.started_at).toISOString().slice(0, 16) : '',
         ended_at: data.ended_at ? new Date(data.ended_at).toISOString().slice(0, 16) : '',
       });
 
       setDescriptionLength((data.description || '').length);
+      setEditIsCustom(isEditCustom);
+
+      const titleForEdit = isEditCustom ? analysis.customtitle : analysis.title;
+      setInitialEditTitle(titleForEdit);
 
       reset({
-        titleId,
+        titleId: isEditCustom ? '1' : titleId,
         description: data.description || '',
+        customtitle: isEditCustom ? analysis.customtitle : '',
         started_at: data.started_at ? new Date(data.started_at).toISOString().slice(0, 16) : '',
         ended_at: data.ended_at ? new Date(data.ended_at).toISOString().slice(0, 16) : '',
       });
-
-      setInitialEditTitle(analysis.title);
       setIsEditModalOpen(true);
     } catch (err) {
       console.error('Error opening edit modal:', err);
@@ -374,15 +389,24 @@ export default function Flow() {
   };
 
   const openDeleteModal = (analysis: Analysis) => {
-    setDeleteData(analysis);
+    const isCustom = analysisTitles.find((t) => t.title === analysis.title)?.id === 1;
+    const titleForDelete = isCustom ? analysis.customtitle : analysis.title;
+
+    setDeleteData({
+      ...analysis,
+      title: titleForDelete,
+    });
     setIsDeleteModalOpen(true);
   };
 
   // 検索処理
   useEffect(() => {
-    const results = analyses.filter((analysis) =>
-      analysis.title.toLowerCase().includes(searchTerm.toLowerCase()),
-    );
+    const results = analyses.filter((analysis) => {
+      const searchLower = searchTerm.toLowerCase();
+      const titleMatch = analysis.title.toLowerCase().includes(searchLower);
+      const customTitleMatch = analysis.customtitle?.toLowerCase().includes(searchLower);
+      return titleMatch || customTitleMatch;
+    });
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
@@ -527,7 +551,11 @@ export default function Flow() {
                   >
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">
-                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <h3 className="text-base/7 font-semibold">
+                          {analysis.title === 'カスタムタイトル'
+                            ? analysis.customtitle || 'カスタムタイトルが設定されていません。'
+                            : analysis.title}
+                        </h3>
                         <div className="flex ml-auto">
                           <button
                             type="button"
@@ -611,15 +639,25 @@ export default function Flow() {
                       <div className="mb-4">
                         <select
                           {...register('titleId', { required: 'タイトルを選択してください' })}
+                          onChange={(e) => {
+                            const value = e.target.value;
+                            if (value === '1') {
+                              setIsCustom(true);
+                            } else {
+                              setIsCustom(false);
+                            }
+                          }}
                           style={{ height: '36px' }}
                           className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
                         >
                           <option value="">タイトルを選択</option>
                           {analysisTitles
-                            .filter(
-                              (title) =>
-                                !analyses.some((analysis) => analysis.title === title.title),
-                            )
+                            .filter((title) => {
+                              if (title.id === 1) {
+                                return true;
+                              }
+                              return !analyses.some((analysis) => analysis.title === title.title);
+                            })
                             .map((title) => (
                               <option key={title.id} value={title.id}>
                                 {title.title}
@@ -629,6 +667,41 @@ export default function Flow() {
                         {errors.titleId && (
                           <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
                         )}
+                      </div>
+
+                      {isCustom && (
+                        <div className="mb-4">
+                          <input
+                            {...register('customtitle', { required: 'タイトルを入力してください' })}
+                            placeholder="カスタムタイトル"
+                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                          {errors.customtitle && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.customtitle.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      <div className="mb-4 flex">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={isCustom}
+                            onChange={(e) => {
+                              const isChecked = e.target.checked;
+                              setIsCustom(isChecked);
+                              if (isChecked) {
+                                reset({ titleId: '1' });
+                              } else {
+                                reset({ titleId: '' });
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          カスタムタイトル
+                        </label>
                       </div>
 
                       {!isAllDay && (
@@ -717,6 +790,7 @@ export default function Flow() {
                           ended_at: '',
                         });
                         setIsAllDay(false);
+                        setIsCustom(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
@@ -772,6 +846,11 @@ export default function Flow() {
                           onChange={(e) => {
                             const value = e.target.value;
                             setEditData({ ...editData, titleId: value });
+                            if (value === '1') {
+                              setEditIsCustom(true);
+                            } else {
+                              setEditIsCustom(false);
+                            }
                           }}
                           className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
                         >
@@ -793,6 +872,45 @@ export default function Flow() {
                         {errors.titleId && (
                           <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
                         )}
+                      </div>
+
+                      {isEditCustom && (
+                        <div className="mb-4">
+                          <input
+                            {...register('customtitle', { required: 'タイトルを入力してください' })}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setEditData({ ...editData, customtitle: value });
+                            }}
+                            placeholder="カスタムタイトル"
+                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                          {errors.customtitle && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.customtitle.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      <div className="mb-4 flex">
+                        <label>
+                          <input
+                            type="checkbox"
+                            checked={isEditCustom}
+                            onChange={(e) => {
+                              const isEditChecked = e.target.checked;
+                              setEditIsCustom(isEditChecked);
+                              if (isEditChecked) {
+                                setEditData((prev) => ({ ...prev, titleId: '1' }));
+                              } else {
+                                setEditData((prev) => ({ ...prev, titleId: '' }));
+                              }
+                            }}
+                            className="mr-2"
+                          />
+                          カスタムタイトル
+                        </label>
                       </div>
 
                       {!editIsAllDay && (
@@ -901,6 +1019,7 @@ export default function Flow() {
                           ended_at: '',
                         });
                         setEditIsAllDay(false);
+                        setEditIsCustom(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
