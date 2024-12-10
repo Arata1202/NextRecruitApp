@@ -12,6 +12,8 @@ interface EventData {
   started_at: string;
   ended_at: string;
   description: string;
+  customtitle: string;
+  title_id: number;
   selection: {
     id: string;
     title: string;
@@ -57,7 +59,9 @@ export default function DashBoard() {
           `
           started_at,
           ended_at,
+          title_id,
           description,
+          customtitle,
           selection (
             id,
             title
@@ -145,7 +149,10 @@ export default function DashBoard() {
           <div>
             <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
               <h3 className="text-base/7 font-semibold">
-                {event.selection?.title || '未設定'} - {event.selectionflowtitle?.title || '未設定'}
+                {event.selection?.title || '未設定'} -{' '}
+                {event.title_id === 1
+                  ? event.customtitle || '未設定'
+                  : event.selectionflowtitle?.title || '未設定'}
               </h3>
               {/* <div className="flex ml-auto">
                 <button
@@ -209,7 +216,10 @@ export default function DashBoard() {
           <div>
             <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
               <h3 className="text-base/7 font-semibold">
-                {event.selection?.title || '未設定'} - {event.selectionflowtitle?.title || '未設定'}
+                {event.selection?.title || '未設定'} -{' '}
+                {event.title_id === 1
+                  ? event.customtitle || '未設定'
+                  : event.selectionflowtitle?.title || '未設定'}
               </h3>
               {/* <div className="flex ml-auto">
                 <button
