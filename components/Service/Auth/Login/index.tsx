@@ -300,6 +300,11 @@ export default function Login() {
               </div>
             </div>
           </div>
+          <p className="mt-6 text-center text-sm/6">
+            <a href="/service/auth/sendemail" className="text-blue-500 hover:text-blue-600">
+              パスワードをお忘れの方はこちら
+            </a>
+          </p>
         </div>
       </div>
 
