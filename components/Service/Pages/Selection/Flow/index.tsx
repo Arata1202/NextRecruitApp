@@ -915,7 +915,15 @@ export default function Flow() {
                               if (isEditChecked) {
                                 setEditData((prev) => ({ ...prev, titleId: '1' }));
                               } else {
-                                setEditData((prev) => ({ ...prev, titleId: '' }));
+                                const defaultTitleId = analysisTitles
+                                  .find((t) => t.title === initialEditTitle)
+                                  ?.id.toString();
+
+                                setEditData((prev) => ({
+                                  ...prev,
+                                  titleId: defaultTitleId || '',
+                                  customtitle: '',
+                                }));
                               }
                             }}
                             className="mr-2"
