@@ -268,6 +268,7 @@ export default function Flow() {
       setAnalyses((prev) => [addedDetail, ...prev]);
       setIsModalOpen(false);
       setIsAllDay(false);
+      setIsCustom(false);
       reset();
     }
   };

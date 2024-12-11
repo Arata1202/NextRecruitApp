@@ -219,6 +219,7 @@ export default function Template() {
       description: '',
     });
     setIsModalOpen(false);
+    setIsCustom(false);
   };
 
   const handleEditAnalysis = async () => {

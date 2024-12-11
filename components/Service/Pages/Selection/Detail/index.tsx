@@ -237,6 +237,7 @@ export default function Detail() {
         ...prev,
       ]);
       setIsModalOpen(false);
+      setIsCustom(false);
       reset();
     }
   };
