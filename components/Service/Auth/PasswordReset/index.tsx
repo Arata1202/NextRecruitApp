@@ -6,6 +6,7 @@ import { Switch } from '@headlessui/react';
 import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
 import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
+import ErrorAlert from '@/components/Service/Common/Alert/ErrorAlert';
 
 type FormData = {
   password: string;
@@ -25,6 +26,9 @@ export default function SignUp() {
   const [confirmShow, setConfirmShow] = useState(false);
   const [ConfirmTitle, setConfirmTitle] = useState('');
   const [ConfirmMessage, setConfirmMessage] = useState('');
+  const [errorShow, setErrorShow] = useState(false);
+  const [errorTitle, setErrorTitle] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     if (confirmShow) {
@@ -34,6 +38,14 @@ export default function SignUp() {
       return () => clearTimeout(timer);
     }
   }, [confirmShow]);
+  useEffect(() => {
+    if (errorShow) {
+      const timer = setTimeout(() => {
+        setErrorShow(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorShow]);
 
   const onSubmit = async (data: FormData) => {
     try {
@@ -48,8 +60,11 @@ export default function SignUp() {
       setConfirmShow(true);
       reset();
       await supabase.auth.signOut();
-    } catch (error) {
-      console.error('Error:', error);
+    } catch {
+      setErrorTitle('パスワードリセットに失敗しました。');
+      setErrorMessage('新しいパスワードは以前のパスワードと異なるものを設定してください。');
+      setErrorShow(true);
+      reset();
     }
   };
 
@@ -196,6 +211,11 @@ export default function SignUp() {
               </form>
             </div>
           </div>
+          <p className="mt-6 text-center text-sm/6">
+            <a href="/service/auth/login" className="text-blue-500 hover:text-blue-600">
+              ログインはこちら
+            </a>
+          </p>
         </div>
       </div>
 
@@ -204,6 +224,13 @@ export default function SignUp() {
         onClose={() => setConfirmShow(false)}
         title={ConfirmTitle}
         message={ConfirmMessage}
+      />
+
+      <ErrorAlert
+        show={errorShow}
+        onClose={() => setErrorShow(false)}
+        title={errorTitle}
+        message={errorMessage}
       />
     </>
   );
