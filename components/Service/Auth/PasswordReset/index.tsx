@@ -2,6 +2,7 @@
 
 import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
+import { useRouter } from 'next/navigation';
 import { Switch } from '@headlessui/react';
 import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
@@ -14,6 +15,7 @@ type FormData = {
 };
 
 export default function SignUp() {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -56,10 +58,12 @@ export default function SignUp() {
         throw passwordResetError;
       }
       setConfirmTitle('パスワードリセットが完了しました。');
-      setConfirmMessage('ログインページからログインしてください。');
+      setConfirmMessage('5秒後に自動でログインします。');
       setConfirmShow(true);
       reset();
-      await supabase.auth.signOut();
+      setTimeout(() => {
+        router.push('/service');
+      }, 5000);
     } catch {
       setErrorTitle('パスワードリセットに失敗しました。');
       setErrorMessage('新しいパスワードは以前のパスワードと異なるものを設定してください。');
@@ -211,11 +215,6 @@ export default function SignUp() {
               </form>
             </div>
           </div>
-          <p className="mt-6 text-center text-sm/6">
-            <a href="/service/auth/login" className="text-blue-500 hover:text-blue-600">
-              ログインはこちら
-            </a>
-          </p>
         </div>
       </div>
 
