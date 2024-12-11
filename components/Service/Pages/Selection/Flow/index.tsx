@@ -65,6 +65,7 @@ export default function Flow() {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
@@ -735,6 +736,15 @@ export default function Flow() {
                             required: isAllDay
                               ? '締切日を選択してください'
                               : '終了時間を選択してください',
+                            validate: (value) => {
+                              const startTime = new Date(watch('started_at')).getTime();
+                              const endTime = new Date(value).getTime();
+
+                              if (startTime && endTime < startTime) {
+                                return '開始時間以降の時間を選択してください。';
+                              }
+                              return true;
+                            },
                           })}
                           className="block w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
                         />
@@ -951,6 +961,15 @@ export default function Flow() {
                             required: editIsAllDay
                               ? '締切日を選択してください'
                               : '終了時間を選択してください',
+                            validate: (value) => {
+                              const startTime = new Date(watch('started_at')).getTime();
+                              const endTime = new Date(value).getTime();
+
+                              if (startTime && endTime < startTime) {
+                                return '開始時間以降の時間を選択してください。';
+                              }
+                              return true;
+                            },
                           })}
                           value={editData.ended_at || ''}
                           onChange={(e) =>
