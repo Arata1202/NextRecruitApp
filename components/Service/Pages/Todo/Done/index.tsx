@@ -110,7 +110,7 @@ export default function Flow() {
             title,
             description,
             started_at,
-            ended_at
+            ended_at,
             `,
           )
           .eq('supabaseauth_id', userId);
@@ -338,8 +338,8 @@ export default function Flow() {
   };
 
   const tabs = [
-    { name: '未完了', href: '#', current: true },
-    { name: '完了', href: './todo/done', current: false },
+    { name: '未完了', href: '../todo', current: false },
+    { name: '完了', href: '#', current: true },
   ];
 
   function classNames(...classes: (string | false | null | undefined)[]): string {
@@ -492,7 +492,7 @@ export default function Flow() {
                             style={{ height: '36px' }}
                             className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
                           >
-                            完了
+                            復元
                           </button>
                         </div>
                       </div>
