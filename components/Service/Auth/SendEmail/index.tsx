@@ -92,6 +92,9 @@ export default function Login() {
               パスワードリセット用のメールを送信します。
               <br />
               リクビジョンに登録されているメールアドレスをご入力ください。
+              <br />
+              <br />
+              realunivlog@gmail.comからメールが届きます。
             </div>
           </div>
 
