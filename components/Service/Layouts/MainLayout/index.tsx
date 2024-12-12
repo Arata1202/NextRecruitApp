@@ -8,7 +8,6 @@ import {
   CalendarDaysIcon,
   ChartBarIcon,
   InformationCircleIcon,
-  BookOpenIcon,
   BuildingOffice2Icon,
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
@@ -54,7 +53,6 @@ export default function MainLayout() {
     { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
     { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
     { name: 'ToDoリスト', href: '/service/todo', icon: NumberedListIcon },
-    { name: 'ご利用ガイド', href: '/service/manual', icon: BookOpenIcon },
     // { name: '設定', href: '/service/settings', icon: Cog6ToothIcon },
   ].map((item) => ({
     ...item,
