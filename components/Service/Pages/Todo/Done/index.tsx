@@ -110,10 +110,11 @@ export default function Flow() {
             title,
             description,
             started_at,
-            ended_at,
+            ended_at
             `,
           )
-          .eq('supabaseauth_id', userId);
+          .eq('supabaseauth_id', userId)
+          .eq('done', 1);
 
         const { data, error } = await query;
 
@@ -339,7 +340,7 @@ export default function Flow() {
 
   const tabs = [
     { name: '未完了', href: '../todo', current: false },
-    { name: '完了', href: '#', current: true },
+    { name: '実行済み', href: '#', current: true },
   ];
 
   function classNames(...classes: (string | false | null | undefined)[]): string {
