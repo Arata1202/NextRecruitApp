@@ -14,6 +14,7 @@ import {
   ClipboardDocumentListIcon,
   NumberedListIcon,
   ShareIcon,
+  BookOpenIcon,
 } from '@heroicons/react/24/outline';
 import {
   Dialog,
@@ -155,6 +156,20 @@ export default function MainLayout() {
                     <ul role="list" className="-mx-2 space-y-1">
                       <li>
                         <a
+                          onClick={() =>
+                            window.open('https://www.instagram.com/riku.vision', '_blank')
+                          }
+                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                        >
+                          <BookOpenIcon
+                            aria-hidden="true"
+                            className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                          />
+                          ご利用ガイド
+                        </a>
+                      </li>
+                      <li>
+                        <a
                           onClick={handleShare}
                           className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
                         >
@@ -228,6 +243,18 @@ export default function MainLayout() {
               </li>
               <li className="mt-auto">
                 <ul role="list" className="-mx-2 space-y-1">
+                  <li>
+                    <button
+                      onClick={() => window.open('https://www.instagram.com/riku.vision', '_blank')}
+                      className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                    >
+                      <BookOpenIcon
+                        aria-hidden="true"
+                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                      />
+                      ご利用ガイド
+                    </button>
+                  </li>
                   <li>
                     <button
                       onClick={handleShare}
