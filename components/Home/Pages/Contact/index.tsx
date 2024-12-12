@@ -155,6 +155,7 @@ const ContactPage = () => {
               </div>
               <p className="mt-2 text-lg/8">
                 リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
+                送信後、realunivlog@gmail.comから確認メールが届きます。
               </p>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">

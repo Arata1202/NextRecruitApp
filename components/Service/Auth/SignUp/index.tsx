@@ -194,6 +194,9 @@ export default function SignUp() {
                 ログイン
               </a>
               できます。
+              <br />
+              <br />
+              realunivlog@gmail.comからメールが届きます。
             </div>
           </div>
 
