@@ -3,6 +3,8 @@
 import { supabase } from '@/libs/supabase';
 import { useState, useRef, Fragment } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
+import { isAndroid, isIOS } from 'react-device-detect';
+import { useA2HS } from '@/hooks/A2hs';
 import {
   Bars3Icon,
   CalendarDaysIcon,
@@ -15,6 +17,8 @@ import {
   NumberedListIcon,
   ShareIcon,
   BookOpenIcon,
+  DevicePhoneMobileIcon,
+  ArrowUpOnSquareIcon,
 } from '@heroicons/react/24/outline';
 import {
   Dialog,
@@ -47,6 +51,8 @@ export default function MainLayout() {
     return classes.filter(Boolean).join(' ');
   }
 
+  const [A2hsOpen, setA2hsOpen] = useState(false);
+
   const SidebarNavigation = [
     { name: '就活イベント', href: '/service', icon: InformationCircleIcon },
     { name: 'カレンダー', href: '/service/calendar', icon: CalendarDaysIcon },
@@ -60,6 +66,9 @@ export default function MainLayout() {
     current:
       pathname === item.href || (pathname.startsWith(item.href + '/') && item.href !== '/service'),
   }));
+
+  const isPWA =
+    typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches;
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const router = useRouter();
@@ -86,6 +95,19 @@ export default function MainLayout() {
   const handleConfirmLogout = async () => {
     await supabase.auth.signOut();
     router.push('/service/auth/login');
+  };
+
+  const [, promptToInstall] = useA2HS({
+    onAccepted: () => {
+      console.log('ホーム画面に追加が受け入れられました');
+    },
+    onDismissed: () => {
+      console.log('ホーム画面に追加が拒否されました');
+    },
+  });
+
+  const handleClose = () => {
+    setA2hsOpen(false);
   };
   return (
     <>
@@ -154,6 +176,37 @@ export default function MainLayout() {
                   </li>
                   <li className="mt-auto">
                     <ul role="list" className="-mx-2 space-y-1">
+                      {(isAndroid || isIOS) && !isPWA && (
+                        <>
+                          {isAndroid ? (
+                            <li>
+                              <a
+                                onClick={promptToInstall}
+                                className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                              >
+                                <DevicePhoneMobileIcon
+                                  aria-hidden="true"
+                                  className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                                />
+                                アプリ登録
+                              </a>
+                            </li>
+                          ) : isIOS ? (
+                            <li>
+                              <a
+                                onClick={() => setA2hsOpen(true)}
+                                className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                              >
+                                <DevicePhoneMobileIcon
+                                  aria-hidden="true"
+                                  className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                                />
+                                アプリ登録
+                              </a>
+                            </li>
+                          ) : null}
+                        </>
+                      )}
                       <li>
                         <a
                           onClick={() =>
@@ -511,6 +564,59 @@ export default function MainLayout() {
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
+      <Transition.Root show={A2hsOpen} as={Fragment}>
+        <Dialog as="div" className="text-gray-700 relative z-50" onClose={() => {}}>
+          <DialogBackdrop
+            transition
+            className="fixed inset-0 bg-gray-500/75 transition-opacity data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in"
+          />
+
+          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <DialogPanel
+                transition
+                style={{ width: '100%' }}
+                className="m-auto relative transform overflow-hidden rounded-lg bg-white px-4 pb-4 pt-5 text-left shadow-xl transition-all data-[closed]:translate-y-4 data-[closed]:opacity-0 data-[enter]:duration-300 data-[leave]:duration-200 data-[enter]:ease-out data-[leave]:ease-in sm:my-8 sm:w-full sm:max-w-lg sm:p-6 data-[closed]:sm:translate-y-0 data-[closed]:sm:scale-95"
+              >
+                <div className="mt-3 text-center sm:mt-0 sm:text-left">
+                  <div className="sm:flex sm:items-start">
+                    <div className="mx-auto flex size-12 shrink-0 items-center justify-center rounded-full bg-blue-100 sm:mx-0 sm:size-10">
+                      <DevicePhoneMobileIcon aria-hidden="true" className="size-6 text-blue-500" />
+                    </div>
+                    <div className="mt-2 text-center sm:ml-4 sm:text-left">
+                      <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
+                        アプリを追加する
+                      </Dialog.Title>
+                      <div className="mt-2">
+                        <div className="text-sm text-gray-500 text-left">
+                          <div className="text-left flex">
+                            ブラウザの
+                            <div className="flex">
+                              「シェアアイコン
+                              <ArrowUpOnSquareIcon aria-hidden="true" className="h-4 w-4" />
+                              」をタップして
+                            </div>
+                          </div>
+                          「ホーム画面に追加」を選択してください。
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div className="mt-3">
+                  <button
+                    onClick={handleClose}
+                    className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                  >
+                    閉じる
+                  </button>
+                </div>
+              </DialogPanel>
             </div>
           </div>
         </Dialog>
