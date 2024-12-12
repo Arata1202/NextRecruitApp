@@ -331,6 +331,22 @@ export default function Flow() {
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
+  const handleDoneTodo = async (id: number) => {
+    try {
+      const { error } = await supabase.from('todo').update({ done: 1 }).eq('id', id);
+
+      if (error) {
+        console.error('Error updating the `done` column:', error.message);
+        return;
+      }
+
+      setAnalyses((prev) => prev.filter((detail) => detail.id !== id));
+      setFilteredAnalyses((prev) => prev.filter((detail) => detail.id !== id));
+    } catch (err) {
+      console.error('Error completing the analysis:', err);
+    }
+  };
+
   const formatDateWithoutTimezone = (datetime: string) => {
     const [datePart, timePart] = datetime.split('T');
     const [year, month, day] = datePart.split('-');
@@ -490,6 +506,7 @@ export default function Flow() {
                           </div>
                           <button
                             type="button"
+                            onClick={() => handleDoneTodo(analysis.id)}
                             style={{ height: '36px' }}
                             className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
                           >

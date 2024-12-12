@@ -139,7 +139,7 @@ export default function Flow() {
             const dateB = b.started_at
               ? new Date(b.started_at).getTime()
               : new Date(b.ended_at || 0).getTime();
-            return dateA - dateB;
+            return dateB - dateA;
           });
 
           setAnalyses(sortedData);
@@ -338,6 +338,22 @@ export default function Flow() {
     return `${year}年${month}月${day}日 ${hours}:${minutes}`;
   };
 
+  const handleDoneTodo = async (id: number) => {
+    try {
+      const { error } = await supabase.from('todo').update({ done: 0 }).eq('id', id);
+
+      if (error) {
+        console.error('Error updating the `done` column:', error.message);
+        return;
+      }
+
+      setAnalyses((prev) => prev.filter((detail) => detail.id !== id));
+      setFilteredAnalyses((prev) => prev.filter((detail) => detail.id !== id));
+    } catch (err) {
+      console.error('Error completing the analysis:', err);
+    }
+  };
+
   const tabs = [
     { name: '未完了', href: '../todo', current: false },
     { name: '実行済み', href: '#', current: true },
@@ -490,6 +506,7 @@ export default function Flow() {
                           </div>
                           <button
                             type="button"
+                            onClick={() => handleDoneTodo(analysis.id)}
                             style={{ height: '36px' }}
                             className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
                           >
