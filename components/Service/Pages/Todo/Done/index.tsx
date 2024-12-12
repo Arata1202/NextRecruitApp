@@ -12,6 +12,7 @@ import {
   PencilIcon,
   TrashIcon,
   NumberedListIcon,
+  MagnifyingGlassIcon,
 } from '@heroicons/react/24/solid';
 
 type Analysis = {
@@ -41,7 +42,7 @@ export default function Flow() {
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
-  const [searchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState('');
   const [descriptionLength, setDescriptionLength] = useState(0);
   const [loading, setLoading] = useState(true);
 
@@ -392,7 +393,7 @@ export default function Flow() {
                   </div>
                 </div>
               </div>
-              {/* <div>
+              <div>
                 <div className="pb-2 flex">
                   <div className="w-full Search relative mt-2 rounded-md shadow-sm">
                     <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
@@ -407,7 +408,7 @@ export default function Flow() {
                     />
                   </div>
                 </div>
-              </div> */}
+              </div>
               <div>
                 <div className="">
                   <div className="border-b border-gray-300">
