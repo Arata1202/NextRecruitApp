@@ -26,8 +26,10 @@ interface EventData {
 export default function DashBoard() {
   const [currentDate, setCurrentDate] = useState('');
   const [tomorrowDate, setTomorrowDate] = useState('');
+  const [dayAfterTomorrowDate, setDayAfterTomorrowDate] = useState('');
   const [todayEvents, setTodayEvents] = useState<EventData[]>([]);
   const [tomorrowEvents, setTomorrowEvents] = useState<EventData[]>([]);
+  const [dayAfterTomorrowEvents, setDayAfterTomorrowEvents] = useState<EventData[]>([]);
   const [loading, setLoading] = useState(true);
   const router = useRouter();
 
@@ -39,8 +41,10 @@ export default function DashBoard() {
     };
     const now = convertToJST(new Date());
     const tomorrow = addDays(now, 1);
+    const dayAfterTomorrow = addDays(now, 2);
     setCurrentDate(format(now, 'M月d日（EEE）', { locale: ja }));
     setTomorrowDate(format(tomorrow, 'M月d日（EEE）', { locale: ja }));
+    setDayAfterTomorrowDate(format(dayAfterTomorrow, 'M月d日（EEE）', { locale: ja }));
 
     const fetchEvents = async () => {
       const {
@@ -124,8 +128,30 @@ export default function DashBoard() {
           return dateA - dateB;
         });
 
+      const filteredDayAfterTomorrowEvents = events
+        .filter((event) => {
+          const eventStart = event.started_at ? subHours(new Date(event.started_at), 9) : null;
+          const eventEnd = subHours(new Date(event.ended_at), 9);
+          return (
+            (eventStart && isSameDay(eventStart, dayAfterTomorrow)) ||
+            (!eventStart && isSameDay(eventEnd, dayAfterTomorrow)) ||
+            (eventStart && eventStart < dayAfterTomorrow && eventEnd >= dayAfterTomorrow) ||
+            isSameDay(eventEnd, dayAfterTomorrow)
+          );
+        })
+        .sort((a, b) => {
+          const dateA = a.started_at
+            ? new Date(a.started_at).getTime()
+            : new Date(a.ended_at).getTime();
+          const dateB = b.started_at
+            ? new Date(b.started_at).getTime()
+            : new Date(b.ended_at).getTime();
+          return dateA - dateB;
+        });
+
       setTodayEvents(filteredTodayEvents);
       setTomorrowEvents(filteredTomorrowEvents);
+      setDayAfterTomorrowEvents(filteredDayAfterTomorrowEvents);
       setTimeout(() => {
         setLoading(false);
       }, 100);
@@ -272,6 +298,64 @@ export default function DashBoard() {
     );
   };
 
+  const renderDayAfterTomorrowEvents = () => {
+    const validDayAfterTomorrowEvents = dayAfterTomorrowEvents.filter(
+      (event) => event.selection && event.selection.title,
+    );
+
+    if (validDayAfterTomorrowEvents.length > 0) {
+      return validDayAfterTomorrowEvents.map((event, index) => (
+        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+          <div>
+            <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
+              <h3 className="text-base/7 font-semibold">
+                {event.selection?.title || '未設定'} -{' '}
+                {event.title_id === 1
+                  ? event.customtitle || '未設定'
+                  : event.selectionflowtitle?.title || '未設定'}
+              </h3>
+              <button
+                type="button"
+                onClick={() => handleIconClick(event.selection.id)}
+                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+              >
+                詳細
+              </button>
+            </div>
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+              <p className="whitespace-pre-wrap">{event.description}</p>
+              <div className="text-sm mt-2">
+                {event.started_at && (
+                  <p>
+                    開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                  </p>
+                )}
+                <p>
+                  {event.started_at ? '終了： ' : '締切： '}
+                  {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      ));
+    }
+    return (
+      <div className="mt-5">
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+          <div>
+            <div className="px-4 py-3 sm:px-6 flex">
+              <h3 className="text-base/7 font-semibold">明後日の予定はありません。</h3>
+            </div>
+            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+              <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
       <div>
@@ -318,6 +402,17 @@ export default function DashBoard() {
                     </div>
                   </div>
                   {renderTomorrowEvents()}
+                </div>
+                {/* 明後日のイベント */}
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-1">
+                  <div className="md:flex md:items-center md:justify-between">
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                        明後日 {dayAfterTomorrowDate}
+                      </h2>
+                    </div>
+                  </div>
+                  {renderDayAfterTomorrowEvents()}
                 </div>
               </>
             )}
