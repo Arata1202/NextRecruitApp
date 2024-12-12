@@ -115,7 +115,7 @@ export default function Flow() {
             `,
           )
           .eq('supabaseauth_id', userId)
-          .eq('done', 0);
+          .eq('done', 1);
 
         const { data, error } = await query;
 
@@ -140,7 +140,7 @@ export default function Flow() {
             const dateB = b.started_at
               ? new Date(b.started_at).getTime()
               : new Date(b.ended_at || 0).getTime();
-            return dateA - dateB;
+            return dateB - dateA;
           });
 
           setAnalyses(sortedData);
@@ -332,9 +332,16 @@ export default function Flow() {
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
+  const formatDateWithoutTimezone = (datetime: string) => {
+    const [datePart, timePart] = datetime.split('T');
+    const [year, month, day] = datePart.split('-');
+    const [hours, minutes] = timePart.split(':');
+    return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+  };
+
   const handleDoneTodo = async (id: number) => {
     try {
-      const { error } = await supabase.from('todo').update({ done: 1 }).eq('id', id);
+      const { error } = await supabase.from('todo').update({ done: 0 }).eq('id', id);
 
       if (error) {
         console.error('Error updating the `done` column:', error.message);
@@ -348,16 +355,9 @@ export default function Flow() {
     }
   };
 
-  const formatDateWithoutTimezone = (datetime: string) => {
-    const [datePart, timePart] = datetime.split('T');
-    const [year, month, day] = datePart.split('-');
-    const [hours, minutes] = timePart.split(':');
-    return `${year}年${month}月${day}日 ${hours}:${minutes}`;
-  };
-
   const tabs = [
-    { name: '未完了', href: '#', current: true },
-    { name: '実行済み', href: './todo/done', current: false },
+    { name: '未完了', href: '../todo', current: false },
+    { name: '実行済み', href: '#', current: true },
   ];
 
   function classNames(...classes: (string | false | null | undefined)[]): string {
@@ -511,7 +511,7 @@ export default function Flow() {
                             style={{ height: '36px' }}
                             className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
                           >
-                            完了
+                            復元
                           </button>
                         </div>
                       </div>
