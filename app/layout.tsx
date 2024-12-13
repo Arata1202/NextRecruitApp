@@ -5,6 +5,7 @@ import './globals.css';
 import Script from 'next/script';
 import type { Viewport } from 'next';
 import ScrollTopButton from '@/components/Service/Common/ScrollToTop';
+import { Adsense } from '@/components/Common/Adsense/AdsenseScript';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -97,6 +98,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}>
         <div className="LightTheme">{children}</div>
         <ScrollTopButton />
+        <Adsense />
       </body>
     </html>
   );

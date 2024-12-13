@@ -9,6 +9,10 @@
   border-color: rgb(209 213 219) !important;
   --tw-ring-color: rgb(209 213 219) !important;
 }
+/* アドセンス */
+.FirstAd {
+  min-height: 280px !important;
+}
 /* PWA ホームバー */
 .HomeBar {
   padding-bottom: calc(env(safe-area-inset-bottom)) !important;
@@ -102,6 +106,9 @@
   }
   .fc-event-title {
     font-size: 10px;
+  }
+  .FirstAd {
+    min-height: 200px !important;
   }
 }
 /* .fc-event-title {
