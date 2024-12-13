@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
+import { isSameDay } from 'date-fns';
 import { Fragment } from 'react';
 import {
   ExclamationTriangleIcon,
@@ -60,6 +61,9 @@ export default function Flow() {
       ended_at: '',
     },
   });
+
+  const today = new Date();
+  today.setHours(today.getHours() - 9);
 
   // ユーザー取得
   useEffect(() => {
@@ -355,6 +359,109 @@ export default function Flow() {
     return `${year}年${month}月${day}日 ${hours}:${minutes}`;
   };
 
+  const adjustTimezone = (dateString: string | null) => {
+    if (!dateString) return null;
+    const date = new Date(dateString);
+    date.setHours(date.getHours() - 9);
+    return date;
+  };
+
+  const expiredFilteredAnalyses = filteredAnalyses.filter((analysis) => {
+    const endedAt = adjustTimezone(analysis.ended_at);
+    return endedAt && endedAt < today;
+  });
+
+  const formatTodayDate = () => {
+    const today = new Date();
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short',
+    };
+    const formatter = new Intl.DateTimeFormat('ja-JP', options);
+    let formattedDate = formatter.format(today);
+
+    formattedDate = formattedDate.replace(/\((.*?)\)/g, '（$1）');
+
+    return `本日 ${formattedDate}`;
+  };
+
+  const todayFilteredAnalyses = filteredAnalyses.filter((analysis) => {
+    const startedAt = adjustTimezone(analysis.started_at);
+    const endedAt = adjustTimezone(analysis.ended_at);
+
+    return (startedAt && isSameDay(today, startedAt)) || (endedAt && isSameDay(today, endedAt));
+  });
+
+  const formatTomorrowDate = () => {
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short',
+    };
+    const formatter = new Intl.DateTimeFormat('ja-JP', options);
+    let formattedDate = formatter.format(tomorrow);
+
+    formattedDate = formattedDate.replace(/\((.*?)\)/g, '（$1）');
+
+    return `明日 ${formattedDate}`;
+  };
+
+  const tomorrowFilteredAnalyses = filteredAnalyses.filter((analysis) => {
+    const startedAt = adjustTimezone(analysis.started_at);
+    const endedAt = adjustTimezone(analysis.ended_at);
+
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    return (
+      (startedAt && isSameDay(tomorrow, startedAt)) || (endedAt && isSameDay(tomorrow, endedAt))
+    );
+  });
+
+  const formatDayAfterTomorrowDate = () => {
+    const dayAfterTomorrow = new Date();
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+
+    const options: Intl.DateTimeFormatOptions = {
+      month: 'long',
+      day: 'numeric',
+      weekday: 'short',
+    };
+    const formatter = new Intl.DateTimeFormat('ja-JP', options);
+    let formattedDate = formatter.format(dayAfterTomorrow);
+
+    formattedDate = formattedDate.replace(/\((.*?)\)/g, '（$1）');
+
+    return `明後日 ${formattedDate}`;
+  };
+
+  const dayAfterTomorrowFilteredAnalyses = filteredAnalyses.filter((analysis) => {
+    const startedAt = adjustTimezone(analysis.started_at);
+    const endedAt = adjustTimezone(analysis.ended_at);
+
+    const dayAfterTomorrow = new Date();
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+
+    return (
+      (startedAt && isSameDay(dayAfterTomorrow, startedAt)) ||
+      (endedAt && isSameDay(dayAfterTomorrow, endedAt))
+    );
+  });
+
+  const beyondDayAfterTomorrowFilteredAnalyses = filteredAnalyses.filter((analysis) => {
+    const startedAt = adjustTimezone(analysis.started_at);
+    const endedAt = adjustTimezone(analysis.ended_at);
+
+    const dayAfterTomorrow = new Date();
+    dayAfterTomorrow.setDate(dayAfterTomorrow.getDate() + 2);
+
+    return (startedAt && startedAt > dayAfterTomorrow) || (endedAt && endedAt > dayAfterTomorrow);
+  });
+
   const tabs = [
     { name: '未完了', href: '#', current: true },
     { name: '実行済み', href: './todo/done', current: false },
@@ -435,20 +542,315 @@ export default function Flow() {
             </div>
 
             {/* メインコンテンツ */}
-            <div
-              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100"
-              style={{
-                paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
-              }}
-            >
+            {/* 期限切れ */}
+            <div className="px-4 sm:px-6 lg:px-8 mt-5 pb-5 bg-gray-100">
               {loading ? (
                 <></>
-              ) : filteredAnalyses.length === 0 ? (
-                <div className="mt-5">
-                  <div className="overflow-hidden bg-white shadow rounded-lg mb-5 mt-5">
+              ) : (
+                <div className="md:flex md:items-center md:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                      期限切れ
+                    </h2>
+                  </div>
+                </div>
+              )}
+              {loading ? (
+                <></>
+              ) : expiredFilteredAnalyses.length === 0 ? (
+                <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
+                  <div>
+                    <div className="px-4 py-3 sm:px-6 flex">
+                      <h3 className="text-base/7 font-semibold">期限切れのToDoはありません。</h3>
+                    </div>
+                    <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                      <p className="whitespace-pre-wrap">
+                        右上の追加ボタンから、ToDoを追加してみましょう！
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                expiredFilteredAnalyses.map((analysis) => (
+                  <div
+                    key={analysis.id}
+                    className="overflow-hidden bg-white shadow rounded-lg mt-5"
+                  >
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">
-                        <h3 className="text-base/7 font-semibold">データがありません。</h3>
+                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <div className="flex ml-auto items-start">
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(analysis)}
+                            className="ml-3 hover:text-blue-500"
+                          >
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openDeleteModal(analysis)}
+                            className="ml-3 hover:text-blue-500"
+                          >
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                        {analysis.description && (
+                          <>
+                            <p className="whitespace-pre-wrap">{analysis.description}</p>
+                            <p className="flex justify-end text-sm mt-1">
+                              {analysis.description.replace(/\s/g, '').length} 文字
+                            </p>
+                          </>
+                        )}
+                        <div className="text-sm mt-2 flex items-end justify-between">
+                          <div>
+                            {analysis.started_at && (
+                              <p>
+                                開始：
+                                {analysis.started_at
+                                  ? formatDateWithoutTimezone(analysis.started_at)
+                                  : '未設定'}
+                              </p>
+                            )}
+                            <p>
+                              {analysis.started_at ? '終了：' : '締切：'}
+                              {analysis.ended_at
+                                ? formatDateWithoutTimezone(analysis.ended_at)
+                                : '未設定'}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDoneTodo(analysis.id)}
+                            style={{ height: '36px' }}
+                            className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                          >
+                            完了
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* 今日 */}
+            <div className="px-4 sm:px-6 lg:px-8 pb-5 bg-gray-100">
+              {loading ? (
+                <></>
+              ) : (
+                <div className="md:flex md:items-center md:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                      {formatTodayDate()}
+                    </h2>
+                  </div>
+                </div>
+              )}
+              {loading ? (
+                <></>
+              ) : todayFilteredAnalyses.length === 0 ? (
+                <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
+                  <div>
+                    <div className="px-4 py-3 sm:px-6 flex">
+                      <h3 className="text-base/7 font-semibold">本日のToDoはありません。</h3>
+                    </div>
+                    <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                      <p className="whitespace-pre-wrap">
+                        右上の追加ボタンから、ToDoを追加してみましょう！
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                todayFilteredAnalyses.map((analysis) => (
+                  <div
+                    key={analysis.id}
+                    className="overflow-hidden bg-white shadow rounded-lg mt-5"
+                  >
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <div className="flex ml-auto items-start">
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(analysis)}
+                            className="ml-3 hover:text-blue-500"
+                          >
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openDeleteModal(analysis)}
+                            className="ml-3 hover:text-blue-500"
+                          >
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                        {analysis.description && (
+                          <>
+                            <p className="whitespace-pre-wrap">{analysis.description}</p>
+                            <p className="flex justify-end text-sm mt-1">
+                              {analysis.description.replace(/\s/g, '').length} 文字
+                            </p>
+                          </>
+                        )}
+                        <div className="text-sm mt-2 flex items-end justify-between">
+                          <div>
+                            {analysis.started_at && (
+                              <p>
+                                開始：
+                                {analysis.started_at
+                                  ? formatDateWithoutTimezone(analysis.started_at)
+                                  : '未設定'}
+                              </p>
+                            )}
+                            <p>
+                              {analysis.started_at ? '終了：' : '締切：'}
+                              {analysis.ended_at
+                                ? formatDateWithoutTimezone(analysis.ended_at)
+                                : '未設定'}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDoneTodo(analysis.id)}
+                            style={{ height: '36px' }}
+                            className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                          >
+                            完了
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* 明日 */}
+            <div className="px-4 sm:px-6 lg:px-8 pb-5 bg-gray-100">
+              {loading ? (
+                <></>
+              ) : (
+                <div className="md:flex md:items-center md:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                      {formatTomorrowDate()}
+                    </h2>
+                  </div>
+                </div>
+              )}
+              {loading ? (
+                <></>
+              ) : tomorrowFilteredAnalyses.length === 0 ? (
+                <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
+                  <div>
+                    <div className="px-4 py-3 sm:px-6 flex">
+                      <h3 className="text-base/7 font-semibold">明日のToDoはありません。</h3>
+                    </div>
+                    <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                      <p className="whitespace-pre-wrap">
+                        右上の追加ボタンから、ToDoを追加してみましょう！
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                tomorrowFilteredAnalyses.map((analysis) => (
+                  <div
+                    key={analysis.id}
+                    className="overflow-hidden bg-white shadow rounded-lg mt-5"
+                  >
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <div className="flex ml-auto items-start">
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(analysis)}
+                            className="ml-3 hover:text-blue-500"
+                          >
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openDeleteModal(analysis)}
+                            className="ml-3 hover:text-blue-500"
+                          >
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                        {analysis.description && (
+                          <>
+                            <p className="whitespace-pre-wrap">{analysis.description}</p>
+                            <p className="flex justify-end text-sm mt-1">
+                              {analysis.description.replace(/\s/g, '').length} 文字
+                            </p>
+                          </>
+                        )}
+                        <div className="text-sm mt-2 flex items-end justify-between">
+                          <div>
+                            {analysis.started_at && (
+                              <p>
+                                開始：
+                                {analysis.started_at
+                                  ? formatDateWithoutTimezone(analysis.started_at)
+                                  : '未設定'}
+                              </p>
+                            )}
+                            <p>
+                              {analysis.started_at ? '終了：' : '締切：'}
+                              {analysis.ended_at
+                                ? formatDateWithoutTimezone(analysis.ended_at)
+                                : '未設定'}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDoneTodo(analysis.id)}
+                            style={{ height: '36px' }}
+                            className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                          >
+                            完了
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* 明後日 */}
+            <div className="px-4 sm:px-6 lg:px-8 pb-5 bg-gray-100">
+              {loading ? (
+                <></>
+              ) : (
+                <div className="md:flex md:items-center md:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                      {formatDayAfterTomorrowDate()}
+                    </h2>
+                  </div>
+                </div>
+              )}
+              {loading ? (
+                <></>
+              ) : dayAfterTomorrowFilteredAnalyses.length === 0 ? (
+                <div className="mt-5">
+                  <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">明後日のToDoはありません。</h3>
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
@@ -459,10 +861,113 @@ export default function Flow() {
                   </div>
                 </div>
               ) : (
-                filteredAnalyses.map((analysis) => (
+                dayAfterTomorrowFilteredAnalyses.map((analysis) => (
                   <div
                     key={analysis.id}
-                    className="overflow-hidden bg-white shadow rounded-lg mb-5"
+                    className="overflow-hidden bg-white shadow rounded-lg mt-5"
+                  >
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <div className="flex ml-auto items-start">
+                          <button
+                            type="button"
+                            onClick={() => openEditModal(analysis)}
+                            className="ml-3 hover:text-blue-500"
+                          >
+                            <PencilIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => openDeleteModal(analysis)}
+                            className="ml-3 hover:text-blue-500"
+                          >
+                            <TrashIcon className="h-4 w-4" aria-hidden="true" />
+                          </button>
+                        </div>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                        {analysis.description && (
+                          <>
+                            <p className="whitespace-pre-wrap">{analysis.description}</p>
+                            <p className="flex justify-end text-sm mt-1">
+                              {analysis.description.replace(/\s/g, '').length} 文字
+                            </p>
+                          </>
+                        )}
+                        <div className="text-sm mt-2 flex items-end justify-between">
+                          <div>
+                            {analysis.started_at && (
+                              <p>
+                                開始：
+                                {analysis.started_at
+                                  ? formatDateWithoutTimezone(analysis.started_at)
+                                  : '未設定'}
+                              </p>
+                            )}
+                            <p>
+                              {analysis.started_at ? '終了：' : '締切：'}
+                              {analysis.ended_at
+                                ? formatDateWithoutTimezone(analysis.ended_at)
+                                : '未設定'}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDoneTodo(analysis.id)}
+                            style={{ height: '36px' }}
+                            className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                          >
+                            完了
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            {/* それ以降 */}
+            <div
+              className="px-4 sm:px-6 lg:px-8 bg-gray-100"
+              style={{
+                paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
+              }}
+            >
+              {loading ? (
+                <></>
+              ) : (
+                <div className="md:flex md:items-center md:justify-between">
+                  <div className="min-w-0 flex-1">
+                    <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                      それ以降
+                    </h2>
+                  </div>
+                </div>
+              )}
+              {loading ? (
+                <></>
+              ) : beyondDayAfterTomorrowFilteredAnalyses.length === 0 ? (
+                <div className="mt-5">
+                  <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
+                    <div>
+                      <div className="px-4 py-3 sm:px-6 flex">
+                        <h3 className="text-base/7 font-semibold">それ以降のToDoはありません。</h3>
+                      </div>
+                      <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                        <p className="whitespace-pre-wrap">
+                          右上の追加ボタンから、ToDoを追加してみましょう！
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                beyondDayAfterTomorrowFilteredAnalyses.map((analysis) => (
+                  <div
+                    key={analysis.id}
+                    className="overflow-hidden bg-white shadow rounded-lg mt-5"
                   >
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">
