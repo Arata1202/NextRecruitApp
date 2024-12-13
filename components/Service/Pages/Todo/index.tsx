@@ -932,7 +932,7 @@ export default function Flow() {
             <div
               className="px-4 sm:px-6 lg:px-8 bg-gray-100"
               style={{
-                paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
+                paddingBottom: `calc(60px + env(safe-area-inset-bottom))`,
               }}
             >
               {loading ? (
