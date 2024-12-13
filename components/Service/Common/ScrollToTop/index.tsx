@@ -20,7 +20,7 @@ const ScrollTopButton: React.FC = () => {
         transition: 'opacity 0.3s, visibility 0.3s',
         width: '40px',
         height: '40px',
-        bottom: '10px',
+        bottom: `calc(10px + env(safe-area-inset-bottom))`,
         right: '10px',
       }}
     >

@@ -404,7 +404,12 @@ export default function DashBoard() {
                   {renderTomorrowEvents()}
                 </div>
                 {/* 明後日のイベント */}
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-10 mt-5">
+                <div
+                  className="px-4 sm:px-6 lg:px-8 bg-gray-100 mt-5"
+                  style={{
+                    paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
+                  }}
+                >
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                       <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
