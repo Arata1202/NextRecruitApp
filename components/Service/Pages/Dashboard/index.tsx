@@ -171,7 +171,7 @@ export default function DashBoard() {
 
     if (validTodayEvents.length > 0) {
       return validTodayEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
               <h3 className="text-base/7 font-semibold">
@@ -216,8 +216,8 @@ export default function DashBoard() {
       ));
     }
     return (
-      <div className="mt-5">
-        <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+      <div className="">
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">本日の予定はありません。</h3>
@@ -238,7 +238,7 @@ export default function DashBoard() {
 
     if (validTomorrowEvents.length > 0) {
       return validTomorrowEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
               <h3 className="text-base/7 font-semibold">
@@ -283,8 +283,8 @@ export default function DashBoard() {
       ));
     }
     return (
-      <div className="mt-5">
-        <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+      <div className="">
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">明日の予定はありません。</h3>
@@ -305,7 +305,7 @@ export default function DashBoard() {
 
     if (validDayAfterTomorrowEvents.length > 0) {
       return validDayAfterTomorrowEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
               <h3 className="text-base/7 font-semibold">
@@ -341,8 +341,8 @@ export default function DashBoard() {
       ));
     }
     return (
-      <div className="mt-5">
-        <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+      <div className="">
+        <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">明後日の予定はありません。</h3>
@@ -382,10 +382,10 @@ export default function DashBoard() {
               <></>
             ) : (
               <>
-                <div className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 pb-1">
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-1 mt-5">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
-                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                      <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
                         本日 {currentDate}
                       </h2>
                     </div>
@@ -393,10 +393,10 @@ export default function DashBoard() {
                   {renderTodayEvents()}
                 </div>
                 {/* 明日のイベント */}
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-1">
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-1 mt-5">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
-                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                      <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
                         明日 {tomorrowDate}
                       </h2>
                     </div>
@@ -404,10 +404,10 @@ export default function DashBoard() {
                   {renderTomorrowEvents()}
                 </div>
                 {/* 明後日のイベント */}
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-1">
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-1 mt-5">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
-                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                      <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
                         明後日 {dayAfterTomorrowDate}
                       </h2>
                     </div>
