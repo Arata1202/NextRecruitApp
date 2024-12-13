@@ -47,8 +47,6 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        <meta name="robots" content="noindex" />
-
         <Script async strategy="lazyOnload" src={process.env.GOOGLE_ANALYTICS_ID} />
         <Script
           id="google-analytics"
