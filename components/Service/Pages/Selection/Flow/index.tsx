@@ -540,7 +540,7 @@ export default function Flow() {
                 <></>
               ) : filteredAnalyses.length === 0 ? (
                 <div className="mt-5">
-                  <div className="overflow-hidden bg-white shadow sm:rounded-lg mb-5 mt-5">
+                  <div className="overflow-hidden bg-white shadow rounded-lg mb-5 mt-5">
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">
                         <h3 className="text-base/7 font-semibold">データがありません。</h3>
@@ -557,7 +557,7 @@ export default function Flow() {
                 filteredAnalyses.map((analysis) => (
                   <div
                     key={analysis.id}
-                    className="overflow-hidden bg-white shadow sm:rounded-lg mb-5"
+                    className="overflow-hidden bg-white shadow rounded-lg mb-5"
                   >
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">

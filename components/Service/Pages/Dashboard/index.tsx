@@ -171,7 +171,7 @@ export default function DashBoard() {
 
     if (validTodayEvents.length > 0) {
       return validTodayEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
+        <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
               <h3 className="text-base/7 font-semibold">
@@ -217,7 +217,7 @@ export default function DashBoard() {
     }
     return (
       <div className="">
-        <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
+        <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">本日の予定はありません。</h3>
@@ -238,7 +238,7 @@ export default function DashBoard() {
 
     if (validTomorrowEvents.length > 0) {
       return validTomorrowEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
+        <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
               <h3 className="text-base/7 font-semibold">
@@ -284,7 +284,7 @@ export default function DashBoard() {
     }
     return (
       <div className="">
-        <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
+        <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">明日の予定はありません。</h3>
@@ -305,7 +305,7 @@ export default function DashBoard() {
 
     if (validDayAfterTomorrowEvents.length > 0) {
       return validDayAfterTomorrowEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
+        <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
               <h3 className="text-base/7 font-semibold">
@@ -342,7 +342,7 @@ export default function DashBoard() {
     }
     return (
       <div className="">
-        <div className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
+        <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
           <div>
             <div className="px-4 py-3 sm:px-6 flex">
               <h3 className="text-base/7 font-semibold">明後日の予定はありません。</h3>
