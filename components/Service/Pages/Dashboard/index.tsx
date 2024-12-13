@@ -173,7 +173,7 @@ export default function DashBoard() {
       return validTodayEvents.map((event, index) => (
         <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
-            <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
+            <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
               <h3 className="text-base/7 font-semibold">
                 {event.selection?.title || '未設定'} -{' '}
                 {event.title_id === 1
@@ -192,7 +192,7 @@ export default function DashBoard() {
               <button
                 type="button"
                 onClick={() => handleIconClick(event.selection.id)}
-                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
               >
                 詳細
               </button>
@@ -240,7 +240,7 @@ export default function DashBoard() {
       return validTomorrowEvents.map((event, index) => (
         <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
-            <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
+            <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
               <h3 className="text-base/7 font-semibold">
                 {event.selection?.title || '未設定'} -{' '}
                 {event.title_id === 1
@@ -259,7 +259,7 @@ export default function DashBoard() {
               <button
                 type="button"
                 onClick={() => handleIconClick(event.selection.id)}
-                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
               >
                 詳細
               </button>
@@ -307,7 +307,7 @@ export default function DashBoard() {
       return validDayAfterTomorrowEvents.map((event, index) => (
         <div key={index} className="overflow-hidden bg-white shadow sm:rounded-lg mt-5">
           <div>
-            <div className="px-4 py-3 sm:px-6 flex justify-between items-center">
+            <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
               <h3 className="text-base/7 font-semibold">
                 {event.selection?.title || '未設定'} -{' '}
                 {event.title_id === 1
@@ -317,7 +317,7 @@ export default function DashBoard() {
               <button
                 type="button"
                 onClick={() => handleIconClick(event.selection.id)}
-                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
               >
                 詳細
               </button>

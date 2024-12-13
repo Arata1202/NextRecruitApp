@@ -462,11 +462,11 @@ export default function Flow() {
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">
                         <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
-                        <div className="flex ml-auto">
+                        <div className="flex ml-auto items-start">
                           <button
                             type="button"
                             onClick={() => openEditModal(analysis)}
-                            className="hover:text-blue-500"
+                            className="ml-3 hover:text-blue-500"
                           >
                             <PencilIcon className="h-4 w-4" aria-hidden="true" />
                           </button>
