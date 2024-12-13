@@ -460,8 +460,9 @@ export default function Calendar() {
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">
                         <h3 className="text-base/7 font-semibold">
-                          {analysis.title === 'カスタムタイトル'
-                            ? analysis.customtitle || 'カスタムタイトルが設定されていません。'
+                          {analysis.title === 'タイトルを自由に記入する'
+                            ? analysis.customtitle ||
+                              'タイトルを自由に記入するが設定されていません。'
                             : analysis.title}
                         </h3>
                         <div className="flex ml-auto">
@@ -557,21 +558,6 @@ export default function Calendar() {
                         )}
                       </div>
 
-                      {isCustom && (
-                        <div className="mb-4">
-                          <input
-                            {...register('customtitle', { required: 'タイトルを入力してください' })}
-                            placeholder="カスタムタイトル"
-                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
-                          />
-                          {errors.customtitle && (
-                            <p className="text-red-500 mt-1 text-left">
-                              {errors.customtitle.message}
-                            </p>
-                          )}
-                        </div>
-                      )}
-
                       <div className="mb-4 flex">
                         <label>
                           <input
@@ -588,9 +574,24 @@ export default function Calendar() {
                             }}
                             className="mr-2"
                           />
-                          カスタムタイトル
+                          タイトルを自由に記入する
                         </label>
                       </div>
+
+                      {isCustom && (
+                        <div className="mb-4">
+                          <input
+                            {...register('customtitle', { required: 'タイトルを入力してください' })}
+                            placeholder="タイトル"
+                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                          {errors.customtitle && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.customtitle.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
 
                       <div className="mb-4">
                         <textarea
@@ -703,25 +704,6 @@ export default function Calendar() {
                         )}
                       </div>
 
-                      {isEditCustom && (
-                        <div className="mb-4">
-                          <input
-                            {...register('customtitle', { required: 'タイトルを入力してください' })}
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              setEditData({ ...editData, customtitle: value });
-                            }}
-                            placeholder="カスタムタイトル"
-                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
-                          />
-                          {errors.customtitle && (
-                            <p className="text-red-500 mt-1 text-left">
-                              {errors.customtitle.message}
-                            </p>
-                          )}
-                        </div>
-                      )}
-
                       <div className="mb-4 flex">
                         <label>
                           <input
@@ -746,9 +728,28 @@ export default function Calendar() {
                             }}
                             className="mr-2"
                           />
-                          カスタムタイトル
+                          タイトルを自由に記入する
                         </label>
                       </div>
+
+                      {isEditCustom && (
+                        <div className="mb-4">
+                          <input
+                            {...register('customtitle', { required: 'タイトルを入力してください' })}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              setEditData({ ...editData, customtitle: value });
+                            }}
+                            placeholder="タイトル"
+                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          />
+                          {errors.customtitle && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.customtitle.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
 
                       <div className="mb-4">
                         <textarea
