@@ -363,7 +363,12 @@ export default function Template() {
             </div>
 
             {/* メインコンテンツ */}
-            <div className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 pb-10">
+            <div
+              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100"
+              style={{
+                paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
+              }}
+            >
               {loading ? (
                 <></>
               ) : filteredAnalyses.length === 0 ? (
