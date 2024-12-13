@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: '就活イベント｜リクビジョン',
   robots: {
     index: false,
+    follow: true,
   },
 };
 
