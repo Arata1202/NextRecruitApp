@@ -4,6 +4,7 @@ import localFont from 'next/font/local';
 import './globals.css';
 import Script from 'next/script';
 import type { Viewport } from 'next';
+import ScrollTopButton from '@/components/Service/Common/ScrollToTop';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -95,6 +96,7 @@ export default function RootLayout({
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}>
         <div className="LightTheme">{children}</div>
+        <ScrollTopButton />
       </body>
     </html>
   );
