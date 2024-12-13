@@ -454,6 +454,7 @@ export default function Flow() {
   const tabs = [
     { name: '企業情報', href: './detail', current: false },
     { name: '選考状況', href: '#', current: true },
+    { name: '企業一覧へ戻る', href: '../', current: false },
   ];
 
   function classNames(...classes: (string | false | null | undefined)[]): string {

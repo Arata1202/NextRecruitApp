@@ -403,6 +403,7 @@ export default function Detail() {
   const tabs = [
     { name: '企業情報', href: '#', current: true },
     { name: '選考状況', href: './flow', current: false },
+    { name: '企業一覧へ戻る', href: '../', current: false },
   ];
 
   function classNames(...classes: (string | false | null | undefined)[]): string {
