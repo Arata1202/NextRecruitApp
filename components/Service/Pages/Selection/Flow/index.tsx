@@ -472,8 +472,11 @@ export default function Flow() {
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
                     <div className="flex">
-                      <BuildingOfficeIcon className="TitleIcon mr-1" aria-hidden="true" />
-                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
+                      <BuildingOfficeIcon
+                        className="TitleIcon mr-1 flex-shrink-0"
+                        aria-hidden="true"
+                      />
+                      <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight overflow-hidden whitespace-nowrap">
                         {pageTitle}
                       </h2>
                     </div>
@@ -563,11 +566,11 @@ export default function Flow() {
                               'タイトルを自由に記入するが設定されていません。'
                             : analysis.title}
                         </h3>
-                        <div className="flex ml-auto">
+                        <div className="flex ml-auto items-start">
                           <button
                             type="button"
                             onClick={() => openEditModal(analysis)}
-                            className="hover:text-blue-500"
+                            className="ml-3 hover:text-blue-500"
                           >
                             <PencilIcon className="h-4 w-4" aria-hidden="true" />
                           </button>

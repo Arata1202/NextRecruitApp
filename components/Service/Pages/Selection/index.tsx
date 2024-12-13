@@ -399,7 +399,7 @@ export default function Template() {
                       > */}
                         <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
                         {/* </a> */}
-                        <div className="flex ml-auto">
+                        <div className="flex ml-auto items-start">
                           {/* <button
                             type="button"
                             onClick={() => handleNavigateToDetail(analysis.id)}
@@ -410,7 +410,7 @@ export default function Template() {
                           <button
                             type="button"
                             onClick={() => openEditModal(analysis)}
-                            className="hover:text-blue-500"
+                            className="ml-3 hover:text-blue-500"
                           >
                             <PencilIcon className="h-4 w-4" aria-hidden="true" />
                           </button>
