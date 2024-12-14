@@ -16,7 +16,7 @@ import {
   ClipboardDocumentListIcon,
   NumberedListIcon,
   ShareIcon,
-  BookOpenIcon,
+  EnvelopeIcon,
   DevicePhoneMobileIcon,
   ArrowUpOnSquareIcon,
 } from '@heroicons/react/24/outline';
@@ -207,7 +207,7 @@ export default function MainLayout() {
                           ) : null}
                         </>
                       )}
-                      <li>
+                      {/* <li>
                         <a
                           onClick={() =>
                             window.open('https://www.instagram.com/riku.vision', '_blank')
@@ -219,6 +219,18 @@ export default function MainLayout() {
                             className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
                           />
                           ご利用ガイド
+                        </a>
+                      </li> */}
+                      <li>
+                        <a
+                          onClick={() => (window.location.href = '/contact')}
+                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                        >
+                          <EnvelopeIcon
+                            aria-hidden="true"
+                            className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                          />
+                          お問い合わせ
                         </a>
                       </li>
                       <li>
@@ -296,7 +308,7 @@ export default function MainLayout() {
               </li>
               <li className="mt-auto">
                 <ul role="list" className="-mx-2 space-y-1">
-                  <li>
+                  {/* <li>
                     <button
                       onClick={() => window.open('https://www.instagram.com/riku.vision', '_blank')}
                       className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
@@ -306,6 +318,18 @@ export default function MainLayout() {
                         className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
                       />
                       ご利用ガイド
+                    </button>
+                  </li> */}
+                  <li>
+                    <button
+                      onClick={() => (window.location.href = '/contact')}
+                      className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                    >
+                      <EnvelopeIcon
+                        aria-hidden="true"
+                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
+                      />
+                      お問い合わせ
                     </button>
                   </li>
                   <li>
