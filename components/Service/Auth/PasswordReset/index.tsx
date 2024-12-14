@@ -8,6 +8,7 @@ import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
 import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
 import ErrorAlert from '@/components/Service/Common/Alert/ErrorAlert';
+import Display from '@/components/Common/Adsense/Display';
 
 type FormData = {
   password: string;
@@ -109,7 +110,7 @@ export default function SignUp() {
             </li>
           </ol>
         </nav>
-        <div className="pt-6 pb-11">
+        <div className="pt-6">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             <h2 className="text-center text-2xl/9 font-bold tracking-tight">パスワードリセット</h2>
             <div className="text-center mt-5" style={{ fontSize: '14px' }}>
@@ -215,6 +216,10 @@ export default function SignUp() {
               </form>
             </div>
           </div>
+        </div>
+
+        <div className="FirstAd mt-5 mb-11 px-6 lg:px-0">
+          <Display slot="7998948559" />
         </div>
       </div>
 

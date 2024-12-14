@@ -8,6 +8,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import { HomeIcon } from '@heroicons/react/24/solid';
 import ErrorAlert from '@/components/Service/Common/Alert/ErrorAlert';
 import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
+import Display from '@/components/Common/Adsense/Display';
 
 type FormData = {
   email: string;
@@ -182,7 +183,7 @@ export default function SignUp() {
             </li>
           </ol>
         </nav>
-        <div className="pt-6 pb-11">
+        <div className="pt-6">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             {/* <img alt="Your Company" src="/images/icons/app/2.png" className="mx-auto h-10 w-auto" /> */}
             <h2 className="text-center text-2xl/9 font-bold tracking-tight">アカウント登録</h2>
@@ -429,6 +430,10 @@ export default function SignUp() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="FirstAd mt-5 mb-11 px-6 lg:px-0">
+          <Display slot="7998948559" />
         </div>
       </div>
 

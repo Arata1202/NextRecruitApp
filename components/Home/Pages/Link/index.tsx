@@ -1,6 +1,7 @@
 import styles from './index.module.css';
 import { HomeIcon, DocumentTextIcon } from '@heroicons/react/24/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
+import Display from '@/components/Common/Adsense/Display';
 export default function Link() {
   return (
     <>
@@ -62,6 +63,10 @@ export default function Link() {
                 </p>
               </div>
             </div>
+          </div>
+
+          <div className="FirstAd mt-5">
+            <Display slot="7998948559" />
           </div>
         </div>
       </div>
