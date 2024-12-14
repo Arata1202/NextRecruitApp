@@ -3,6 +3,7 @@ import {
   CalendarDaysIcon,
   ClipboardDocumentListIcon,
 } from '@heroicons/react/24/outline';
+import Display from '@/components/Common/Adsense/Display';
 
 const features = [
   {
@@ -223,6 +224,10 @@ export default function Top() {
               </div>
             </div>
           </div>
+        </div>
+
+        <div className="FirstAd mt-5 overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
+          <Display slot="7998948559" />
         </div>
       </div>
     </>

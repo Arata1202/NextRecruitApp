@@ -201,7 +201,7 @@ export default function Calendar() {
                 dayCellDidMount={dayCellDidMount}
               />
 
-              <div className="FirstAd mb-5 mt-4">
+              <div className="FirstAd mb-5 mt-5">
                 <Display slot="7998948559" />
               </div>
             </div>
