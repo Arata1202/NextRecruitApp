@@ -503,9 +503,13 @@ export default function Calendar() {
                 ))
               )}
 
-              <div className="FirstAd mb-5">
-                <Display slot="7998948559" />
-              </div>
+              {loading ? (
+                <></>
+              ) : (
+                <div className="FirstAd mb-5">
+                  <Display slot="7998948559" />
+                </div>
+              )}
             </div>
           </main>
         </div>

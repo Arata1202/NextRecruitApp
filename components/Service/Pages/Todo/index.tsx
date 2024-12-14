@@ -1034,9 +1034,13 @@ export default function Flow() {
                 ))
               )}
 
-              <div className="FirstAd mb-5 mt-5">
-                <Display slot="7998948559" />
-              </div>
+              {loading ? (
+                <></>
+              ) : (
+                <div className="FirstAd mb-5 mt-5">
+                  <Display slot="7998948559" />
+                </div>
+              )}
             </div>
           </main>
         </div>

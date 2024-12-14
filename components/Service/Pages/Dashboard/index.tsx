@@ -422,14 +422,18 @@ export default function DashBoard() {
               </>
             )}
 
-            <div
-              className="FirstAd bg-gray-100 px-4 sm:px-6 lg:px-8"
-              style={{
-                paddingBottom: `calc(60px + env(safe-area-inset-bottom))`,
-              }}
-            >
-              <Display slot="7998948559" />
-            </div>
+            {loading ? (
+              <></>
+            ) : (
+              <div
+                className="FirstAd bg-gray-100 px-4 sm:px-6 lg:px-8"
+                style={{
+                  paddingBottom: `calc(60px + env(safe-area-inset-bottom))`,
+                }}
+              >
+                <Display slot="7998948559" />
+              </div>
+            )}
           </main>
         </div>
       </div>
