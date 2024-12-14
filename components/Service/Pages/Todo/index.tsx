@@ -7,6 +7,7 @@ import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { isSameDay } from 'date-fns';
 import { Fragment } from 'react';
+import Display from '@/components/Common/Adsense/Display';
 import {
   ExclamationTriangleIcon,
   PlusIcon,
@@ -544,6 +545,9 @@ export default function Flow() {
             {/* メインコンテンツ */}
             {/* 期限切れ */}
             <div className="px-4 sm:px-6 lg:px-8 mt-5 pb-5 bg-gray-100">
+              <div className="FirstAd mb-5">
+                <Display slot="3381880848" />
+              </div>
               {loading ? (
                 <></>
               ) : (
@@ -1029,6 +1033,10 @@ export default function Flow() {
                   </div>
                 ))
               )}
+
+              <div className="FirstAd mb-5 mt-5">
+                <Display slot="7998948559" />
+              </div>
             </div>
           </main>
         </div>

@@ -9,6 +9,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
+import Display from '@/components/Common/Adsense/Display';
 
 interface EventData {
   started_at: string;
@@ -180,6 +181,10 @@ export default function Calendar() {
                 paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
               }}
             >
+              <div className="FirstAd mb-5">
+                <Display slot="3381880848" />
+              </div>
+
               <FullCalendar
                 plugins={[dayGridPlugin, interactionPlugin, timeGridPlugin]}
                 locale="ja"
@@ -195,6 +200,10 @@ export default function Calendar() {
                 height="auto"
                 dayCellDidMount={dayCellDidMount}
               />
+
+              <div className="FirstAd mb-5 mt-4">
+                <Display slot="7998948559" />
+              </div>
             </div>
           </main>
         </div>

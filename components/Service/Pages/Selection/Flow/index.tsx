@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
+import Display from '@/components/Common/Adsense/Display';
 import { Fragment } from 'react';
 import {
   ExclamationTriangleIcon,
@@ -541,6 +542,9 @@ export default function Flow() {
                 paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
               }}
             >
+              <div className="FirstAd mb-5">
+                <Display slot="3381880848" />
+              </div>
               {loading ? (
                 <></>
               ) : filteredAnalyses.length === 0 ? (
@@ -619,6 +623,10 @@ export default function Flow() {
                   </div>
                 ))
               )}
+
+              <div className="FirstAd mb-5">
+                <Display slot="7998948559" />
+              </div>
             </div>
           </main>
         </div>
