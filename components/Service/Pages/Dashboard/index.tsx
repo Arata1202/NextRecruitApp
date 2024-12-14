@@ -4,6 +4,7 @@ import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
 import { format, isSameDay, addDays, subHours } from 'date-fns';
+import Display from '@/components/Common/Adsense/Display';
 import { ja } from 'date-fns/locale';
 import { supabase } from '@/libs/supabase';
 import { useRouter } from 'next/navigation';
@@ -377,12 +378,16 @@ export default function DashBoard() {
                 </div>
               </div>
             </div>
+
+            <div className="FirstAd mb-5 mt-5 px-4 sm:px-6 lg:px-8">
+              <Display slot="3381880848" />
+            </div>
             {/* 本日のイベント */}
             {loading ? (
               <></>
             ) : (
               <>
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-1 mt-5">
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                       <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
@@ -393,7 +398,7 @@ export default function DashBoard() {
                   {renderTodayEvents()}
                 </div>
                 {/* 明日のイベント */}
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-1 mt-5">
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                       <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
@@ -404,12 +409,7 @@ export default function DashBoard() {
                   {renderTomorrowEvents()}
                 </div>
                 {/* 明後日のイベント */}
-                <div
-                  className="px-4 sm:px-6 lg:px-8 bg-gray-100 mt-5"
-                  style={{
-                    paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
-                  }}
-                >
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                       <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
@@ -421,6 +421,15 @@ export default function DashBoard() {
                 </div>
               </>
             )}
+
+            <div
+              className="FirstAd bg-gray-100 px-4 sm:px-6 lg:px-8"
+              style={{
+                paddingBottom: `calc(60px + env(safe-area-inset-bottom))`,
+              }}
+            >
+              <Display slot="7998948559" />
+            </div>
           </main>
         </div>
       </div>
