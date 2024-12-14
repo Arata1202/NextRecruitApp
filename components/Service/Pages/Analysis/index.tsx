@@ -440,9 +440,9 @@ export default function Calendar() {
                 paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
               }}
             >
-              <div className="FirstAd mb-5">
+              {/* <div className="FirstAd mb-5">
                 <Display slot="3381880848" />
-              </div>
+              </div> */}
 
               {loading ? (
                 <></>

@@ -379,15 +379,15 @@ export default function DashBoard() {
               </div>
             </div>
 
-            <div className="FirstAd mb-5 mt-5 px-4 sm:px-6 lg:px-8">
+            {/* <div className="FirstAd mb-5 mt-5 px-4 sm:px-6 lg:px-8">
               <Display slot="3381880848" />
-            </div>
+            </div> */}
             {/* 本日のイベント */}
             {loading ? (
               <></>
             ) : (
               <>
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5">
+                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5 mt-5">
                   <div className="md:flex md:items-center md:justify-between">
                     <div className="min-w-0 flex-1">
                       <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">

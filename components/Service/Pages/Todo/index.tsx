@@ -545,9 +545,9 @@ export default function Flow() {
             {/* メインコンテンツ */}
             {/* 期限切れ */}
             <div className="px-4 sm:px-6 lg:px-8 mt-5 pb-5 bg-gray-100">
-              <div className="FirstAd mb-5">
+              {/* <div className="FirstAd mb-5">
                 <Display slot="3381880848" />
-              </div>
+              </div> */}
               {loading ? (
                 <></>
               ) : (
