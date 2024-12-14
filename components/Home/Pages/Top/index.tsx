@@ -226,7 +226,7 @@ export default function Top() {
           </div>
         </div>
 
-        <div className="FirstAd mt-5 overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
+        <div className="TopTitle FirstAd overflow-hidden mx-auto max-w-7xl px-6 lg:px-8">
           <Display slot="7998948559" />
         </div>
       </div>
