@@ -47,7 +47,6 @@
     "typescript-eslint": "^8.17.0"
   },
   "devDependencies": {
-    "@eslint/compat": "^1.2.3",
     "@fullcalendar/list": "^6.1.15",
     "@types/nodemailer": "^6.4.16",
     "autoprefixer": "^10.4.20",
@@ -58,7 +57,6 @@
     "nodemailer": "^6.9.16",
     "postcss": "^8.4.49",
     "preline": "^2.6.0",
-    "prisma": "^5.22.0",
     "react-device-detect": "^2.2.3",
     "react-onesignal": "^3.0.1",
     "tailwindcss": "^3.4.15",
