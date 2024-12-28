@@ -1,10 +1,6 @@
-## アーキテクチャ
-
-※ 今後作成予定
-
 ## リンク集
 
-※ リリースまで非公開
+- https://rikuvision.realunivlog.com
 
 ## 実装機能
 
@@ -23,23 +19,21 @@
 
 - PWA
 - OneSignal
-  - プッシュ通知
 
-## 技術構成
+## 技術スタック
+
+### 開発技術
 
 - Next.js
 - TypeScript
 - TailwindCSS
 - Supabase
+  - PostgreSQL
 - Vercel
-- Husky
-  - pre-commit
-    - Prettier
-    - ESLint
 - GitHub Actions
   - Deploy Vercel
-- Docker （オプション）
-  - Reverse Proxy
+- Docker
+  - Nginx
 
 ### デザインツール
 
