@@ -8,6 +8,7 @@
   <img src="https://img.shields.io/badge/-Typescript-000000.svg?logo=typescript&style=for-the-badge">
   <img src="https://img.shields.io/badge/-Tailwind CSS-000000.svg?logo=tailwindcss&style=for-the-badge">
   <img src="https://img.shields.io/badge/-Supabase-000000.svg?logo=supabase&style=for-the-badge">
+  <img src="https://img.shields.io/badge/-PostgreSQL-000000.svg?logo=postgresql&style=for-the-badge">
   <img src="https://img.shields.io/badge/-PWA-000000.svg?logo=pwa&style=for-the-badge">
   <img src="https://img.shields.io/badge/-OneSignal-000000.svg?logo=onesignal&style=for-the-badge">
   <img src="https://img.shields.io/badge/-Vercel-000000.svg?logo=vercel&style=for-the-badge">
