@@ -14,7 +14,6 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
-  MagnifyingGlassIcon,
   BuildingOfficeIcon,
 } from '@heroicons/react/24/solid';
 
@@ -444,17 +443,14 @@ export default function Detail() {
                 </div>
               </div>
               <div>
-                <div className="pb-2 flex">
-                  <div className="w-full Search relative mt-2 rounded-md shadow-sm">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-500" />
-                    </div>
+                <div className="flex">
+                  <div className="w-full Search relative rounded-md shadow-sm">
                     <input
                       type="text"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       placeholder="検索"
-                      className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                     />
                   </div>
 
@@ -609,7 +605,7 @@ export default function Detail() {
                       <div className="mb-4">
                         <select
                           {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '36px' }}
+                          style={{ height: '42px' }}
                           onChange={(e) => {
                             const value = e.target.value;
                             if (value === '1') {
@@ -618,7 +614,7 @@ export default function Detail() {
                               setIsCustom(false);
                             }
                           }}
-                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                          className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                         >
                           <option value="">タイトルを選択</option>
                           {analysisTitles
@@ -653,7 +649,7 @@ export default function Detail() {
                                 reset({ titleId: '' });
                               }
                             }}
-                            className="mr-2"
+                            className="mr-2 cursor-pointer"
                           />
                           タイトルを自由に記入する
                         </label>
@@ -664,7 +660,7 @@ export default function Detail() {
                           <input
                             {...register('customtitle', { required: 'タイトルを入力してください' })}
                             placeholder="タイトル"
-                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                            className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                           />
                           {errors.customtitle && (
                             <p className="text-red-500 mt-1 text-left">
@@ -679,7 +675,7 @@ export default function Detail() {
                           {...register('description', { required: '内容を入力してください' })}
                           placeholder="内容"
                           rows={10}
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500 focus:border-2 focus:border-blue-500 focus:outline-none"
                           onChange={(e) =>
                             setDescriptionLength(e.target.value.replace(/\s/g, '').length)
                           }
@@ -752,8 +748,8 @@ export default function Detail() {
                       <div className="mb-4">
                         <select
                           {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '36px' }}
                           value={editData.titleId}
+                          style={{ height: '42px' }}
                           onChange={(e) => {
                             const value = e.target.value;
                             setEditData({ ...editData, titleId: value });
@@ -763,7 +759,7 @@ export default function Detail() {
                               setEditIsCustom(false);
                             }
                           }}
-                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                          className={`cursor-pointer block w-full rounded-md border py-2.5 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                         >
                           <option value="">タイトルを選択</option>
                           {analysisTitles
@@ -807,7 +803,7 @@ export default function Detail() {
                                 }));
                               }
                             }}
-                            className="mr-2"
+                            className="mr-2 cursor-pointer"
                           />
                           タイトルを自由に記入する
                         </label>
@@ -822,7 +818,7 @@ export default function Detail() {
                               setEditData({ ...editData, customtitle: value });
                             }}
                             placeholder="タイトル"
-                            className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                            className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                           />
                           {errors.customtitle && (
                             <p className="text-red-500 mt-1 text-left">
@@ -843,7 +839,7 @@ export default function Detail() {
                             setEditData({ ...editData, description: value });
                             setDescriptionLength(value.replace(/\s/g, '').length);
                           }}
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500 focus:border-2 focus:border-blue-500 focus:outline-none"
                         />
                         <p className="flex justify-end text-sm mt-1">
                           {editData.description.replace(/\s/g, '').length} 文字

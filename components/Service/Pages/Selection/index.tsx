@@ -13,7 +13,6 @@ import {
   PlusIcon,
   PencilIcon,
   TrashIcon,
-  MagnifyingGlassIcon,
   BuildingOffice2Icon,
 } from '@heroicons/react/24/solid';
 
@@ -329,16 +328,13 @@ export default function Template() {
               </div>
               <div>
                 <div className="pb-5 flex">
-                  <div className="w-2/3 Search relative mt-2 rounded-md shadow-sm">
-                    <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                      <MagnifyingGlassIcon aria-hidden="true" className="size-5 text-gray-500" />
-                    </div>
+                  <div className="w-2/3 Search relative rounded-md shadow-sm">
                     <input
                       type="text"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}
                       placeholder="検索"
-                      className="block w-full rounded-md border-0 py-1.5 pl-10 ring-1 ring-inset ring-gray-300 placeholder:text-gray-500 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6"
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                     />
                   </div>
                   <div className="w-1/3 ml-2">
@@ -348,8 +344,7 @@ export default function Template() {
                         const value = e.target.value;
                         setSelectedStarTitle(value !== '' ? value : null);
                       }}
-                      style={{ height: '36px' }}
-                      className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                      className={`cursor-pointer block w-full h-full rounded-md border py-2.5 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                     >
                       <option value="">全て</option>
                       {selectionStars.map((star) => (
@@ -491,8 +486,7 @@ export default function Template() {
                         <input
                           {...register('title', { required: 'タイトルを入力してください' })}
                           placeholder="企業名"
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
-                          style={{ height: '38px' }}
+                          className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                         />
                         {errors.title && (
                           <p className="text-red-500 mt-1 text-left">{errors.title.message}</p>
@@ -506,8 +500,8 @@ export default function Template() {
                         <select
                           {...register('selectionStarId', { required: '選択してください' })}
                           id="selectionStar"
-                          style={{ height: '36px' }}
-                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                          style={{ height: '42px' }}
+                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                         >
                           <option value="">選択してください</option>
                           {selectionStars.map((star) => (
@@ -587,7 +581,7 @@ export default function Template() {
                           placeholder="企業名"
                           value={editData.title}
                           onChange={(e) => setEditData({ ...editData, title: e.target.value })}
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500"
+                          className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                         />
                         {errors.title && (
                           <p className="text-red-500 mt-1 text-left">{errors.title.message}</p>
@@ -605,8 +599,8 @@ export default function Template() {
                             const value = e.target.value;
                             setEditData({ ...editData, selectionStarId: value });
                           }}
-                          style={{ height: '36px' }}
-                          className="Search mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-blue-500 sm:text-sm/6"
+                          style={{ height: '42px' }}
+                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                         >
                           <option value="">選択してください</option>
                           {selectionStars.map((star) => (
