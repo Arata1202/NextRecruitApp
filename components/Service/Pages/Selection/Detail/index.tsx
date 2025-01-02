@@ -614,7 +614,7 @@ export default function Detail() {
                               setIsCustom(false);
                             }
                           }}
-                          className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                         >
                           <option value="">タイトルを選択</option>
                           {analysisTitles
@@ -904,7 +904,7 @@ export default function Detail() {
                       「{deleteData?.title}」を削除しますか？
                     </DialogTitle>
                     <div className="mt-2">
-                      <p className="text-sm">操作は取り消すことができません。</p>
+                      <p className="text-sm text-gray-500">操作は取り消すことができません。</p>
                     </div>
                   </div>
                 </div>

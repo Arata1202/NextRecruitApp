@@ -785,7 +785,7 @@ export default function Template() {
                       「{deleteData?.title}」を削除しますか？
                     </DialogTitle>
                     <div className="mt-2">
-                      <p className="text-sm">操作は取り消すことができません。</p>
+                      <p className="text-sm text-gray-500">操作は取り消すことができません。</p>
                     </div>
                   </div>
                 </div>
