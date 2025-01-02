@@ -515,7 +515,7 @@ export default function MainLayout() {
                       aria-label="シェアボタン"
                       url="https://rikuvision.realunivlog.com"
                       title="リクビジョン"
-                      className="m-1"
+                      className="m-1 hover:opacity-60"
                     >
                       <TwitterIcon size={40} round={true} />
                     </TwitterShareButton>
@@ -524,7 +524,7 @@ export default function MainLayout() {
                       aria-label="シェアボタン"
                       url="https://rikuvision.realunivlog.com"
                       title="リクビジョン"
-                      className="m-1"
+                      className="m-1 hover:opacity-60"
                     >
                       <FacebookIcon size={40} round={true} />
                     </FacebookShareButton>
@@ -533,7 +533,7 @@ export default function MainLayout() {
                       aria-label="シェアボタン"
                       url="https://rikuvision.realunivlog.com"
                       title="リクビジョン"
-                      className="m-1"
+                      className="m-1 hover:opacity-60"
                     >
                       <LineIcon size={40} round={true} />
                     </LineShareButton>
@@ -542,7 +542,7 @@ export default function MainLayout() {
                       aria-label="シェアボタン"
                       url="https://rikuvision.realunivlog.com"
                       title="リクビジョン"
-                      className="m-1"
+                      className="m-1 hover:opacity-60"
                     >
                       <HatenaIcon size={40} round={true} />
                     </HatenaShareButton>
@@ -552,7 +552,7 @@ export default function MainLayout() {
                       url="https://rikuvision.realunivlog.com"
                       media="/images/og/1.png"
                       description="リクビジョン"
-                      className="m-1"
+                      className="m-1 hover:opacity-60"
                     >
                       <PinterestIcon size={40} round={true} />
                     </PinterestShareButton>
@@ -561,7 +561,7 @@ export default function MainLayout() {
                       aria-label="シェアボタン"
                       url="https://rikuvision.realunivlog.com"
                       title="リクビジョン"
-                      className="m-1"
+                      className="m-1 hover:opacity-60"
                     >
                       <RedditIcon size={40} round={true} />
                     </RedditShareButton>
@@ -571,7 +571,7 @@ export default function MainLayout() {
                       url="https://rikuvision.realunivlog.com"
                       title="リクビジョン"
                       summary="就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。"
-                      className="m-1"
+                      className="m-1 hover:opacity-60"
                     >
                       <LinkedinIcon size={40} round={true} />
                     </LinkedinShareButton>
