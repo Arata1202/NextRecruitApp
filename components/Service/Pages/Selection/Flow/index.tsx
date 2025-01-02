@@ -272,6 +272,8 @@ export default function Flow() {
       reset({
         titleId: '',
         description: '',
+        started_at: '',
+        ended_at: '',
       });
       reset();
     }
