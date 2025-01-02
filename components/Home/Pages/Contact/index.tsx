@@ -52,7 +52,7 @@ const ContactPage = () => {
   const sendEmail = useCallback(() => {
     if (!formData) return;
 
-    fetch(`${process.env.NEXT_PUBLIC_EMAIL_ENDPOINT}`, {
+    fetch(`/api/sendemail`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -76,7 +76,7 @@ const ContactPage = () => {
   const handleConfirmSend = useCallback(() => {
     const verifyCaptcha = async () => {
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_RECAPTCHA_ENDPOINT}`, {
+        const response = await fetch(`/api/recaptcha`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
@@ -156,7 +156,6 @@ const ContactPage = () => {
               </div>
               <p className="mt-2 text-lg/8">
                 リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
-                送信後、realunivlog@gmail.comから確認メールが届きます。
               </p>
             </div>
             <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">
@@ -178,23 +177,23 @@ const ContactPage = () => {
                       name="email"
                       id="email"
                       autoComplete="email"
-                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                     />
                     {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                   </div>
                 </div>
                 <div className="sm:col-span-2">
                   <label htmlFor="last-name" className={`block text-sm font-semibold leading-6`}>
-                    題名
+                    件名
                   </label>
                   <div className="mt-2.5">
                     <input
-                      {...register('title', { required: '※ 題名を入力してください' })}
+                      {...register('title', { required: '※ 件名を入力してください' })}
                       type="text"
                       name="title"
                       id="title"
                       autoComplete="family-name"
-                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                     />
                     {errors.title && <p className="text-red-500">{errors.title.message}</p>}
                   </div>
@@ -209,7 +208,7 @@ const ContactPage = () => {
                       name="message"
                       id="message"
                       rows={4}
-                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:ring-blue-500`}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                       defaultValue={''}
                     />
                     {errors.message && <p className="text-red-500">{errors.message.message}</p>}
@@ -227,7 +226,7 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   disabled={!captchaValue}
-                  className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                  className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold shadow-s border hover:border-2 hover:border-blue-500 hover:text-blue-500`}
                 >
                   送信
                 </button>
@@ -284,12 +283,13 @@ const ContactPage = () => {
                     <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
                       <Dialog.Title
                         as="h1"
-                        className={`text-base font-bold leading-6 text-gray-700`}
+                        className={`font-bold leading-6 text-gray-700`}
+                        style={{ fontSize: '16px' }}
                       >
                         お問い合わせを送信しますか？
                       </Dialog.Title>
                       <div className="mt-2">
-                        <p className={`text-sm text-gray-700`}>
+                        <p className={`text-sm text-gray-500`} style={{ fontSize: '14px' }}>
                           送信ボタンは一度だけ押してください。送信完了まで数秒かかることがあります。
                         </p>
                       </div>
@@ -306,7 +306,7 @@ const ContactPage = () => {
                     </button>
                     <button
                       type="button"
-                      className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
+                      className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 sm:ml-3 sm:w-auto"
                       onClick={handleConfirmSend}
                     >
                       送信
@@ -343,10 +343,12 @@ const ContactPage = () => {
                     <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
                   </div>
                   <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className={`text-sm font-medium text-gray-700`}>
+                    <p className={`font-semibold text-gray-700`} style={{ fontSize: '16px' }}>
                       お問い合わせありがとうございます
                     </p>
-                    <p className="mt-1 text-sm text-gray-700">正常に処理が完了しました。</p>
+                    <p className="mt-1 text-gray-500" style={{ fontSize: '14px' }}>
+                      正常に処理が完了しました。
+                    </p>
                   </div>
                   <div className="ml-4 flex flex-shrink-0">
                     <button

@@ -24,13 +24,13 @@ export async function POST(req: Request) {
     const { title, email, message } = postData;
 
     const mailOptions = {
-      from: `"${EMAIL_FROM}" <${EMAIL_FROM}>`,
+      from: `"リクビジョン" <${EMAIL_FROM}>`,
       to: `${email},${EMAIL_TO}`,
       subject: 'お問い合わせありがとうございます',
       html: `
         <p>以下の内容でお問い合わせを承りました。</p>
         <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>メールアドレス: ${email}</p>
-        <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>題名: ${title}</p>
+        <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>件名: ${title}</p>
         <p style='padding: 12px; border-left: 4px solid #d0d0d0;'>お問い合わせ内容: ${message}</p>
       `,
     };
