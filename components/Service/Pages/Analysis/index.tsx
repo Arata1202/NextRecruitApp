@@ -701,6 +701,9 @@ export default function Calendar() {
                           <option value="">タイトルを選択</option>
                           {analysisTitles
                             .filter((title) => {
+                              if (title.id === 1) {
+                                return true;
+                              }
                               const isCurrentTitle = title.id.toString() === editData.titleId;
                               const isUsedTitle = analyses.some(
                                 (analysis) => analysis.title === title.title,
