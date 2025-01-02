@@ -35,8 +35,12 @@ const ConfirmAlert: React.FC<AlertProps> = ({ show, onClose, title, message }) =
                   <CheckCircleIcon className="h-6 w-6 text-green-500" aria-hidden="true" />
                 </div>
                 <div className="ml-3 w-0 flex-1 pt-0.5">
-                  <p className="text-sm font-bold">{title}</p>
-                  <p className="mt-1 text-sm">{message}</p>
+                  <p className="font-semibold" style={{ fontSize: '16px' }}>
+                    {title}
+                  </p>
+                  <p className="mt-1 text-gray-500" style={{ fontSize: '14px' }}>
+                    {message}
+                  </p>
                 </div>
                 <div className="ml-4 flex flex-shrink-0">
                   <button

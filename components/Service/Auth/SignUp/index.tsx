@@ -195,9 +195,6 @@ export default function SignUp() {
                 ログイン
               </a>
               できます。
-              <br />
-              <br />
-              realunivlog@gmail.comからメールが届きます。
             </div>
           </div>
 
@@ -221,7 +218,7 @@ export default function SignUp() {
                           message: '有効なメールアドレスを入力してください。',
                         },
                       })}
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 px-2"
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                     />
                     {errors.email && <p className="text-red-500">{errors.email.message}</p>}
                   </div>
@@ -263,7 +260,7 @@ export default function SignUp() {
                           return true;
                         },
                       })}
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 px-2"
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                     />
                     {errors.password && <p className="text-red-500">{errors.password.message}</p>}
                   </div>
@@ -282,7 +279,7 @@ export default function SignUp() {
                         required: 'パスワード（確認）を入力してください。',
                         validate: (value) => value === password || 'パスワードが一致しません。',
                       })}
-                      className="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-blue-500 sm:text-sm/6 px-2"
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                     />
                     {errors.passwordConf && (
                       <p className="text-red-500">{errors.passwordConf.message}</p>
@@ -320,7 +317,7 @@ export default function SignUp() {
                           {...register('privacy', {
                             required: 'プライバシーポリシーへの同意が必要です。',
                           })}
-                          className="text-gray-300 size-4 rounded border-gray-300 focus:ring-blue-500"
+                          className="text-gray-300 size-4 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
                         />
                       </div>
                       <div className="ml-3 text-sm/6">
@@ -355,7 +352,7 @@ export default function SignUp() {
                 <div>
                   <button
                     type="submit"
-                    className="flex w-full justify-center rounded-md bg-blue-500 px-3 py-1.5 text-sm/6 font-semibold text-white shadow-sm hover:bg-blue-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-500"
+                    className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
                   >
                     アカウントを登録する
                   </button>

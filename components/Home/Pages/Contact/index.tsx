@@ -226,7 +226,7 @@ const ContactPage = () => {
                 <button
                   type="submit"
                   disabled={!captchaValue}
-                  className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-center text-sm font-semibold shadow-s border hover:border-2 hover:border-blue-500 hover:text-blue-500`}
+                  className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
                 >
                   送信
                 </button>
