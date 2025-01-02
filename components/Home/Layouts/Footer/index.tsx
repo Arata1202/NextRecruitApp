@@ -131,7 +131,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-16 border-t border-gray-300 pt-8 sm:mt-20 lg:mt-24">
-          <p className="text-sm/6 ">Copyright © 2024 リクビジョン All Rights Reserved.</p>
+          <p className="text-xs ">Copyright © 2024 リクビジョン All Rights Reserved.</p>
         </div>
       </div>
     </footer>
