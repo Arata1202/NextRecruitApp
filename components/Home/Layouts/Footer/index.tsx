@@ -57,7 +57,7 @@ export default function Footer() {
                 style={{ height: '45px' }}
               />
             </a>
-            <div className="flex gap-x-6 underLogo">
+            {/* <div className="flex gap-x-6 underLogo">
               {navigation.social.map((item) => (
                 <a
                   key={item.name}
@@ -69,7 +69,7 @@ export default function Footer() {
                   <item.icon aria-hidden="true" className="size-6" />
                 </a>
               ))}
-            </div>
+            </div> */}
           </div>
           <div className="mt-16 grid grid-cols-2 gap-8 xl:col-span-2 xl:mt-0">
             <div className="md:grid md:grid-cols-2 md:gap-8">
