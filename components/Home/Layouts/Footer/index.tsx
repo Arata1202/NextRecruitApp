@@ -87,7 +87,7 @@ export default function Footer() {
               </div>
               <div className="mt-10 md:mt-0 footerMenu">
                 <h3 className="text-sm/6 font-semibold ">デベロッパー</h3>
-                <ul role="list" className="mt-6 space-y-4">
+                {/* <ul role="list" className="mt-6 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
                       <a
@@ -99,7 +99,7 @@ export default function Footer() {
                       </a>
                     </li>
                   ))}
-                </ul>
+                </ul> */}
               </div>
             </div>
             <div className="md:grid md:grid-cols-2 md:gap-8 footerMenu">
