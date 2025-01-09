@@ -8,7 +8,6 @@ import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import Display from '@/components/Common/Adsense/Display';
-import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 import { Fragment } from 'react';
 import {
   ExclamationTriangleIcon,
@@ -31,7 +30,6 @@ type AnalysisTitle = {
 };
 
 export default function Detail() {
-  useHeightGuardObserver();
   const { id } = useParams();
   const router = useRouter();
 
@@ -71,6 +69,24 @@ export default function Detail() {
       customtitle: '',
     },
   });
+
+  useEffect(() => {
+    const targets = document.querySelectorAll<HTMLElement>('.mut-height-guard');
+    const observers: MutationObserver[] = [];
+    targets.forEach((target) => {
+      const heightChangeObserver = new MutationObserver(() => {
+        target.style.height = '';
+      });
+      heightChangeObserver.observe(target, {
+        attributes: true,
+        attributeFilter: ['style'],
+      });
+      observers.push(heightChangeObserver);
+    });
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, []);
 
   // ユーザー取得
   useEffect(() => {
