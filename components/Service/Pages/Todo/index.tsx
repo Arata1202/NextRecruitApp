@@ -932,7 +932,7 @@ export default function Flow() {
 
             {/* それ以降 */}
             <div
-              className="px-4 sm:px-6 lg:px-8 bg-gray-100"
+              className="px-4 sm:px-6 lg:px-8 bg-gray-100 mut-height-guard"
               style={{
                 paddingBottom: `calc(60px + env(safe-area-inset-bottom))`,
               }}

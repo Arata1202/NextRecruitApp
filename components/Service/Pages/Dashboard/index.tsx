@@ -428,7 +428,7 @@ export default function DashBoard() {
               <></>
             ) : (
               <div
-                className="FirstAd bg-gray-100 px-4 sm:px-6 lg:px-8"
+                className="FirstAd bg-gray-100 px-4 sm:px-6 lg:px-8 mut-height-guard"
                 style={{
                   paddingBottom: `calc(60px + env(safe-area-inset-bottom))`,
                 }}
