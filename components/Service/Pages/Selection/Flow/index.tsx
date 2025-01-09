@@ -7,6 +7,7 @@ import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import Display from '@/components/Common/Adsense/Display';
+import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 import { Fragment } from 'react';
 import {
   ExclamationTriangleIcon,
@@ -31,6 +32,7 @@ type AnalysisTitle = {
 };
 
 export default function Flow() {
+  useHeightGuardObserver();
   const { id } = useParams();
   const router = useRouter();
 
@@ -467,8 +469,8 @@ export default function Flow() {
     <>
       <div>
         <MainLayout />
-        <div className="lg:pl-72">
-          <main className="h-screen">
+        <div className="lg:pl-72 mut-height-guard">
+          <main className="h-screen mut-height-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>

@@ -10,6 +10,7 @@ import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import Display from '@/components/Common/Adsense/Display';
+import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 
 interface EventData {
   started_at: string;
@@ -31,6 +32,7 @@ interface MappedEvent {
 }
 
 export default function Calendar() {
+  useHeightGuardObserver();
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const [holidays, setHolidays] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -157,8 +159,8 @@ export default function Calendar() {
     <>
       <div>
         <MainLayout />
-        <div className="lg:pl-72">
-          <main className="h-screen">
+        <div className="lg:pl-72 mut-height-guard">
+          <main className="h-screen mut-height-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>

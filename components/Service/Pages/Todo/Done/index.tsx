@@ -7,6 +7,7 @@ import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { Fragment } from 'react';
 import Display from '@/components/Common/Adsense/Display';
+import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 import {
   ExclamationTriangleIcon,
   PlusIcon,
@@ -24,6 +25,7 @@ type Analysis = {
 };
 
 export default function Flow() {
+  useHeightGuardObserver();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [isAllDay, setIsAllDay] = useState(false);
@@ -368,8 +370,8 @@ export default function Flow() {
     <>
       <div>
         <MainLayout />
-        <div className="lg:pl-72">
-          <main className="h-screen">
+        <div className="lg:pl-72 mut-height-guard">
+          <main className="h-screen mut-height-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>

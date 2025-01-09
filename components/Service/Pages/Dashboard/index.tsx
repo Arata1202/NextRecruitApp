@@ -5,6 +5,7 @@ import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
 import { format, isSameDay, addDays, subHours } from 'date-fns';
 import Display from '@/components/Common/Adsense/Display';
+import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 import { ja } from 'date-fns/locale';
 import { supabase } from '@/libs/supabase';
 import { useRouter } from 'next/navigation';
@@ -25,6 +26,7 @@ interface EventData {
 }
 
 export default function DashBoard() {
+  useHeightGuardObserver();
   const [currentDate, setCurrentDate] = useState('');
   const [tomorrowDate, setTomorrowDate] = useState('');
   const [dayAfterTomorrowDate, setDayAfterTomorrowDate] = useState('');
@@ -361,8 +363,8 @@ export default function DashBoard() {
     <>
       <div>
         <MainLayout />
-        <div className="lg:pl-72">
-          <main className="h-screen">
+        <div className="lg:pl-72 mut-height-guard">
+          <main className="h-screen mut-height-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>
