@@ -334,7 +334,7 @@ export default function Template() {
       <div>
         <MainLayout />
         <div className="lg:pl-72">
-          <main>
+          <main className="h-screen">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>
@@ -375,7 +375,7 @@ export default function Template() {
 
             {/* メインコンテンツ */}
             <div
-              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 min-h-screen"
+              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100"
               style={{
                 paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
               }}
