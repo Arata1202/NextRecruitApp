@@ -17,9 +17,6 @@
 .HomeBar {
   padding-bottom: calc(env(safe-area-inset-bottom)) !important;
 }
-.h-100vh {
-  height: 100vh !important;
-}
 
 /* メディアクエリ */
 .SidebarLayout {

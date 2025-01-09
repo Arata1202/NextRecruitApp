@@ -375,7 +375,7 @@ export default function Template() {
 
             {/* メインコンテンツ */}
             <div
-              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 h-100vh"
+              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100"
               style={{
                 paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
               }}
