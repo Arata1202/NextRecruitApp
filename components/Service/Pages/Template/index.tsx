@@ -329,6 +329,28 @@ export default function Template() {
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
 
+  useEffect(() => {
+    const targets = document.querySelectorAll<HTMLElement>('.mut-height-guard');
+    const observers: MutationObserver[] = [];
+
+    targets.forEach((target) => {
+      const heightChangeObserver = new MutationObserver(() => {
+        target.style.height = '';
+      });
+
+      heightChangeObserver.observe(target, {
+        attributes: true,
+        attributeFilter: ['style'],
+      });
+
+      observers.push(heightChangeObserver);
+    });
+
+    return () => {
+      observers.forEach((observer) => observer.disconnect());
+    };
+  }, []);
+
   return (
     <>
       <div>
@@ -375,7 +397,7 @@ export default function Template() {
 
             {/* メインコンテンツ */}
             <div
-              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100"
+              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 mut-height-guard"
               style={{
                 paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
               }}
