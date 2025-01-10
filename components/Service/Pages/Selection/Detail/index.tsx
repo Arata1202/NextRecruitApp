@@ -176,7 +176,7 @@ export default function Detail() {
     };
 
     fetchSelectionDetails();
-  }, [userId, id, loading]);
+  }, [userId, id]);
 
   // AnalysisTitle データ取得
   useEffect(() => {
