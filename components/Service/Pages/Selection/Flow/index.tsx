@@ -188,7 +188,7 @@ export default function Flow() {
     };
 
     fetchSelectionDetails();
-  }, [userId, id]);
+  }, [userId, id, loading]);
 
   // AnalysisTitle データ取得
   useEffect(() => {
