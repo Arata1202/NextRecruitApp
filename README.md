@@ -1,66 +1,147 @@
-<div id="top"><h1>リクビジョン</h1></div>
+<div id="top"></div>
+
+<div align="right">
+  
+![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/Arata1202/NextRecruitApp/vercel_deploy.yml)
+![GitHub License](https://img.shields.io/github/license/Arata1202/NextRecruitApp)
+
+</div>
+
+![3](/public/images/readme/title.png)
+
+## 目次
+- [リクビジョン](#top)
+  - [目次](#目次)
+  - [リンク一覧](#リンク一覧)
+  - [主な機能一覧](#主な機能一覧)
+  - [使用技術](#使用技術)
+  - [環境構築](#環境構築)
+    - [リポジトリのクローン](#リポジトリのクローン)
+    - [pnpmの場合](#pnpmの場合)
+      - [開発環境](#開発環境)
+      - [本番環境](#本番環境)
+    - [Dockerの場合](#Dockerの場合)
+  - [ディレクトリ構成](#ディレクトリ構成)
+  - [Gitの運用](#Gitの運用)
+    - [ブランチ](#ブランチ)
+    - [コミットメッセージの記法](#コミットメッセージの記法)
+
+## リンク一覧
+<ul><li><a href="https://rikuvision.realunivlog.com/">リクビジョン</a></li></ul>
+
+<p align="right">(<a href="#top">トップへ</a>)</p>
+
+## 主な機能一覧
+| アカウント登録ページ |　ログインページ |
+| ---- | ---- |
+| ![11](/public/images/readme/11.png) | ![12](/public/images/readme/12.png) |
+| 新規アカウント登録を行うページです。ソーシャルアカウントの場合は登録する必要はありません。 | ログインを行うページです。Google, X, GitHubのソーシャルログインにも対応しています。  |
+
+| パスワードリセットページ |　就活イベントページ |
+| ---- | ---- |
+| ![13](/public/images/readme/13.png) | ![14](/public/images/readme/14.png) |
+| パスワードを忘れた場合に、リセットを行うページです。 | 登録した就活イベントを、明後日まで一目で確認することができます。詳細から、企業ごとの選考状況を確認できます。 |
+
+| カレンダーページ |　企業管理ページ |
+| ---- | ---- |
+| ![15](/public/images/readme/15.png) | ![16](/public/images/readme/16.png) |
+| 登録した就活イベント（青）とToDoタスク（緑）を、カレンダーで閲覧することができます。イベントをクリックすることで、詳細を確認できます。 | 選考を受ける企業を登録することができます。星で志望度を表します。詳細から、企業情報と選考状況を登録できます。 |
+
+| 企業情報管理ページ |　選考状況管理ページ |
+| ---- | ---- |
+| ![17](/public/images/readme/17.png) | ![18](/public/images/readme/18.png) |
+| 登録した企業ごとに、詳細情報を登録することができます。 | 登録した企業ごとに、選考状況を登録できます。 |
+
+| ESテンプレートページ |　自己分析ページ |
+| ---- | ---- |
+| ![19](/public/images/readme/19.png) | ![20](/public/images/readme/20.png) |
+| ESで使い回し可能な、テンプレートを保存しておくことができます。 | 予め用意された質問をセレクトボックスから選び、答えていくことで自己分析を行うことができるページです。 |
+
+| ToDoリストページ |　お問い合わせページ |
+| ---- | ---- |
+| ![21](/public/images/readme/21.png) | ![22](/public/images/readme/22.png) |
+| ToDoタスクを登録することができます。完了をクリックすることで実行済みとなります。完了したタスクは復元可能です。 | 管理者にお問い合わせするページです。 |
+
+<p align="right">(<a href="#top">トップへ</a>)</p>
 
 ## 使用技術
 
-<!-- シールド一覧 -->
-<p style="display: inline">
-  <img src="https://img.shields.io/badge/-Next.js-000000.svg?logo=next.js&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Typescript-000000.svg?logo=typescript&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Tailwind CSS-000000.svg?logo=tailwindcss&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Supabase-000000.svg?logo=supabase&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-PostgreSQL-000000.svg?logo=postgresql&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-PWA-000000.svg?logo=pwa&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-OneSignal-000000.svg?logo=onesignal&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Vercel-000000.svg?logo=vercel&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Github Actions-000000.svg?logo=githubactions&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Docker-000000.svg?logo=docker&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Nginx-000000.svg?logo=nginx&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Canva-000000.svg?logo=canva&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Google AdSense-000000.svg?logo=googleadsense&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Google Analytics-000000.svg?logo=googleanalytics&style=for-the-badge">
-  <img src="https://img.shields.io/badge/-Google Search Console-000000.svg?logo=googlesearchconsole&style=for-the-badge">
-</p>
-
-## 目次
-
-1. [プロジェクトについて](#1-プロジェクトについて)
-2. [環境](#2-環境)
-3. [ディレクトリ構成](#3-ディレクトリ構成)
-4. [開発環境構築](#4-開発環境構築)
-4. [プレフィックス](#5-プレフィックス)
-
-## 1. プロジェクトについて
-
-就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービス
-
-  <p align="left">
-    <br />
-    <a href="https://rikuvision.realunivlog.com"><strong>リクビジョン »</strong></a>
-    <br />
-    <br />
+| Category          | Technology Stack                                     |
+| ----------------- | --------------------------------------------------   |
+| Frontend          | Next.js, TypeScript, Tailwind CSS                    |
+| Infrastructure    | Vercel                                               |
+| Database          | Supabase（PostgreSQL）                                |
+| Environment setup | Docker, Nginx                                        |
+| CI/CD             | GitHub Actions                                       |
+| Design            | Canva                                                |
+| Google            | AdSense, Analytics, Search Console, reCAPTCHA        |
+| etc.              | PWA, OneSignal                                       |
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
-## 2. 環境
+## 環境構築
 
-<!-- 言語、フレームワーク、ミドルウェア、インフラの一覧とバージョンを記載 -->
+### リポジトリのクローン
 
-| 主要なパッケージ  | バージョン |
-| --------------------- | ---------- |
-| next               | 15.0.3     |
-| react               | 18.3.1     |
-| typescript               | 5.6.3     |
-| tailwindcss               | 3.4.15     |
-| @supabase/supabase-js               | 2.47.10     |
-| husky               | 9.1.6     |
-| eslint               | 9.15.0     |
-| prettier               | 3.3.3     |
+```
+# リポジトリのクローン
+git clone git@github.com:Arata1202/NextRecruitApp.git
+cd NextRecruitApp
 
-その他のパッケージのバージョンは package.json を参照
+# .env.exampleから.envを作成
+mv .env.example .env
+
+# .envの編集
+vi .env
+```
+
+### pnpmの場合
+
+#### 開発環境
+
+```
+# node_modulesのインストール
+pnpm install
+
+# 開発サーバーの立ち上げ
+pnpm dev
+
+# ブラウザにアクセス
+http:localhost:3000
+```
+
+#### 本番環境
+
+```
+# node_modulesのインストール
+pnpm install
+
+# Next.jsのビルド
+pnpm build
+
+# ビルドしたNext.jsの起動
+pnpm start
+
+# ブラウザにアクセス
+http:localhost:3000
+```
+
+### Dockerの場合
+
+```
+# コンテナのビルドと起動
+docker compose up -d --build
+
+# ブラウザにアクセス
+http:localhost:3000
+
+# コンテナの停止
+docker compose down
+```
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
-## 3. ディレクトリ構成
+## ディレクトリ構成
 
 ```
 ❯ tree -a -I "node_modules|.next|.git|.pytest_cache|static" -L 2
@@ -126,82 +207,19 @@
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
-## 4. 開発環境構築
+## Gitの運用
 
-### 開発環境の構築と起動
+### ブランチ
 
-.env ファイルを[環境変数一覧](#環境変数一覧)を元に作成
+Github-flowを使用する。
+masterとfeatureブランチで運用する。
 
-```
-NEXT_PUBLIC_SUPABASE_URL=
-NEXT_PUBLIC_SUPABASE_ANON_KEY=
-NEXT_PUBLIC_ONESIGNAL_APP_ID=
-GOOGLE_ANALYTICS_ID=
-GOOGLE_ADSENSE_ID=
-RECAPTCHA_SECRET_KEY=
-EMAIL_TO=
-EMAIL_FROM=
-SMTP_USER=
-SMTP_PASS=
-```
+| ブランチ名 |   役割   | 派生元 | マージ先 |
+| :--------: | :------: | :----: | :------: |
+|    master    | 本番環境 |   -    |    -     |
+| feature/\* | 機能開発 |  master  |   master   |
 
-.env ファイルを作成後、以下の方法で開発環境を起動
-
-#### pnpmを使用する場合
-
-```
-pnpm install
-pnpm run dev
-```
-
-#### Dockerを使用する場合
-
-```
-docker compose up -d --build
-```
-
-### 動作確認
-
-http://localhost:3000 にアクセスできるか確認
-アクセスできたら成功
-
-### コンテナの停止
-
-以下のコマンドでコンテナを停止
-
-```
-docker compose down
-```
-
-### 環境変数一覧
-
-| 変数名                 | 役割                                      |
-| ---------------------- | ----------------------------------------- |
-| NEXT_PUBLIC_SUPABASE_URL    | SupabaseのProject URL |
-| NEXT_PUBLIC_SUPABASE_ANON_KEY         | SupabaseのProject API keys（anon）   |
-| NEXT_PUBLIC_ONESIGNAL_APP_ID             | OneSignalのappId         |
-| GOOGLE_ANALYTICS_ID         | Google AnalyticsのスクリプトID       |
-| GOOGLE_ADSENSE_ID             | Google AdSenseのスクリプトID         |
-| RECAPTCHA_SECRET_KEY             | Google reCAPTCHAのシークレットキー                 |
-| EMAIL_TO          | お問い合わせの送信先メールアドレス              |
-| EMAIL_FROM                  | お問い合わせの送信元メールアドレス                  |
-| SMTP_USER        | Googleアカウントのメールアドレス                  |
-| SMTP_PASS | Googleアカウントのアプリパスワード   |
-
-### コマンド一覧
-
-| 主要なコマンド               | 実行する処理                                                            |
-| ------------------- | ----------------------------------------------------------------------- |
-| pnpm install        | `node_modules`のインストール |
-| pnpm run dev             | 開発環境の起動                                                          |
-| pnpm run build          | Next.jsのビルド、サイトマップとRSSフィードの生成                                                     |
-| pnpm run start           | ビルド済みNext.jsの起動                                                          |
-| docker compose up -d --build       | コンテナのビルドと起動                                                      |
-| docker compose down | コンテナの停止                                          |
-
-<p align="right">(<a href="#top">トップへ</a>)</p>
-
-## 5. プレフィックス
+### コミットメッセージの記法
 
 ```
 fix: バグ修正
