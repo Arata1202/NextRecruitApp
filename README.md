@@ -211,7 +211,7 @@ docker compose down
 
 ### ブランチ
 
-Github-flowを使用する。
+GitHub Flowを使用する。
 masterとfeatureブランチで運用する。
 
 | ブランチ名 |   役割   | 派生元 | マージ先 |
