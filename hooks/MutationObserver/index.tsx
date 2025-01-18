@@ -8,7 +8,6 @@ export const useHeightGuardObserver = () => {
     targets.forEach((target) => {
       const heightChangeObserver = new MutationObserver(() => {
         target.style.height = '';
-        target.style.removeProperty('height');
         target.style.minHeight = '';
       });
 
