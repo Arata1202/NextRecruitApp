@@ -2,30 +2,25 @@ import { useEffect } from 'react';
 
 export const useHeightGuardObserver = () => {
   useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      const targets = document.querySelectorAll<HTMLElement>('.mut-height-guard');
-      const observers: MutationObserver[] = [];
+    const targets = document.querySelectorAll<HTMLElement>('.mut-height-guard');
+    const observers: MutationObserver[] = [];
 
-      targets.forEach((target) => {
-        const heightChangeObserver = new MutationObserver(() => {
-          target.style.height = '';
-        });
-
-        heightChangeObserver.observe(target, {
-          attributes: true,
-          attributeFilter: ['style'],
-        });
-
-        observers.push(heightChangeObserver);
+    targets.forEach((target) => {
+      const heightChangeObserver = new MutationObserver(() => {
+        target.style.height = '';
+        target.style.minHeight = '';
       });
 
-      return () => {
-        observers.forEach((observer) => observer.disconnect());
-      };
-    }, 100);
+      heightChangeObserver.observe(target, {
+        attributes: true,
+        attributeFilter: ['style'],
+      });
+
+      observers.push(heightChangeObserver);
+    });
 
     return () => {
-      clearTimeout(timeoutId);
+      observers.forEach((observer) => observer.disconnect());
     };
   }, []);
 };
