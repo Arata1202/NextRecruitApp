@@ -13,6 +13,9 @@
 .FirstAd {
   min-height: 280px !important;
 }
+.h-screen-force {
+  height: 100vh !important;
+}
 /* PWA ホームバー */
 .HomeBar {
   padding-bottom: calc(env(safe-area-inset-bottom)) !important;

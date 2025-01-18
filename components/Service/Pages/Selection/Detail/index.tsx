@@ -417,7 +417,7 @@ export default function Detail() {
       <div>
         <MainLayout />
         <div className="lg:pl-72 mut-height-guard">
-          <main className="h-screen mut-height-guard">
+          <main className="h-screen-force mut-height-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>
