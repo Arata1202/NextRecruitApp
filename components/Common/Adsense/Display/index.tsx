@@ -2,6 +2,7 @@
 
 import { useEffect } from 'react';
 import { usePathname } from 'next/navigation';
+import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 
 const PUBLISHER_ID = '1705865999592590';
 
@@ -21,6 +22,7 @@ type DisplayProps = {
 const Display = ({ slot, format = 'rectangle', responsive = 'false', style }: DisplayProps) => {
   let pathname = usePathname();
   pathname = pathname ? pathname : '';
+  useHeightGuardObserver();
 
   useEffect(() => {
     try {
@@ -32,13 +34,13 @@ const Display = ({ slot, format = 'rectangle', responsive = 'false', style }: Di
 
   return (
     <div
-      style={{ maxWidth: '100%', overflow: 'hidden' }}
+      style={{ maxWidth: '100%' }}
       className="FirstAd"
       key={pathname.replace(/\//g, '-') + '-' + slot}
     >
       <p className={`text-center text-gray-700`}>スポンサーリンク</p>
       <ins
-        className="adsbygoogle"
+        className="adsbygoogle mut-height-guard"
         style={{ display: 'flex', justifyContent: 'center', width: '100%', ...style }}
         data-ad-client={`ca-pub-${PUBLISHER_ID}`}
         data-ad-slot={slot}

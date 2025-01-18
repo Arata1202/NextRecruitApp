@@ -567,7 +567,7 @@ export default function Detail() {
               {loading ? (
                 <></>
               ) : (
-                <div className="FirstAd mb-5">
+                <div className="FirstAd mb-5 mut-height-guard">
                   <Display slot="7998948559" />
                 </div>
               )}
