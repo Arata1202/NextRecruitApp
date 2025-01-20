@@ -192,7 +192,6 @@ docker compose down
 │   ├── A2hs
 │   └── Middleware
 ├── libs
-│   ├── OneSignalInitial.tsx
 │   └── supabase.js
 ├── next-sitemap.config.js
 ├── next.config.ts
@@ -201,7 +200,6 @@ docker compose down
 ├── pnpm-lock.yaml
 ├── postcss.config.mjs
 ├── public
-│   ├── OneSignalSDKWorker.js
 │   ├── favicon.ico
 │   ├── images
 │   ├── manifest.json
