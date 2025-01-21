@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import { HomeIcon, ShieldExclamationIcon } from '@heroicons/react/24/solid';
+import { HomeIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import Display from '@/components/Common/Adsense/Display';
 export default function Disclaimer() {
@@ -45,7 +45,7 @@ export default function Disclaimer() {
             <div className="mx-auto max-w-3xl text-base/7">
               <div className={`${styles.content}`}>
                 <div className="flex">
-                  <ShieldExclamationIcon className="h-7 w-7 mr-2" aria-hidden="true" />
+                  <ExclamationCircleIcon className="h-7 w-7 mr-2" aria-hidden="true" />
                   <h1 className="">免責事項</h1>
                 </div>
                 <span

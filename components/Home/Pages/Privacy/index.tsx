@@ -1,5 +1,5 @@
 import styles from './index.module.css';
-import { HomeIcon, InformationCircleIcon } from '@heroicons/react/24/solid';
+import { HomeIcon, LockClosedIcon } from '@heroicons/react/24/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import Display from '@/components/Common/Adsense/Display';
 export default function Privacy() {
@@ -45,7 +45,7 @@ export default function Privacy() {
             <div className="mx-auto max-w-3xl text-base/7">
               <div className={`${styles.content}`}>
                 <div className="flex">
-                  <InformationCircleIcon className="h-7 w-7 mr-2" aria-hidden="true" />
+                  <LockClosedIcon className="h-7 w-7 mr-2" aria-hidden="true" />
                   <h1 className="">プライバシーポリシー</h1>
                 </div>
                 <span
