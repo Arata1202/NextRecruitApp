@@ -80,7 +80,7 @@
 | CI/CD             | GitHub Actions                                |
 | Design            | Canva                                         |
 | Google            | AdSense, Analytics, Search Console, reCAPTCHA |
-| etc.              | PWA                                           |
+| etc.              | PWA, OneSignal                                |
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
@@ -154,6 +154,7 @@ docker compose down
 ├── .docker
 │   ├── js
 │   └── nginx
+├── .dockerignore
 ├── .env
 ├── .env.example
 ├── .github
@@ -169,6 +170,7 @@ docker compose down
 ├── LICENSE
 ├── README.md
 ├── app
+│   ├── manifest.json
 │   ├── api
 │   ├── contact
 │   ├── copyright
@@ -202,7 +204,7 @@ docker compose down
 ├── public
 │   ├── favicon.ico
 │   ├── images
-│   ├── manifest.json
+│   ├── OneSignalSDKWorker.js
 │   └── robots.txt
 ├── tailwind.config.ts
 └── tsconfig.json
