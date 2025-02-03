@@ -28,6 +28,7 @@
     "@fullcalendar/timegrid": "^6.1.15",
     "@headlessui/react": "^2.2.0",
     "@heroicons/react": "^2.2.0",
+    "@sentry/nextjs": "^8",
     "@supabase/supabase-js": "^2.47.10",
     "@types/node": "^22.10.2",
     "@types/react": "^18.3.18",
