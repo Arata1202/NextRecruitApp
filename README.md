@@ -80,7 +80,7 @@
 | CI/CD             | GitHub Actions                                |
 | Design            | Canva                                         |
 | Google            | AdSense, Analytics, Search Console, reCAPTCHA |
-| etc.              | PWA, OneSignal                                |
+| etc.              | PWA, OneSignal, Sentry, Slack                 |
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
@@ -176,6 +176,7 @@ docker compose down
 │   ├── copyright
 │   ├── disclaimer
 │   ├── fonts
+│   ├── global-error.tsx
 │   ├── globals.css
 │   ├── layout.tsx
 │   ├── link
@@ -190,6 +191,7 @@ docker compose down
 │   └── Service
 ├── docker-compose.yml
 ├── eslint.config.mjs
+├── instrumentation.ts
 ├── hooks
 │   ├── A2hs
 │   └── Middleware
@@ -206,6 +208,9 @@ docker compose down
 │   ├── images
 │   ├── OneSignalSDKWorker.js
 │   └── robots.txt
+├── sentry.client.config.ts
+├── sentry.edge.config.ts
+├── sentry.server.config.ts
 ├── tailwind.config.ts
 └── tsconfig.json
 ```
