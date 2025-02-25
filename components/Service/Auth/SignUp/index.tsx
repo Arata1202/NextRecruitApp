@@ -69,7 +69,7 @@ export default function SignUp() {
       return;
     }
 
-    const recaptchaResponse = await fetch('/api/recaptcha', {
+    const recaptchaResponse = await fetch(`${process.env.NEXT_PUBLIC_API_RECAPTCHA_URL}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
