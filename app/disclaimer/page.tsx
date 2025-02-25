@@ -4,6 +4,8 @@ import Disclaimer from '@/components/Home/Pages/Disclaimer';
 import Header from '@/components/Home/Layouts/Header';
 import Footer from '@/components/Home/Layouts/Footer';
 
+export const runtime = 'edge';
+
 export default function DashBoardPage() {
   return (
     <>

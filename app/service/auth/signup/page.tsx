@@ -5,6 +5,8 @@ import { useAuthAuthCheck } from '@/hooks/Middleware/Auth';
 import Header from '@/components/Home/Layouts/Header';
 import Footer from '@/components/Home/Layouts/Footer';
 
+export const runtime = 'edge';
+
 export default function SignUpPage() {
   const { userChecked } = useAuthAuthCheck();
   if (!userChecked) {

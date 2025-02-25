@@ -4,6 +4,8 @@ import PasswordReset from '@/components/Service/Auth/PasswordReset';
 import Header from '@/components/Home/Layouts/Header';
 import Footer from '@/components/Home/Layouts/Footer';
 
+export const runtime = 'edge';
+
 export default function PasswordResetPage() {
   return (
     <>

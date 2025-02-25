@@ -4,6 +4,8 @@ import Link from '@/components/Home/Pages/Link';
 import Header from '@/components/Home/Layouts/Header';
 import Footer from '@/components/Home/Layouts/Footer';
 
+export const runtime = 'edge';
+
 export default function DashBoardPage() {
   return (
     <>
