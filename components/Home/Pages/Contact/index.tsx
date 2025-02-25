@@ -52,7 +52,7 @@ const ContactPage = () => {
   const sendEmail = useCallback(() => {
     if (!formData) return;
 
-    fetch(`/api/sendemail`, {
+    fetch(`${process.env.NEXT_PUBLIC_API_SENDEMAIL_URL}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
@@ -76,7 +76,7 @@ const ContactPage = () => {
   const handleConfirmSend = useCallback(() => {
     const verifyCaptcha = async () => {
       try {
-        const response = await fetch(`/api/recaptcha`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_RECAPTCHA_URL}`, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
