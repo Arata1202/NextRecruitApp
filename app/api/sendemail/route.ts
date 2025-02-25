@@ -7,6 +7,8 @@ type EmailRequestBody = {
   message: string;
 };
 
+export const runtime = 'edge';
+
 export async function POST(req: Request) {
   try {
     const { EMAIL_TO, EMAIL_FROM, SMTP_USER, SMTP_PASS } = process.env;

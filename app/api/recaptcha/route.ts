@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import https from 'https';
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest): Promise<NextResponse> {
   try {
     const body = await req.json();
