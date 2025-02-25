@@ -49,6 +49,7 @@
     "typescript-eslint": "^8.18.2"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.13.8",
     "@fullcalendar/list": "^6.1.15",
     "@types/nodemailer": "^6.4.17",
     "autoprefixer": "^10.4.20",
