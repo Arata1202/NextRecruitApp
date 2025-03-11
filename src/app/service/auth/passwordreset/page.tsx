@@ -1,17 +1,15 @@
-'use client';
-
-import PasswordReset from '@/components/Service/Auth/PasswordReset';
+import PasswordResetPage from '@/components/Pages/PasswordReset';
 import Header from '@/components/Common/Layouts/Header';
 import Footer from '@/components/Common/Layouts/Footer';
 
 export const runtime = 'edge';
 
-export default function PasswordResetPage() {
+export default function Page() {
   return (
     <>
       <Header />
       <div style={{ marginTop: '72px' }}>
-        <PasswordReset />
+        <PasswordResetPage />
       </div>
       <Footer />
     </>

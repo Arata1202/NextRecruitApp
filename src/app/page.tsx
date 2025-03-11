@@ -1,17 +1,15 @@
-'use client';
-
-import Top from '@/components/Home/Pages/Top';
+import HomePage from '@/components/Pages/Home';
 import Header from '@/components/Common/Layouts/Header';
 import Footer from '@/components/Common/Layouts/Footer';
 
 export const runtime = 'edge';
 
-export default function DashBoardPage() {
+export default function Page() {
   return (
     <>
       <Header />
       <div style={{ marginTop: '72px' }}>
-        <Top />
+        <HomePage />
       </div>
       <Footer />
     </>

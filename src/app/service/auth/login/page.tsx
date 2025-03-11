@@ -1,22 +1,15 @@
-'use client';
-
-import Login from '@/components/Service/Auth/Login';
-import { useAuthAuthCheck } from '@/hooks/Middleware/Auth';
+import LoginPage from '@/components/Pages/Login';
 import Header from '@/components/Common/Layouts/Header';
 import Footer from '@/components/Common/Layouts/Footer';
 
 export const runtime = 'edge';
 
-export default function LoginPage() {
-  const { userChecked } = useAuthAuthCheck();
-  if (!userChecked) {
-    return null;
-  }
+export default function Page() {
   return (
     <>
       <Header />
       <div style={{ marginTop: '72px' }}>
-        <Login />
+        <LoginPage />
       </div>
       <Footer />
     </>
