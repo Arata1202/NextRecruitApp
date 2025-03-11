@@ -5,67 +5,61 @@ import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
+import { Fragment } from 'react';
 import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import { useMutationObserver } from '@/hooks/useMutationObserver';
-import { Fragment } from 'react';
 import {
   ExclamationTriangleIcon,
   PlusIcon,
   PencilIcon,
   TrashIcon,
-  ChartBarIcon,
+  NumberedListIcon,
 } from '@heroicons/react/24/solid';
 
 type Analysis = {
   id: number;
   title: string;
   description: string;
-  customtitle: string;
+  started_at: string | null;
+  ended_at: string | null;
 };
 
-type AnalysisTitle = {
-  id: number;
-  title: string;
-};
-
-export default function Calendar() {
+export default function Done() {
   useMutationObserver();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
-  const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [isAllDay, setIsAllDay] = useState(false);
+  const [editIsAllDay, setEditIsAllDay] = useState(false);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editData, setEditData] = useState({
     id: 0,
-    titleId: '',
+    title: '',
     description: '',
-    customtitle: '',
+    started_at: '',
+    ended_at: '',
   });
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [, setDeleteId] = useState<number | null>(null);
   const [deleteData, setDeleteData] = useState<Analysis | null>(null);
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
-  const [searchQuery] = useState('');
   const [searchTerm, setSearchTerm] = useState('');
-  const [analysisGroups, setAnalysisGroups] = useState<{ id: number; title: string }[]>([]);
-  const [selectedGroupId, setSelectedGroupId] = useState<number | null>(null);
   const [descriptionLength, setDescriptionLength] = useState(0);
-  const [isCustom, setIsCustom] = useState(false);
-  const [isEditCustom, setEditIsCustom] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors },
   } = useForm({
     defaultValues: {
-      titleId: '',
+      title: '',
       description: '',
-      customtitle: '',
+      started_at: '',
+      ended_at: '',
     },
   });
 
@@ -88,285 +82,289 @@ export default function Calendar() {
     fetchUser();
   }, []);
 
+  // 認証チェック
+  useEffect(() => {
+    const checkAuthorization = async () => {
+      if (!userId) {
+        return;
+      }
+
+      try {
+        await supabase.from('todo').select('supabaseauth_id').single();
+      } catch (error) {
+        console.error('Authorization check failed:', error);
+      }
+    };
+
+    if (userId) checkAuthorization();
+  }, [userId]);
+
   // データ取得
   useEffect(() => {
-    if (!userId) return;
+    const fetchSelectionDetails = async () => {
+      if (!userId) return;
 
-    const fetchAnalyses = async () => {
       try {
         const query = supabase
-          .from('analysis')
+          .from('todo')
           .select(
             `
             id,
-            title_id (
-              id,
-              title,
-              sort
-            ),
+            title,
             description,
-            customtitle
-          `,
+            started_at,
+            ended_at
+            `,
           )
-          .ilike('title_id.title', `%${searchQuery}%`)
-          .eq('supabaseauth_id', userId);
-
-        if (selectedGroupId) {
-          query.eq('title_id.group_id', selectedGroupId);
-        }
+          .eq('supabaseauth_id', userId)
+          .eq('done', 1);
 
         const { data, error } = await query;
 
         if (error) {
-          console.error('Error fetching analyses:', error.message, error.details, error.hint);
+          console.error('Error fetching selection details:', error.message);
           return;
         }
 
-        if (!data) {
-          console.error('No data fetched');
-          return;
+        if (data) {
+          const formattedData = data.map((item: any) => ({
+            id: item.id,
+            title: item.title || 'Untitled',
+            description: item.description,
+            started_at: item.started_at || null,
+            ended_at: item.ended_at || null,
+          }));
+
+          const sortedData = formattedData.sort((a, b) => {
+            const dateA = a.started_at
+              ? new Date(a.started_at).getTime()
+              : new Date(a.ended_at || 0).getTime();
+            const dateB = b.started_at
+              ? new Date(b.started_at).getTime()
+              : new Date(b.ended_at || 0).getTime();
+            return dateB - dateA;
+          });
+
+          setAnalyses(sortedData);
+          setFilteredAnalyses(sortedData);
+          setTimeout(() => {
+            setLoading(false);
+          }, 100);
         }
-
-        const filteredData = data.filter((item: any) => item.title_id && item.title_id.title);
-
-        const formattedData = filteredData.map((item: any) => ({
-          id: item.id,
-          title: item.title_id?.title || 'Untitled',
-          description: item.description,
-          customtitle: item.customtitle,
-          sort: item.title_id?.sort || 0,
-        }));
-
-        setFilteredAnalyses(formattedData);
-
-        const sortedData = formattedData.sort((a, b) => a.sort - b.sort);
-
-        setAnalyses(sortedData);
-        setTimeout(() => {
-          setLoading(false);
-        }, 100);
       } catch (error) {
-        console.error('Error fetching analyses:', error);
+        console.error('Error fetching selection details:', error);
       }
     };
 
-    fetchAnalyses();
-  }, [userId, searchQuery, selectedGroupId]);
+    fetchSelectionDetails();
+  }, [userId]);
 
-  // analysisgroup データを取得
-  useEffect(() => {
-    const fetchAnalysisGroups = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('analysisgroup')
-          .select('id, title')
-          .order('sort', { ascending: true });
-
-        if (error) throw error;
-
-        setAnalysisGroups(data || []);
-      } catch (error) {
-        console.error('Error fetching analysis groups:', error);
-      }
-    };
-
-    fetchAnalysisGroups();
-  }, []);
-
-  // AnalysisTitle データ取得
-  useEffect(() => {
-    const fetchAnalysisTitles = async () => {
-      try {
-        const { data, error } = await supabase
-          .from('analysistitle')
-          .select('id, title')
-          .order('sort', { ascending: true });
-
-        if (error) throw error;
-
-        setAnalysisTitles(data);
-      } catch (error) {
-        console.error('Error fetching analysis titles:', error);
-      }
-    };
-
-    fetchAnalysisTitles();
-  }, []);
+  const toUTC = (localDatetime: string) => {
+    const date = new Date(localDatetime);
+    const utcDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000);
+    return utcDate.toISOString();
+  };
 
   // データ追加
   const handleAddAnalysis = async (formValues: {
-    titleId: string;
+    title: string;
     description: string;
-    customtitle: string;
+    started_at: string;
+    ended_at: string;
   }) => {
-    if (!userId || !formValues.titleId) {
-      console.error('User ID or Title ID is missing');
+    let startedAt = formValues.started_at ? toUTC(formValues.started_at) : null;
+    const endedAt = formValues.ended_at ? toUTC(formValues.ended_at) : null;
+
+    if (startedAt === endedAt) {
+      startedAt = null;
+    }
+
+    const { data, error } = await supabase
+      .from('todo')
+      .insert([
+        {
+          supabaseauth_id: userId,
+          title: formValues.title,
+          description: formValues.description,
+          started_at: startedAt,
+          ended_at: endedAt,
+        },
+      ])
+      .select();
+
+    if (error) {
+      console.error('Error adding selection detail:', error.message);
       return;
     }
 
-    try {
-      const { data: titleData } = await supabase
-        .from('analysistitle')
-        .select('id')
-        .eq('id', formValues.titleId);
+    if (data) {
+      const addedDetail = {
+        id: data[0]?.id,
+        title: formValues.title,
+        description: formValues.description,
+        started_at: startedAt,
+        ended_at: endedAt,
+      };
 
-      if (!titleData || titleData.length === 0) {
-        console.error('Invalid title_id: Does not exist in analysistitle table.');
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from('analysis')
-        .insert([
-          {
-            supabaseauth_id: userId,
-            title_id: parseInt(formValues.titleId),
-            description: formValues.description,
-            customtitle: formValues.customtitle,
-          },
-        ])
-        .select();
-
-      if (error) {
-        console.error('Supabase error:', error.message);
-        return;
-      }
-
-      if (data && data.length > 0) {
-        const addedAnalysis = data[0];
-        const title =
-          analysisTitles.find((t) => t.id === parseInt(formValues.titleId))?.title || '';
-        setAnalyses((prev) => [
-          {
-            id: addedAnalysis.id,
-            title,
-            description: formValues.description,
-            customtitle: formValues.customtitle,
-          },
-          ...prev,
-        ]);
-      } else {
-        console.warn('No data returned from insert.');
-      }
-
-      reset({
-        titleId: '',
-        description: '',
-      });
+      setAnalyses((prev) => [addedDetail, ...prev]);
       setIsModalOpen(false);
-      setIsCustom(false);
-    } catch (error) {
-      console.error('Error adding analysis:', error);
+      setIsAllDay(false);
+      reset();
     }
   };
 
   const handleEditAnalysis = async () => {
     try {
+      let startedAt = editData.started_at ? toUTC(editData.started_at) : null;
+      const endedAt = editData.ended_at ? toUTC(editData.ended_at) : null;
+
+      if (startedAt === endedAt) {
+        startedAt = null;
+      }
+
       const { error } = await supabase
-        .from('analysis')
+        .from('todo')
         .update({
-          title_id: parseInt(editData.titleId),
+          title: editData.title,
           description: editData.description,
-          customtitle: editData.customtitle,
+          started_at: startedAt,
+          ended_at: endedAt,
         })
-        .eq('id', editData.id)
-        .select();
+        .eq('id', editData.id);
 
       if (error) {
-        console.error('Error editing analysis:', error);
+        console.error('Error editing selection detail:', error.message);
         return;
       }
 
       setAnalyses((prev) =>
-        prev.map((analysis) =>
-          analysis.id === editData.id
+        prev.map((detail) =>
+          detail.id === editData.id
             ? {
                 id: editData.id,
-                title: analysisTitles.find((t) => t.id === parseInt(editData.titleId))?.title || '',
+                title: editData.title,
                 description: editData.description,
-                customtitle: editData.customtitle,
+                started_at: startedAt,
+                ended_at: endedAt,
               }
-            : analysis,
+            : detail,
         ),
       );
-
-      setEditData({ id: 0, titleId: '', description: '', customtitle: '' });
       setIsEditModalOpen(false);
+      setDescriptionLength(0);
+      setEditIsAllDay(false);
       reset({
-        titleId: '',
+        title: '',
         description: '',
+        started_at: '',
+        ended_at: '',
       });
-      setEditIsCustom(false);
     } catch (error) {
-      console.error('Error editing analysis:', error);
+      console.error('Error editing selection detail:', error);
     }
   };
 
-  const openEditModal = (analysis: Analysis) => {
-    const titleId = analysisTitles.find((t) => t.title === analysis.title)?.id.toString() || '';
-    const isEditCustom = titleId === '1';
-    setEditData({
-      id: analysis.id,
-      titleId,
-      description: analysis.description,
-      customtitle: analysis.customtitle,
-    });
-    setDescriptionLength(analysis.description.length);
-    setEditIsCustom(isEditCustom);
-
-    const titleForEdit = isEditCustom ? analysis.customtitle : analysis.title;
-    setInitialEditTitle(titleForEdit);
-
-    reset({
-      titleId: isEditCustom ? '1' : titleId,
-      description: analysis.description,
-      customtitle: isEditCustom ? analysis.customtitle : '',
-    });
-    setIsEditModalOpen(true);
-  };
-
-  const handleDeleteAnalysis = async () => {
-    if (!deleteData?.id) return;
-
+  const openEditModal = async (analysis: Analysis) => {
     try {
-      const { error } = await supabase.from('analysis').delete().eq('id', deleteData.id);
+      const { data, error } = await supabase
+        .from('todo')
+        .select('title, description, started_at, ended_at')
+        .eq('id', analysis.id)
+        .single();
 
-      if (error) {
-        console.error('Error deleting analysis:', error);
+      if (error || !data) {
+        console.error('Error fetching data:', error);
         return;
       }
 
-      // データをローカル状態から削除
-      setAnalyses((prev) => prev.filter((analysis) => analysis.id !== deleteData.id));
-      setDeleteId(null);
-      setDeleteData(null);
+      setEditIsAllDay(!data.started_at);
+
+      setEditData({
+        id: analysis.id,
+        title: data.title || '',
+        description: data.description || '',
+        started_at: data.started_at ? new Date(data.started_at).toISOString().slice(0, 16) : '',
+        ended_at: data.ended_at ? new Date(data.ended_at).toISOString().slice(0, 16) : '',
+      });
+
+      setDescriptionLength((data.description || '').length);
+
+      reset({
+        title: data.title || '',
+        description: data.description || '',
+        started_at: data.started_at ? new Date(data.started_at).toISOString().slice(0, 16) : '',
+        ended_at: data.ended_at ? new Date(data.ended_at).toISOString().slice(0, 16) : '',
+      });
+
+      setInitialEditTitle(analysis.title);
+      setIsEditModalOpen(true);
+    } catch (err) {
+      console.error('Error opening edit modal:', err);
+    }
+  };
+
+  const handleDeleteAnalysis = async () => {
+    if (!deleteData) return;
+
+    try {
+      const { error } = await supabase.from('todo').delete().eq('id', deleteData.id);
+
+      if (error) {
+        console.error('Error deleting selection detail:', error.message);
+        return;
+      }
+
+      setAnalyses((prev) => prev.filter((detail) => detail.id !== deleteData.id));
       setIsDeleteModalOpen(false);
     } catch (error) {
-      console.error('Error deleting analysis:', error);
+      console.error('Error deleting selection detail:', error);
     }
   };
 
   const openDeleteModal = (analysis: Analysis) => {
-    const isCustom = analysisTitles.find((t) => t.title === analysis.title)?.id === 1;
-    const titleForDelete = isCustom ? analysis.customtitle : analysis.title;
-
-    setDeleteData({
-      ...analysis,
-      title: titleForDelete,
-    });
+    setDeleteData(analysis);
     setIsDeleteModalOpen(true);
   };
 
   // 検索処理
   useEffect(() => {
-    const results = analyses.filter((analysis) => {
-      const searchLower = searchTerm.toLowerCase();
-      const titleMatch = analysis.title.toLowerCase().includes(searchLower);
-      const customTitleMatch = analysis.customtitle?.toLowerCase().includes(searchLower);
-      return titleMatch || customTitleMatch;
-    });
+    const results = analyses.filter((analysis) =>
+      analysis.title.toLowerCase().includes(searchTerm.toLowerCase()),
+    );
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
+
+  const formatDateWithoutTimezone = (datetime: string) => {
+    const [datePart, timePart] = datetime.split('T');
+    const [year, month, day] = datePart.split('-');
+    const [hours, minutes] = timePart.split(':');
+    return `${year}年${month}月${day}日 ${hours}:${minutes}`;
+  };
+
+  const handleDoneTodo = async (id: number) => {
+    try {
+      const { error } = await supabase.from('todo').update({ done: 0 }).eq('id', id);
+
+      if (error) {
+        console.error('Error updating the `done` column:', error.message);
+        return;
+      }
+
+      setAnalyses((prev) => prev.filter((detail) => detail.id !== id));
+      setFilteredAnalyses((prev) => prev.filter((detail) => detail.id !== id));
+    } catch (err) {
+      console.error('Error completing the analysis:', err);
+    }
+  };
+
+  const tabs = [
+    { name: '未完了', href: '../todo', current: false },
+    { name: '実行済み', href: '#', current: true },
+  ];
+
+  function classNames(...classes: (string | false | null | undefined)[]): string {
+    return classes.filter(Boolean).join(' ');
+  }
 
   return (
     <>
@@ -380,9 +378,9 @@ export default function Calendar() {
                 <div className="flex items-center justify-between TitleBanner">
                   <div className="min-w-0 flex-1">
                     <div className="flex">
-                      <ChartBarIcon className="TitleIcon mr-1" aria-hidden="true" />
+                      <NumberedListIcon className="TitleIcon mr-1" aria-hidden="true" />
                       <h2 className="text-2xl/7 font-bold sm:truncate sm:text-3xl sm:tracking-tight">
-                        自己分析
+                        ToDoリスト
                       </h2>
                     </div>
                   </div>
@@ -398,8 +396,8 @@ export default function Calendar() {
                 </div>
               </div>
               <div>
-                <div className="pb-5 flex">
-                  <div className="w-2/3 Search relative rounded-md shadow-sm">
+                <div className="flex">
+                  <div className="w-full Search relative rounded-md shadow-sm">
                     <input
                       type="text"
                       value={searchTerm}
@@ -408,24 +406,28 @@ export default function Calendar() {
                       className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                     />
                   </div>
-
-                  <div className="w-1/3 ml-2">
-                    <select
-                      value={selectedGroupId || ''}
-                      onChange={(e) => {
-                        const value = e.target.value;
-                        setSelectedGroupId(value ? parseInt(value) : null);
-                      }}
-                      style={{ height: '42px' }}
-                      className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
-                    >
-                      <option>全て</option>
-                      {analysisGroups.map((group) => (
-                        <option key={group.id} value={group.id}>
-                          {group.title}
-                        </option>
+                </div>
+              </div>
+              <div>
+                <div className="">
+                  <div className="border-b border-gray-300">
+                    <nav aria-label="Tabs" className="-mb-px flex space-x-8">
+                      {tabs.map((tab) => (
+                        <a
+                          key={tab.name}
+                          href={tab.href}
+                          aria-current={tab.current ? 'page' : undefined}
+                          className={classNames(
+                            tab.current
+                              ? 'border-blue-500 text-blue-500'
+                              : 'border-transparent text-gray-700 hover:border-blue-500 hover:text-blue-500',
+                            'whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium',
+                          )}
+                        >
+                          {tab.name}
+                        </a>
                       ))}
-                    </select>
+                    </nav>
                   </div>
                 </div>
               </div>
@@ -441,7 +443,6 @@ export default function Calendar() {
               {/* <div className="FirstAd mb-5">
                 <Display slot="3381880848" />
               </div> */}
-
               {loading ? (
                 <></>
               ) : filteredAnalyses.length === 0 ? (
@@ -453,7 +454,7 @@ export default function Calendar() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、自己分析を行ってみましょう！
+                          右上の追加ボタンから、ToDoを追加してみましょう！
                         </p>
                       </div>
                     </div>
@@ -467,12 +468,7 @@ export default function Calendar() {
                   >
                     <div>
                       <div className="px-4 py-3 sm:px-6 flex">
-                        <h3 className="text-base/7 font-semibold">
-                          {analysis.title === 'タイトルを自由に記入する'
-                            ? analysis.customtitle ||
-                              'タイトルを自由に記入するが設定されていません。'
-                            : analysis.title}
-                        </h3>
+                        <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
                         <div className="flex ml-auto items-start">
                           <button
                             type="button"
@@ -491,10 +487,40 @@ export default function Calendar() {
                         </div>
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-                        <p className="whitespace-pre-wrap">{analysis.description}</p>
-                        <p className="flex justify-end text-gray-500 text-sm mt-1">
-                          {analysis.description.replace(/\s/g, '').length} 文字
-                        </p>
+                        {analysis.description && (
+                          <>
+                            <p className="whitespace-pre-wrap">{analysis.description}</p>
+                            <p className="flex justify-end text-sm mt-1">
+                              {analysis.description.replace(/\s/g, '').length} 文字
+                            </p>
+                          </>
+                        )}
+                        <div className="text-sm mt-2 flex items-end justify-between">
+                          <div>
+                            {analysis.started_at && (
+                              <p>
+                                開始：
+                                {analysis.started_at
+                                  ? formatDateWithoutTimezone(analysis.started_at)
+                                  : '未設定'}
+                              </p>
+                            )}
+                            <p>
+                              {analysis.started_at ? '終了：' : '締切：'}
+                              {analysis.ended_at
+                                ? formatDateWithoutTimezone(analysis.ended_at)
+                                : '未設定'}
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={() => handleDoneTodo(analysis.id)}
+                            style={{ height: '36px' }}
+                            className="ml-3 inline-flex rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm"
+                          >
+                            復元
+                          </button>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -530,41 +556,69 @@ export default function Calendar() {
                       </div>
                       <div className="mt-2 text-center sm:ml-4 sm:text-left">
                         <Dialog.Title as="h1" className={`text-base font-bold leading-6`}>
-                          自己分析を追加
+                          ToDoを追加
                         </Dialog.Title>
                       </div>
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
-                        <select
-                          {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '42px' }}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            if (value === '1') {
-                              setIsCustom(true);
-                            } else {
-                              setIsCustom(false);
-                            }
-                          }}
-                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
-                        >
-                          <option value="">タイトルを選択</option>
-                          {analysisTitles
-                            .filter((title) => {
-                              if (title.id === 1) {
-                                return true;
+                        <input
+                          {...register('title', { required: 'タイトルを選択してください' })}
+                          placeholder="タイトル"
+                          className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                        />
+                        {errors.title && (
+                          <p className="text-red-500 text-left">{errors.title.message}</p>
+                        )}
+                      </div>
+
+                      {!isAllDay && (
+                        <div className="mb-4 mt-2">
+                          <label
+                            htmlFor="started_at"
+                            className="block text-sm font-medium text-left"
+                          >
+                            開始時間
+                          </label>
+                          <input
+                            type="datetime-local"
+                            {...register('started_at', { required: false })}
+                            style={{ height: '42px' }}
+                            className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                          />
+                          {errors.started_at && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.started_at.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      <div className="mb-4">
+                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
+                          {isAllDay ? '締切日' : '終了時間'}
+                        </label>
+                        <input
+                          type="datetime-local"
+                          {...register('ended_at', {
+                            required: isAllDay
+                              ? '締切日を選択してください'
+                              : '終了時間を選択してください',
+                            validate: (value) => {
+                              const startTime = new Date(watch('started_at')).getTime();
+                              const endTime = new Date(value).getTime();
+
+                              if (startTime && endTime < startTime) {
+                                return '開始時間以降の時間を選択してください。';
                               }
-                              return !analyses.some((analysis) => analysis.title === title.title);
-                            })
-                            .map((title) => (
-                              <option key={title.id} value={title.id}>
-                                {title.title}
-                              </option>
-                            ))}
-                        </select>
-                        {errors.titleId && (
-                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                              return true;
+                            },
+                          })}
+                          style={{ height: '42px' }}
+                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                        />
+                        {errors.ended_at && (
+                          <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
                         )}
                       </div>
 
@@ -572,41 +626,23 @@ export default function Calendar() {
                         <label>
                           <input
                             type="checkbox"
-                            checked={isCustom}
+                            checked={isAllDay}
                             onChange={(e) => {
-                              const isChecked = e.target.checked;
-                              setIsCustom(isChecked);
-                              if (isChecked) {
-                                reset({ titleId: '1' });
-                              } else {
-                                reset({ titleId: '' });
-                              }
+                              setIsAllDay(e.target.checked);
+                              reset({
+                                started_at: '',
+                              });
                             }}
                             className="mr-2 cursor-pointer"
                           />
-                          タイトルを自由に記入する
+                          終日
                         </label>
                       </div>
 
-                      {isCustom && (
-                        <div className="mb-4">
-                          <input
-                            {...register('customtitle', { required: 'タイトルを入力してください' })}
-                            placeholder="タイトル"
-                            className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
-                          />
-                          {errors.customtitle && (
-                            <p className="text-red-500 mt-1 text-left">
-                              {errors.customtitle.message}
-                            </p>
-                          )}
-                        </div>
-                      )}
-
                       <div className="mb-4">
                         <textarea
-                          {...register('description', { required: '内容を入力してください' })}
-                          placeholder="内容"
+                          {...register('description')}
+                          placeholder="備考（任意）"
                           rows={10}
                           className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500 focus:border-2 focus:border-blue-500 focus:outline-none"
                           onChange={(e) =>
@@ -627,10 +663,12 @@ export default function Calendar() {
                         setIsModalOpen(false);
                         setDescriptionLength(0);
                         reset({
-                          titleId: '',
+                          title: '',
                           description: '',
+                          started_at: '',
+                          ended_at: '',
                         });
-                        setIsCustom(false);
+                        setIsAllDay(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >
@@ -679,41 +717,82 @@ export default function Calendar() {
                     </div>
                     <div className="mt-4">
                       <div className="mb-4">
-                        <select
-                          {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '42px' }}
-                          value={editData.titleId}
+                        <input
+                          {...register('title', { required: 'タイトルを選択してください' })}
+                          placeholder="タイトル"
+                          value={editData.title}
                           onChange={(e) => {
                             const value = e.target.value;
-                            setEditData({ ...editData, titleId: value });
-                            if (value === '1') {
-                              setEditIsCustom(true);
-                            } else {
-                              setEditIsCustom(false);
-                            }
+                            setEditData({ ...editData, title: value });
                           }}
-                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
-                        >
-                          <option value="">タイトルを選択</option>
-                          {analysisTitles
-                            .filter((title) => {
-                              if (title.id === 1) {
-                                return true;
+                          className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                        />
+                        {errors.title && (
+                          <p className="text-red-500 text-left">{errors.title.message}</p>
+                        )}
+                      </div>
+
+                      {!editIsAllDay && (
+                        <div className="mb-4 mt-2">
+                          <label
+                            htmlFor="started_at"
+                            className="block text-sm font-medium text-left"
+                          >
+                            開始時間
+                          </label>
+                          <input
+                            type="datetime-local"
+                            {...register('started_at', { required: false })}
+                            value={editData.started_at || ''}
+                            onChange={(e) =>
+                              setEditData((prev) => ({
+                                ...prev,
+                                started_at: e.target.value,
+                              }))
+                            }
+                            style={{ height: '42px' }}
+                            className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                          />
+                          {errors.started_at && (
+                            <p className="text-red-500 mt-1 text-left">
+                              {errors.started_at.message}
+                            </p>
+                          )}
+                        </div>
+                      )}
+
+                      <div className="mb-4">
+                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
+                          {editIsAllDay ? '締切日' : '終了時間'}
+                        </label>
+                        <input
+                          type="datetime-local"
+                          {...register('ended_at', {
+                            required: editIsAllDay
+                              ? '締切日を選択してください'
+                              : '終了時間を選択してください',
+                            validate: (value) => {
+                              const startTime = new Date(watch('started_at')).getTime();
+                              const endTime = new Date(value).getTime();
+
+                              if (startTime && endTime < startTime) {
+                                return '開始時間以降の時間を選択してください。';
                               }
-                              const isCurrentTitle = title.id.toString() === editData.titleId;
-                              const isUsedTitle = analyses.some(
-                                (analysis) => analysis.title === title.title,
-                              );
-                              return isCurrentTitle || !isUsedTitle;
-                            })
-                            .map((title) => (
-                              <option key={title.id} value={title.id}>
-                                {title.title}
-                              </option>
-                            ))}
-                        </select>
-                        {errors.titleId && (
-                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
+                              return true;
+                            },
+                          })}
+                          value={editData.ended_at || ''}
+                          onChange={(e) =>
+                            setEditData((prev) => ({
+                              ...prev,
+                              ended_at: e.target.value,
+                            }))
+                          }
+                          style={{ height: '42px' }}
+                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                        />
+                        {errors.ended_at && (
+                          <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
                         )}
                       </div>
 
@@ -721,69 +800,40 @@ export default function Calendar() {
                         <label>
                           <input
                             type="checkbox"
-                            checked={isEditCustom}
+                            checked={editIsAllDay}
                             onChange={(e) => {
-                              const isEditChecked = e.target.checked;
-                              setEditIsCustom(isEditChecked);
-                              if (isEditChecked) {
-                                setEditData((prev) => ({ ...prev, titleId: '1' }));
-                              } else {
-                                const defaultTitleId = analysisTitles
-                                  .find((t) => t.title === initialEditTitle)
-                                  ?.id.toString();
-
+                              setEditIsAllDay(e.target.checked);
+                              if (e.target.checked) {
                                 setEditData((prev) => ({
                                   ...prev,
-                                  titleId: defaultTitleId || '',
-                                  customtitle: '',
+                                  started_at: '',
                                 }));
                               }
                             }}
                             className="mr-2 cursor-pointer"
                           />
-                          タイトルを自由に記入する
+                          終日
                         </label>
                       </div>
 
-                      {isEditCustom && (
-                        <div className="mb-4">
-                          <input
-                            {...register('customtitle', { required: 'タイトルを入力してください' })}
-                            onChange={(e) => {
-                              const value = e.target.value;
-                              setEditData({ ...editData, customtitle: value });
-                            }}
-                            placeholder="タイトル"
-                            className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
-                          />
-                          {errors.customtitle && (
-                            <p className="text-red-500 mt-1 text-left">
-                              {errors.customtitle.message}
-                            </p>
-                          )}
-                        </div>
+                      <textarea
+                        {...register('description')}
+                        placeholder="備考（任意）"
+                        rows={10}
+                        value={editData.description}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          setEditData({ ...editData, description: value });
+                          setDescriptionLength(value.replace(/\s/g, '').length);
+                        }}
+                        className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500 focus:border-2 focus:border-blue-500 focus:outline-none"
+                      />
+                      <p className="flex justify-end text-sm mt-1">
+                        {editData.description.replace(/\s/g, '').length} 文字
+                      </p>
+                      {errors.description && (
+                        <p className="text-red-500 text-left">{errors.description.message}</p>
                       )}
-
-                      <div className="mb-4">
-                        <textarea
-                          {...register('description', { required: '内容を入力してください' })}
-                          placeholder="内容"
-                          rows={10}
-                          value={editData.description}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setEditData({ ...editData, description: value });
-                            setDescriptionLength(value.replace(/\s/g, '').length);
-                          }}
-                          className="w-full rounded-md border border-gray-300 p-2 placeholder:text-gray-500 focus:border-2 focus:border-blue-500 focus:outline-none"
-                        />
-                        <p className="flex justify-end text-sm mt-1">
-                          {editData.description.replace(/\s/g, '').length} 文字
-                        </p>
-                        {errors.description && (
-                          <p className="text-red-500 text-left">{errors.description.message}</p>
-                        )}
-                      </div>
                     </div>
                   </div>
                   <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
@@ -793,10 +843,12 @@ export default function Calendar() {
                         setIsEditModalOpen(false);
                         setDescriptionLength(0);
                         reset({
-                          titleId: '',
+                          title: '',
                           description: '',
+                          started_at: '',
+                          ended_at: '',
                         });
-                        setEditIsCustom(false);
+                        setEditIsAllDay(false);
                       }}
                       className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     >

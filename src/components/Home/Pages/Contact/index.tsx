@@ -10,7 +10,7 @@ import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './index.module.css';
 import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
-const ContactPage = () => {
+const Contact = () => {
   const [show, setContactConfirmShow] = useState(false);
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const [formData, setContactFormData] = useState<FormData | null>(null);
@@ -369,4 +369,4 @@ const ContactPage = () => {
   );
 };
 
-export default ContactPage;
+export default Contact;
