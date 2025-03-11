@@ -25,7 +25,7 @@ type Analysis = {
   ended_at: string | null;
 };
 
-export default function Todo() {
+export default function Flow() {
   useMutationObserver();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [userId, setUserId] = useState<string | null>(null);

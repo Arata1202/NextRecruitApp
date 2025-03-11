@@ -2,32 +2,51 @@
 
 import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
-import { useState, useEffect } from 'react';
-import { useRouter } from 'next/navigation';
 import { Switch } from '@headlessui/react';
-import ErrorAlert from '../../Common/Alert/ErrorAlert';
+import { useState, useRef, useEffect } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { HomeIcon } from '@heroicons/react/24/solid';
+import ErrorAlert from '@/components/Service/Common/Alert/ErrorAlert';
+import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
 import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
   email: string;
   password: string;
+  passwordConf: string;
+  privacy: boolean;
+  recaptcha: string;
 };
 
-export default function Login() {
-  const router = useRouter();
-  const [enabled, setEnabled] = useState(false);
-  const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-
+export default function SignUp() {
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const {
     register,
     handleSubmit,
     formState: { errors },
+    watch,
+    setError,
+    clearErrors,
     reset,
   } = useForm<FormData>();
+  const [enabled, setEnabled] = useState(false);
+  const password = watch('password');
+  const [captchaValue, setCaptchaValue] = useState<string | null>(null);
+  const [errorShow, setErrorShow] = useState(false);
+  const [errorTitle, setErrorTitle] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [confirmShow, setConfirmShow] = useState(false);
+  const [ConfirmTitle, setConfirmTitle] = useState('');
+  const [ConfirmMessage, setConfirmMessage] = useState('');
 
+  useEffect(() => {
+    if (confirmShow) {
+      const timer = setTimeout(() => {
+        setConfirmShow(false);
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [confirmShow]);
   useEffect(() => {
     if (errorShow) {
       const timer = setTimeout(() => {
@@ -37,20 +56,58 @@ export default function Login() {
     }
   }, [errorShow]);
 
-  const onSubmit = async (data: FormData) => {
-    const { error: signInError } = await supabase.auth.signInWithPassword({
-      email: data.email,
-      password: data.password,
-    });
+  const onChange = (value: string | null) => {
+    setCaptchaValue(value);
+    if (value) {
+      clearErrors('recaptcha');
+    }
+  };
 
-    if (signInError) {
-      setErrorTitle('ログインに失敗しました。');
-      setErrorMessage('もう一度やり直してください。');
-      setErrorShow(true);
-      reset();
+  const onSubmit = async (data: FormData) => {
+    if (!captchaValue) {
+      setError('recaptcha', { type: 'manual', message: 'reCAPTCHAをチェックしてください。' });
       return;
     }
-    await router.push('/service');
+
+    const recaptchaResponse = await fetch(`${process.env.NEXT_PUBLIC_API_RECAPTCHA_URL}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        'g-recaptcha-response': captchaValue,
+      }),
+    });
+
+    const recaptchaResult = await recaptchaResponse.json();
+    if (!recaptchaResult.success) {
+      setErrorTitle('reCAPTCHAの検証に失敗しました。');
+      setErrorMessage('お手数ですが、最初からやり直してください。');
+      setErrorShow(true);
+      reset();
+      recaptchaRef.current?.reset();
+      return;
+    }
+
+    const { data: signUpData } = await supabase.auth.signUp({
+      email: data.email,
+      password: data.password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/service`,
+      },
+    });
+    const identities = signUpData?.user?.identities;
+    if (identities?.length === 0) {
+      setErrorTitle('このメールアドレスは既に登録されています。');
+      setErrorMessage('別のメールアドレスを使用するか、ログインしてください。');
+      setErrorShow(true);
+      reset();
+      recaptchaRef.current?.reset();
+      return;
+    }
+    setConfirmTitle('確認メールを送信しました。');
+    setConfirmMessage('メール内のリンクから登録を完了させてください。');
+    setConfirmShow(true);
+    reset();
+    recaptchaRef.current?.reset();
   };
 
   const handleGoogleLogin = async () => {
@@ -117,10 +174,10 @@ export default function Login() {
                   <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
                 <a
-                  href="/service/auth/login"
+                  href="/service/auth/signup"
                   className="ml-4 text-sm font-medium text-gray-500 hover:text-blue-500"
                 >
-                  ログイン
+                  アカウント登録
                 </a>
               </div>
             </li>
@@ -129,15 +186,15 @@ export default function Login() {
         <div className="pt-6">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
             {/* <img alt="Your Company" src="/images/icons/app/2.png" className="mx-auto h-10 w-auto" /> */}
-            <h2 className="text-center text-2xl/9 font-bold tracking-tight">ログイン</h2>
+            <h2 className="text-center text-2xl/9 font-bold tracking-tight">アカウント登録</h2>
             <div className="text-center mt-5" style={{ fontSize: '14px' }}>
-              アカウントをお持ちでない方は、
+              初めてご利用の方は、新規アカウント登録が必要です。
               <br />
-              こちらから
-              <a href="/service/auth/signup" className="text-blue-500 hover:text-blue-600">
-                アカウントを登録
+              アカウントをお持ちの方は、こちらから
+              <a href="/service/auth/login" className="text-blue-500 hover:text-blue-600">
+                ログイン
               </a>
-              いただけます。
+              できます。
             </div>
           </div>
 
@@ -152,8 +209,8 @@ export default function Login() {
                     <input
                       id="email"
                       type="email"
-                      required
                       autoComplete="email"
+                      required
                       {...register('email', {
                         required: 'メールアドレスを入力してください。',
                         pattern: {
@@ -171,6 +228,11 @@ export default function Login() {
                   <label htmlFor="password" className="block text-md font-bold">
                     パスワード
                   </label>
+                  <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
+                    8文字以上で入力してください。
+                    <br />
+                    大文字、小文字、数字、記号を含める必要があります。
+                  </div>
                   <div className="mt-2">
                     <input
                       id="password"
@@ -204,6 +266,27 @@ export default function Login() {
                   </div>
                 </div>
 
+                <div>
+                  <label htmlFor="password" className="block text-md font-bold">
+                    パスワード（確認）
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="passwordConf"
+                      type={enabled ? 'text' : 'password'}
+                      required
+                      {...register('passwordConf', {
+                        required: 'パスワード（確認）を入力してください。',
+                        validate: (value) => value === password || 'パスワードが一致しません。',
+                      })}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                    />
+                    {errors.passwordConf && (
+                      <p className="text-red-500">{errors.passwordConf.message}</p>
+                    )}
+                  </div>
+                </div>
+
                 <div className="flex items-center">
                   <Switch
                     checked={enabled}
@@ -223,12 +306,55 @@ export default function Login() {
                   </div>
                 </div>
 
+                <fieldset>
+                  <div className="space-y-5">
+                    <div className="relative flex items-start">
+                      <div className="flex h-6 items-center">
+                        <input
+                          id="privacy"
+                          type="checkbox"
+                          required
+                          {...register('privacy', {
+                            required: 'プライバシーポリシーへの同意が必要です。',
+                          })}
+                          className="text-gray-300 size-4 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
+                        />
+                      </div>
+                      <div className="ml-3 text-sm/6">
+                        <label htmlFor="privacy" className="font-medium">
+                          <a
+                            href="/privacy"
+                            target="_blank"
+                            className="text-blue-500 hover:text-blue-600"
+                          >
+                            プライバシーポリシー
+                          </a>
+                          に同意します
+                        </label>
+                      </div>
+                    </div>
+                    {errors.privacy && (
+                      <p className="error text-red-500">{errors.privacy.message}</p>
+                    )}
+                  </div>
+                </fieldset>
+
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey="6LeRcoEqAAAAADAy9S_y6Xn_ZKtWqSs5lXekEwFp"
+                  onChange={onChange}
+                  className="mt-3"
+                />
+                {errors.recaptcha && (
+                  <p className="error text-red-500">{errors.recaptcha.message}</p>
+                )}
+
                 <div>
                   <button
                     type="submit"
                     className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
                   >
-                    ログイン
+                    アカウントを登録する
                   </button>
                 </div>
               </form>
@@ -239,7 +365,7 @@ export default function Login() {
                     <div className="w-full border-t border-gray-300" />
                   </div>
                   <div className="relative flex justify-center text-sm/6 font-medium">
-                    <span className="bg-white px-6">ソーシャルアカウントでログイン</span>
+                    <span className="bg-white px-6">ソーシャルアカウントで登録</span>
                   </div>
                 </div>
 
@@ -267,7 +393,7 @@ export default function Login() {
                         fill="#34A853"
                       />
                     </svg>
-                    <span className="text-sm/6 font-semibold">Googleでログイン</span>
+                    <span className="text-sm/6 font-semibold">Googleで登録</span>
                   </button>
                   {/* GitHub */}
                   <button
@@ -286,7 +412,7 @@ export default function Login() {
                         fillRule="evenodd"
                       />
                     </svg>
-                    <span className="text-sm/6 font-semibold">GitHubでログイン</span>
+                    <span className="text-sm/6 font-semibold">GitHubで登録</span>
                   </button>
                   <button
                     onClick={handleTwitterLogin}
@@ -295,17 +421,12 @@ export default function Login() {
                     <svg fill="currentColor" viewBox="0 0 24 24" className="h-5 w-5 text-black">
                       <path d="M13.6823 10.6218L20.2391 3H18.6854L12.9921 9.61788L8.44486 3H3.2002L10.0765 13.0074L3.2002 21H4.75404L10.7663 14.0113L15.5685 21H20.8131L13.6819 10.6218H13.6823ZM11.5541 13.0956L10.8574 12.0991L5.31391 4.16971H7.70053L12.1742 10.5689L12.8709 11.5655L18.6861 19.8835H16.2995L11.5541 13.096V13.0956Z" />
                     </svg>
-                    <span className="text-sm/6 font-semibold">X（旧Twitter）でログイン</span>
+                    <span className="text-sm/6 font-semibold">X（旧Twitter）で登録</span>
                   </button>
                 </div>
               </div>
             </div>
           </div>
-          <p className="mt-6 text-center text-sm/6">
-            <a href="/service/auth/sendemail" className="text-blue-500 hover:text-blue-600">
-              パスワードをお忘れの方はこちら
-            </a>
-          </p>
         </div>
         <AdUnit
           slot="7998948559"
@@ -323,6 +444,13 @@ export default function Login() {
         onClose={() => setErrorShow(false)}
         title={errorTitle}
         message={errorMessage}
+      />
+
+      <ConfirmAlert
+        show={confirmShow}
+        onClose={() => setConfirmShow(false)}
+        title={ConfirmTitle}
+        message={ConfirmMessage}
       />
     </>
   );
