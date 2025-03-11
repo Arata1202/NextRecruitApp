@@ -17,11 +17,6 @@
   - [主な機能一覧](#主な機能一覧)
   - [使用技術](#使用技術)
   - [環境構築](#環境構築)
-    - [リポジトリのクローン](#リポジトリのクローン)
-    - [pnpmの場合](#pnpmの場合)
-      - [開発環境](#開発環境)
-      - [本番環境](#本番環境)
-    - [Dockerの場合](#Dockerの場合)
   - [ディレクトリ構成](#ディレクトリ構成)
   - [Gitの運用](#Gitの運用)
     - [ブランチ](#ブランチ)
@@ -74,19 +69,18 @@
 | Category          | Technology Stack                              |
 | ----------------- | --------------------------------------------- |
 | Frontend          | Next.js, TypeScript, Tailwind CSS             |
-| Infrastructure    | Vercel                                        |
+| Backend           | Go                                            |
 | Database          | Supabase（PostgreSQL）                        |
-| Environment setup | Docker, Nginx                                 |
+| Infrastructure    | Cloudflare Pages, Vercel                      |
+| Environment setup | Docker                                        |
 | CI/CD             | GitHub Actions                                |
 | Design            | Canva                                         |
 | Google            | AdSense, Analytics, Search Console, reCAPTCHA |
-| etc.              | PWA, OneSignal, Sentry, Slack                 |
+| etc.              | PWA, OneSignal                                |
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
 ## 環境構築
-
-### リポジトリのクローン
 
 ```
 # リポジトリのクローン
@@ -98,42 +92,7 @@ mv .env.example .env
 
 # .envの編集
 vi .env
-```
 
-### pnpmの場合
-
-#### 開発環境
-
-```
-# node_modulesのインストール
-pnpm install
-
-# 開発サーバーの立ち上げ
-pnpm dev
-
-# ブラウザにアクセス
-http:localhost:3000
-```
-
-#### 本番環境
-
-```
-# node_modulesのインストール
-pnpm install
-
-# Next.jsのビルド
-pnpm build
-
-# ビルドしたNext.jsの起動
-pnpm start
-
-# ブラウザにアクセス
-http:localhost:3000
-```
-
-### Dockerの場合
-
-```
 # コンテナのビルドと起動
 docker compose up -d --build
 
@@ -149,70 +108,7 @@ docker compose down
 ## ディレクトリ構成
 
 ```
-❯ tree -a -I "node_modules|.next|.git|.pytest_cache|static" -L 2
-.
-├── .docker
-│   ├── js
-│   └── nginx
-├── .dockerignore
-├── .env
-├── .env.example
-├── .github
-│   └── workflows
-├── .gitignore
-├── .husky
-│   └── pre-commit
-├── .prettierignore
-├── .prettierrc
-├── .vscode
-│   ├── extensions.json
-│   └── settings.json
-├── LICENSE
-├── README.md
-├── app
-│   ├── manifest.json
-│   ├── api
-│   ├── contact
-│   ├── copyright
-│   ├── disclaimer
-│   ├── fonts
-│   ├── global-error.tsx
-│   ├── globals.css
-│   ├── layout.tsx
-│   ├── link
-│   ├── not-found.module.css
-│   ├── not-found.tsx
-│   ├── page.tsx
-│   ├── privacy
-│   └── service
-├── components
-│   ├── Common
-│   ├── Home
-│   └── Service
-├── docker-compose.yml
-├── eslint.config.mjs
-├── instrumentation.ts
-├── hooks
-│   ├── A2hs
-│   └── Middleware
-├── libs
-│   └── supabase.js
-├── next-sitemap.config.js
-├── next.config.ts
-├── package-lock.json
-├── package.json
-├── pnpm-lock.yaml
-├── postcss.config.mjs
-├── public
-│   ├── favicon.ico
-│   ├── images
-│   ├── OneSignalSDKWorker.js
-│   └── robots.txt
-├── sentry.client.config.ts
-├── sentry.edge.config.ts
-├── sentry.server.config.ts
-├── tailwind.config.ts
-└── tsconfig.json
+❯ tree -a -I "node_modules|.next|.git|out|.vercel|_|.DS_Store|.env|next-env.d.ts|tmp" -L 3
 ```
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
