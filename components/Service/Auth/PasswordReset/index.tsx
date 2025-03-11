@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { Switch } from '@headlessui/react';
 import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
-import ConfirmAlert from '../../Common/Alert/ConfirmAlert';
-import ErrorAlert from '../../Common/Alert/ErrorAlert';
+import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
+import ErrorAlert from '@/components/Service/Common/Alert/ErrorAlert';
 import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
@@ -15,7 +15,7 @@ type FormData = {
   passwordConf: string;
 };
 
-export default function PasswordReset() {
+export default function SignUp() {
   const router = useRouter();
   const {
     register,
