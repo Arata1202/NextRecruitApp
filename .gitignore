@@ -38,6 +38,3 @@ next-env.d.ts
 
 # cloudflare
 .wrangler
-
-# air
-/tmp

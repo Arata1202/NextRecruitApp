@@ -17,6 +17,11 @@
   - [主な機能一覧](#主な機能一覧)
   - [使用技術](#使用技術)
   - [環境構築](#環境構築)
+    - [リポジトリのクローン](#リポジトリのクローン)
+    - [pnpmの場合](#pnpmの場合)
+      - [開発環境](#開発環境)
+      - [本番環境](#本番環境)
+    - [Dockerの場合](#Dockerの場合)
   - [ディレクトリ構成](#ディレクトリ構成)
   - [Gitの運用](#Gitの運用)
     - [ブランチ](#ブランチ)
@@ -69,38 +74,68 @@
 | Category          | Technology Stack                              |
 | ----------------- | --------------------------------------------- |
 | Frontend          | Next.js, TypeScript, Tailwind CSS             |
-| Backend           | Go                                            |
+| Infrastructure    | Vercel                                        |
 | Database          | Supabase（PostgreSQL）                        |
-| Infrastructure    | Cloudflare Pages, Vercel                      |
-| Environment setup | Docker                                        |
+| Environment setup | Docker, Nginx                                 |
 | CI/CD             | GitHub Actions                                |
 | Design            | Canva                                         |
 | Google            | AdSense, Analytics, Search Console, reCAPTCHA |
-| etc.              | PWA, OneSignal                                |
+| etc.              | PWA, OneSignal, Sentry, Slack                 |
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
 
 ## 環境構築
 
+### リポジトリのクローン
+
 ```
 # リポジトリのクローン
-git clone git@github.com:Arata1202/NextBlogApp.git
-cd NextBlogApp
+git clone git@github.com:Arata1202/NextRecruitApp.git
+cd NextRecruitApp
 
 # .env.exampleから.envを作成
 mv .env.example .env
 
 # .envの編集
 vi .env
+```
 
-## node_modulesのインストール
+### pnpmの場合
+
+#### 開発環境
+
+```
+# node_modulesのインストール
 pnpm install
-
-# コンテナのビルドと起動
-docker compose up -d --build
 
 # 開発サーバーの立ち上げ
 pnpm dev
+
+# ブラウザにアクセス
+http:localhost:3000
+```
+
+#### 本番環境
+
+```
+# node_modulesのインストール
+pnpm install
+
+# Next.jsのビルド
+pnpm build
+
+# ビルドしたNext.jsの起動
+pnpm start
+
+# ブラウザにアクセス
+http:localhost:3000
+```
+
+### Dockerの場合
+
+```
+# コンテナのビルドと起動
+docker compose up -d --build
 
 # ブラウザにアクセス
 http:localhost:3000
@@ -114,7 +149,70 @@ docker compose down
 ## ディレクトリ構成
 
 ```
-❯ tree -a -I "node_modules|.next|.git|out|.vercel|_|.DS_Store|.env|next-env.d.ts|tmp" -L 3
+❯ tree -a -I "node_modules|.next|.git|.pytest_cache|static" -L 2
+.
+├── .docker
+│   ├── js
+│   └── nginx
+├── .dockerignore
+├── .env
+├── .env.example
+├── .github
+│   └── workflows
+├── .gitignore
+├── .husky
+│   └── pre-commit
+├── .prettierignore
+├── .prettierrc
+├── .vscode
+│   ├── extensions.json
+│   └── settings.json
+├── LICENSE
+├── README.md
+├── app
+│   ├── manifest.json
+│   ├── api
+│   ├── contact
+│   ├── copyright
+│   ├── disclaimer
+│   ├── fonts
+│   ├── global-error.tsx
+│   ├── globals.css
+│   ├── layout.tsx
+│   ├── link
+│   ├── not-found.module.css
+│   ├── not-found.tsx
+│   ├── page.tsx
+│   ├── privacy
+│   └── service
+├── components
+│   ├── Common
+│   ├── Home
+│   └── Service
+├── docker-compose.yml
+├── eslint.config.mjs
+├── instrumentation.ts
+├── hooks
+│   ├── A2hs
+│   └── Middleware
+├── libs
+│   └── supabase.js
+├── next-sitemap.config.js
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── pnpm-lock.yaml
+├── postcss.config.mjs
+├── public
+│   ├── favicon.ico
+│   ├── images
+│   ├── OneSignalSDKWorker.js
+│   └── robots.txt
+├── sentry.client.config.ts
+├── sentry.edge.config.ts
+├── sentry.server.config.ts
+├── tailwind.config.ts
+└── tsconfig.json
 ```
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
