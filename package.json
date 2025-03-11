@@ -10,7 +10,7 @@
     "lint:fix": "eslint --fix",
     "prepare": "husky install",
     "format": "prettier --write --ignore-path .gitignore './**/*.{js,jsx,ts,tsx,json,css}'",
-    "pages:build": "rm -rf ./app/api && pnpm dlx @cloudflare/next-on-pages",
+    "pages:build": "pnpm dlx @cloudflare/next-on-pages",
     "preview": "pnpm run pages:build && wrangler pages dev",
     "deploy": "pnpm run pages:build && wrangler deploy"
   },
