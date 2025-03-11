@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { supabase } from '@/libs/supabase';
 import { useState, useRef, Fragment } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
@@ -150,7 +151,7 @@ export default function MainLayout() {
                     <ul role="list" className="-mx-2 space-y-1">
                       {SidebarNavigation.map((item) => (
                         <li key={item.name}>
-                          <a
+                          <Link
                             href={item.href}
                             className={classNames(
                               item.current
@@ -169,7 +170,7 @@ export default function MainLayout() {
                               )}
                             />
                             {item.name}
-                          </a>
+                          </Link>
                         </li>
                       ))}
                     </ul>
@@ -208,7 +209,7 @@ export default function MainLayout() {
                         </>
                       )}
                       {/* <li>
-                        <a
+                        <Link
                           onClick={() =>
                             window.open('https://www.instagram.com/riku.vision', '_blank')
                           }
@@ -219,11 +220,11 @@ export default function MainLayout() {
                             className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
                           />
                           ご利用ガイド
-                        </a>
+                        </Link>
                       </li> */}
                       <li>
-                        <a
-                          onClick={() => (window.location.href = '/contact')}
+                        <Link
+                          href="/contact"
                           className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
                         >
                           <EnvelopeIcon
@@ -231,7 +232,7 @@ export default function MainLayout() {
                             className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
                           />
                           お問い合わせ
-                        </a>
+                        </Link>
                       </li>
                       <li>
                         <a
@@ -282,7 +283,7 @@ export default function MainLayout() {
                 <ul role="list" className="-mx-2 space-y-1">
                   {SidebarNavigation.map((item) => (
                     <li key={item.name}>
-                      <a
+                      <Link
                         href={item.href}
                         className={classNames(
                           item.current
@@ -301,7 +302,7 @@ export default function MainLayout() {
                           )}
                         />
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -322,7 +323,7 @@ export default function MainLayout() {
                   </li> */}
                   <li>
                     <button
-                      onClick={() => (window.location.href = '/contact')}
+                      onClick={() => router.push('/contact')}
                       className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
                     >
                       <EnvelopeIcon

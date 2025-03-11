@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -517,7 +518,7 @@ export default function FlowFeature() {
                     <div className="border-b border-gray-200">
                       <nav aria-label="Tabs" className="-mb-px flex space-x-8">
                         {tabs.map((tab) => (
-                          <a
+                          <Link
                             key={tab.name}
                             href={tab.href}
                             aria-current={tab.current ? 'page' : undefined}
@@ -529,7 +530,7 @@ export default function FlowFeature() {
                             )}
                           >
                             {tab.name}
-                          </a>
+                          </Link>
                         ))}
                       </nav>
                     </div>

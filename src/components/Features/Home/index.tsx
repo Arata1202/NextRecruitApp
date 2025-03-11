@@ -1,3 +1,4 @@
+import Link from 'next/link';
 import {
   ChartPieIcon,
   CalendarDaysIcon,
@@ -158,18 +159,18 @@ export default function HomeFeature() {
                   </div>
                   <div className="mt-10">
                     <p className="text-center">＼ ソーシャルアカウントの場合はこちら ／</p>
-                    <a
+                    <Link
                       href="/service/auth/login"
                       className="mt-1 w-full justify-center inline-flex rounded-md bg-blue-500 px-3.5 py-3.5 text-xl font-semibold text-white shadow-sm hover:bg-blue-600"
                     >
                       ログイン
-                    </a>
-                    <a
+                    </Link>
+                    <Link
                       href="/service/auth/signup"
                       className="mt-5 border w-full justify-center inline-flex rounded-md px-3.5 py-3.5 text-xl font-semibold shadow-sm border-blue-500 text-blue-500 hover:border-blue-600 hover:text-blue-600"
                     >
                       アカウント登録
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </div>
@@ -215,12 +216,12 @@ export default function HomeFeature() {
                 リクビジョンは、現役の大学生が実際に感じた就活の課題を解決するために、個人で開発を行っているサービスです。ご意見やご要望がございましたら、ぜひお気軽にお問い合わせください。
               </p>
               <div className="mt-10 flex items-center justify-center gap-x-6">
-                <a
+                <Link
                   href="/contact"
                   className="border w-full justify-center inline-flex rounded-md px-3.5 py-3.5 text-xl font-semibold shadow-sm border-blue-500 text-blue-500 hover:border-blue-600 hover:text-blue-600"
                 >
                   お問い合わせ
-                </a>
+                </Link>
               </div>
             </div>
           </div>

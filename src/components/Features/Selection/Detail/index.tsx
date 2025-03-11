@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
@@ -390,7 +391,7 @@ export default function DetailFeature() {
 
     return parts.map((part, index) =>
       urlRegex.test(part) ? (
-        <a
+        <Link
           key={index}
           href={part}
           target="_blank"
@@ -398,7 +399,7 @@ export default function DetailFeature() {
           className="text-blue-500 hover:text-blue-600"
         >
           {part}
-        </a>
+        </Link>
       ) : (
         <React.Fragment key={index}>{part}</React.Fragment>
       ),
@@ -475,7 +476,7 @@ export default function DetailFeature() {
                     <div className="border-b border-gray-300">
                       <nav aria-label="Tabs" className="-mb-px flex space-x-8">
                         {tabs.map((tab) => (
-                          <a
+                          <Link
                             key={tab.name}
                             href={tab.href}
                             aria-current={tab.current ? 'page' : undefined}
@@ -487,7 +488,7 @@ export default function DetailFeature() {
                             )}
                           >
                             {tab.name}
-                          </a>
+                          </Link>
                         ))}
                       </nav>
                     </div>

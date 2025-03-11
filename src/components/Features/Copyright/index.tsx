@@ -1,7 +1,9 @@
+import Link from 'next/link';
 import styles from './index.module.css';
 import { HomeIcon, DocumentTextIcon } from '@heroicons/react/24/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
 import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+
 export default function CopyrightFeature() {
   return (
     <>
@@ -13,10 +15,10 @@ export default function CopyrightFeature() {
           >
             <li className="flex">
               <div className="flex items-center">
-                <a href="/" className="text-gray-500 hover:text-blue-500">
+                <Link href="/" className="text-gray-500 hover:text-blue-500">
                   <HomeIcon aria-hidden="true" className="size-5 shrink-0" />
                   <span className="sr-only">Home</span>
-                </a>
+                </Link>
               </div>
             </li>
             <li className="flex">
@@ -30,12 +32,12 @@ export default function CopyrightFeature() {
                 >
                   <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
-                <a
+                <Link
                   href="/copyright"
                   className="ml-4 text-sm font-medium text-gray-500 hover:text-blue-500"
                 >
                   著作権
-                </a>
+                </Link>
               </div>
             </li>
           </ol>
@@ -64,7 +66,7 @@ export default function CopyrightFeature() {
                   <br />
                   <br />
                   本サービスは著作権や肖像権の侵害を目的としたものではありません。著作権や肖像権に関して問題がございましたら、
-                  <a href="/contact">お問い合わせ</a>
+                  <Link href="/contact">お問い合わせ</Link>
                   よりご連絡ください。迅速に対応いたします。
                 </p>
               </div>

@@ -1,4 +1,6 @@
+import Link from 'next/link';
 import styles from './index.module.css';
+
 const navigation = {
   solutions: [
     { name: 'アカウント登録', href: '/service/auth/signup' },
@@ -49,17 +51,17 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 pb-8 pt-16 sm:pt-24 lg:px-8 lg:pt-32">
         <div className="xl:grid xl:grid-cols-3 xl:gap-8">
           <div className="space-y-8">
-            <a href="/" className="underLogo">
+            <Link href="/" className="underLogo">
               <img
                 alt="Company name"
                 src="/images/head/1.png"
                 className="hover:scale-110 transition-transform"
                 style={{ height: '45px' }}
               />
-            </a>
+            </Link>
             {/* <div className="flex gap-x-6 underLogo">
               {navigation.social.map((item) => (
-                <a
+                <Link
                   key={item.name}
                   href={item.href}
                   target="_blank"
@@ -67,7 +69,7 @@ export default function Footer() {
                 >
                   <span className="sr-only">{item.name}</span>
                   <item.icon aria-hidden="true" className="size-6" />
-                </a>
+                </Link>
               ))}
             </div> */}
           </div>
@@ -78,9 +80,9 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.solutions.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6  hover:text-blue-500">
+                      <Link href={item.href} className="text-sm/6  hover:text-blue-500">
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -90,13 +92,13 @@ export default function Footer() {
                 {/* <ul role="list" className="mt-6 space-y-4">
                   {navigation.support.map((item) => (
                     <li key={item.name}>
-                      <a
+                      <Link
                         href={item.href}
                         target="_blank"
                         className="text-sm/6  hover:text-blue-500"
                       >
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul> */}
@@ -108,9 +110,9 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.company.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6  hover:text-blue-500">
+                      <Link href={item.href} className="text-sm/6  hover:text-blue-500">
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>
@@ -120,9 +122,9 @@ export default function Footer() {
                 <ul role="list" className="mt-6 space-y-4">
                   {navigation.legal.map((item) => (
                     <li key={item.name}>
-                      <a href={item.href} className="text-sm/6  hover:text-blue-500">
+                      <Link href={item.href} className="text-sm/6  hover:text-blue-500">
                         {item.name}
-                      </a>
+                      </Link>
                     </li>
                   ))}
                 </ul>

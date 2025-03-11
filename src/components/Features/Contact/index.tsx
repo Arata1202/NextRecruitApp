@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useState, useEffect, useRef, useCallback, Fragment } from 'react';
+import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { Dialog, Transition } from '@headlessui/react';
 import { XMarkIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
@@ -120,10 +121,10 @@ export default function ContactFeature() {
           >
             <li className="flex">
               <div className="flex items-center">
-                <a href="/" className="text-gray-500 hover:text-blue-500">
+                <Link href="/" className="text-gray-500 hover:text-blue-500">
                   <HomeIcon aria-hidden="true" className="size-5 shrink-0" />
                   <span className="sr-only">Home</span>
-                </a>
+                </Link>
               </div>
             </li>
             <li className="flex">
@@ -137,12 +138,12 @@ export default function ContactFeature() {
                 >
                   <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
-                <a
+                <Link
                   href="/contact"
                   className="ml-4 text-sm font-medium text-gray-500 hover:text-blue-500"
                 >
                   お問い合わせ
-                </a>
+                </Link>
               </div>
             </li>
           </ol>

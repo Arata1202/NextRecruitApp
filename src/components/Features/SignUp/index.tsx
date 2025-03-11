@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { Switch } from '@headlessui/react';
@@ -156,10 +157,10 @@ export default function SignUpFeature() {
           >
             <li className="flex">
               <div className="flex items-center">
-                <a href="/" className="text-gray-500 hover:text-blue-500">
+                <Link href="/" className="text-gray-500 hover:text-blue-500">
                   <HomeIcon aria-hidden="true" className="size-5 shrink-0" />
                   <span className="sr-only">Home</span>
-                </a>
+                </Link>
               </div>
             </li>
             <li className="flex">
@@ -173,12 +174,12 @@ export default function SignUpFeature() {
                 >
                   <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
-                <a
+                <Link
                   href="/service/auth/signup"
                   className="ml-4 text-sm font-medium text-gray-500 hover:text-blue-500"
                 >
                   アカウント登録
-                </a>
+                </Link>
               </div>
             </li>
           </ol>
@@ -191,9 +192,9 @@ export default function SignUpFeature() {
               初めてご利用の方は、新規アカウント登録が必要です。
               <br />
               アカウントをお持ちの方は、こちらから
-              <a href="/service/auth/login" className="text-blue-500 hover:text-blue-600">
+              <Link href="/service/auth/login" className="text-blue-500 hover:text-blue-600">
                 ログイン
-              </a>
+              </Link>
               できます。
             </div>
           </div>
@@ -322,13 +323,13 @@ export default function SignUpFeature() {
                       </div>
                       <div className="ml-3 text-sm/6">
                         <label htmlFor="privacy" className="font-medium">
-                          <a
+                          <Link
                             href="/privacy"
                             target="_blank"
                             className="text-blue-500 hover:text-blue-600"
                           >
                             プライバシーポリシー
-                          </a>
+                          </Link>
                           に同意します
                         </label>
                       </div>

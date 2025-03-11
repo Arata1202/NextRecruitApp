@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
@@ -99,10 +100,10 @@ export default function LoginFeature() {
           >
             <li className="flex">
               <div className="flex items-center">
-                <a href="/" className="text-gray-500 hover:text-blue-500">
+                <Link href="/" className="text-gray-500 hover:text-blue-500">
                   <HomeIcon aria-hidden="true" className="size-5 shrink-0" />
                   <span className="sr-only">Home</span>
-                </a>
+                </Link>
               </div>
             </li>
             <li className="flex">
@@ -116,12 +117,12 @@ export default function LoginFeature() {
                 >
                   <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
-                <a
+                <Link
                   href="/service/auth/login"
                   className="ml-4 text-sm font-medium text-gray-500 hover:text-blue-500"
                 >
                   ログイン
-                </a>
+                </Link>
               </div>
             </li>
           </ol>
@@ -134,9 +135,9 @@ export default function LoginFeature() {
               アカウントをお持ちでない方は、
               <br />
               こちらから
-              <a href="/service/auth/signup" className="text-blue-500 hover:text-blue-600">
+              <Link href="/service/auth/signup" className="text-blue-500 hover:text-blue-600">
                 アカウントを登録
-              </a>
+              </Link>
               いただけます。
             </div>
           </div>
@@ -302,9 +303,9 @@ export default function LoginFeature() {
             </div>
           </div>
           <p className="mt-6 text-center text-sm/6">
-            <a href="/service/auth/sendemail" className="text-blue-500 hover:text-blue-600">
+            <Link href="/service/auth/sendemail" className="text-blue-500 hover:text-blue-600">
               パスワードをお忘れの方はこちら
-            </a>
+            </Link>
           </p>
         </div>
         <AdUnit

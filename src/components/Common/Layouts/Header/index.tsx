@@ -1,6 +1,7 @@
 'use client';
 
 import { Fragment, useState } from 'react';
+import Link from 'next/link';
 import styles from './index.module.css';
 import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
@@ -19,10 +20,10 @@ export default function Header() {
         className="mx-auto flex max-w-7xl items-center justify-between py-4 px-6 lg:px-8"
         aria-label="Global"
       >
-        <a href="/" className="-m-1.5 p-1.5 hover:scale-110 transition-transform">
+        <Link href="/" className="-m-1.5 p-1.5 hover:scale-110 transition-transform">
           <span className="sr-only">Your Company</span>
           <img alt="" src="/images/head/1.png" className="w-auto" style={{ height: '45px' }} />
-        </a>
+        </Link>
         <div className="flex lg:hidden">
           {mobileMenuOpen ? (
             <button
@@ -48,18 +49,21 @@ export default function Header() {
         </div>
 
         <div className="hidden lg:flex lg:gap-x-12 font-bold">
-          <a href="/contact" className={`flex text-sm leading-6 hover:text-blue-500`}>
+          <Link href="/contact" className={`flex text-sm leading-6 hover:text-blue-500`}>
             <EnvelopeIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             お問い合わせ
-          </a>
-          <a href="/service/auth/signup" className={`flex text-sm leading-6 hover:text-blue-500`}>
+          </Link>
+          <Link
+            href="/service/auth/signup"
+            className={`flex text-sm leading-6 hover:text-blue-500`}
+          >
             <UserPlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             アカウント登録
-          </a>
-          <a href="/service/auth/login" className={`flex text-sm leading-6 hover:text-blue-500`}>
+          </Link>
+          <Link href="/service/auth/login" className={`flex text-sm leading-6 hover:text-blue-500`}>
             <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-2" aria-hidden="true" />
             ログイン
-          </a>
+          </Link>
         </div>
       </nav>
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
@@ -105,17 +109,17 @@ export default function Header() {
                 </div> */}
                 <ul className="mt-5 space-y-6">
                   <li>
-                    <a href="/service/auth/signup">
+                    <Link href="/service/auth/signup">
                       <div
                         className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
                       >
                         <UserPlusIcon className="h-6 w-6 mr-2 ml-2" aria-hidden="true" />
                         アカウント登録
                       </div>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/service/auth/login">
+                    <Link href="/service/auth/login">
                       <div
                         className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
                       >
@@ -125,17 +129,17 @@ export default function Header() {
                         />
                         ログイン
                       </div>
-                    </a>
+                    </Link>
                   </li>
                   <li>
-                    <a href="/contact">
+                    <Link href="/contact">
                       <div
                         className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
                       >
                         <EnvelopeIcon className="h-6 w-6 mr-2 ml-2" aria-hidden="true" />
                         お問い合わせ
                       </div>
-                    </a>
+                    </Link>
                   </li>
                 </ul>
               </div>

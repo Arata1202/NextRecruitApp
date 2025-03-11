@@ -35,7 +35,7 @@ export default function CalendarFeature() {
   useMutationObserver();
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const [holidays, setHolidays] = useState<string[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [, setIsLoading] = useState(true);
   const router = useRouter();
 
   useEffect(() => {
@@ -150,10 +150,6 @@ export default function CalendarFeature() {
       info.el.style.backgroundColor = '#ffebee';
     }
   };
-
-  if (isLoading) {
-    return <></>;
-  }
 
   return (
     <>

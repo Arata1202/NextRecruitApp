@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
@@ -83,10 +84,10 @@ export default function PasswordResetFeature() {
           >
             <li className="flex">
               <div className="flex items-center">
-                <a href="/" className="text-gray-500 hover:text-blue-500">
+                <Link href="/" className="text-gray-500 hover:text-blue-500">
                   <HomeIcon aria-hidden="true" className="size-5 shrink-0" />
                   <span className="sr-only">Home</span>
-                </a>
+                </Link>
               </div>
             </li>
             <li className="flex">
@@ -100,12 +101,12 @@ export default function PasswordResetFeature() {
                 >
                   <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
                 </svg>
-                <a
+                <Link
                   href="/service/auth/sendemail"
                   className="ml-4 text-sm font-medium text-gray-500 hover:text-blue-500"
                 >
                   パスワードリセット
-                </a>
+                </Link>
               </div>
             </li>
           </ol>

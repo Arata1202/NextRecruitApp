@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
@@ -520,7 +521,7 @@ export default function TodoFeature() {
                   <div className="border-b border-gray-300">
                     <nav aria-label="Tabs" className="-mb-px flex space-x-8">
                       {tabs.map((tab) => (
-                        <a
+                        <Link
                           key={tab.name}
                           href={tab.href}
                           aria-current={tab.current ? 'page' : undefined}
@@ -532,7 +533,7 @@ export default function TodoFeature() {
                           )}
                         >
                           {tab.name}
-                        </a>
+                        </Link>
                       ))}
                     </nav>
                   </div>
