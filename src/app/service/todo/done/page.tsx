@@ -1,6 +1,6 @@
 'use client';
 
-import Todo from '@/components/Service/Pages/Todo/Done';
+import Done from '@/components/Service/Pages/Todo/Done';
 import { useAuthMainCheck } from '@/hooks/Middleware/Main';
 
 export const runtime = 'edge';
@@ -11,5 +11,5 @@ export default function TemplatePage() {
   if (!userChecked) {
     return null;
   }
-  return <Todo />;
+  return <Done />;
 }

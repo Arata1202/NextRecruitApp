@@ -23,7 +23,7 @@ type Analysis = {
   star_id: string;
 };
 
-export default function Template() {
+export default function Selection() {
   useMutationObserver();
   const router = useRouter();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
