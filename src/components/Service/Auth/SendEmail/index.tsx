@@ -4,14 +4,14 @@ import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
-import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
+import ConfirmAlert from '../../Common/Alert/ConfirmAlert';
 import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
   email: string;
 };
 
-export default function Login() {
+export default function SendEmail() {
   const [confirmShow, setConfirmShow] = useState(false);
   const [ConfirmTitle, setConfirmTitle] = useState('');
   const [ConfirmMessage, setConfirmMessage] = useState('');
