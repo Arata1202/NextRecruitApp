@@ -1,7 +1,7 @@
 import styles from './index.module.css';
 import { HomeIcon, ExclamationCircleIcon } from '@heroicons/react/24/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import Display from '@/components/Common/Adsense/Display';
 export default function Disclaimer() {
   return (
     <>
@@ -67,7 +67,10 @@ export default function Disclaimer() {
               </div>
             </div>
           </div>
-          <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
+
+          <div className="FirstAd mt-5">
+            <Display slot="7998948559" />
+          </div>
         </div>
       </div>
     </>

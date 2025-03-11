@@ -8,7 +8,7 @@ import { HomeIcon } from '@heroicons/react/24/solid';
 import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './index.module.css';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import Display from '@/components/Common/Adsense/Display';
 
 const ContactPage = () => {
   const [show, setContactConfirmShow] = useState(false);
@@ -233,7 +233,10 @@ const ContactPage = () => {
               </div>
             </form>
           </div>
-          <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
+
+          <div className="FirstAd mt-5">
+            <Display slot="7998948559" />
+          </div>
         </div>
       </div>
       {/* 送信確認モーダル */}

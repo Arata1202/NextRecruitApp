@@ -3,12 +3,12 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
-import MainLayout from '@/components/Common/Layouts/MainLayout';
+import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { isSameDay } from 'date-fns';
 import { Fragment } from 'react';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
-import { useMutationObserver } from '@/hooks/useMutationObserver';
+import Display from '@/components/Common/Adsense/Display';
+import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 import {
   ExclamationTriangleIcon,
   PlusIcon,
@@ -26,7 +26,7 @@ type Analysis = {
 };
 
 export default function Flow() {
-  useMutationObserver();
+  useHeightGuardObserver();
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [userId, setUserId] = useState<string | null>(null);
   const [isAllDay, setIsAllDay] = useState(false);
@@ -477,8 +477,8 @@ export default function Flow() {
     <>
       <div>
         <MainLayout />
-        <div className="lg:pl-72 mut-guard">
-          <main className="h-screen mut-guard">
+        <div className="lg:pl-72 mut-height-guard">
+          <main className="h-screen mut-height-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>
@@ -932,7 +932,7 @@ export default function Flow() {
 
             {/* それ以降 */}
             <div
-              className="px-4 sm:px-6 lg:px-8 bg-gray-100 mut-guard"
+              className="px-4 sm:px-6 lg:px-8 bg-gray-100 mut-height-guard"
               style={{
                 paddingBottom: `calc(60px + env(safe-area-inset-bottom))`,
               }}
@@ -1035,10 +1035,9 @@ export default function Flow() {
               {loading ? (
                 <></>
               ) : (
-                <AdUnit
-                  slot="7998948559"
-                  style={{ marginBottom: '1.25rem', marginTop: '1.25rem' }}
-                />
+                <div className="FirstAd mb-5 mt-5">
+                  <Display slot="7998948559" />
+                </div>
               )}
             </div>
           </main>

@@ -1,8 +1,8 @@
 'use client';
 
 import SendEmail from '@/components/Service/Auth/SendEmail';
-import Header from '@/components/Common/Layouts/Header';
-import Footer from '@/components/Common/Layouts/Footer';
+import Header from '@/components/Home/Layouts/Header';
+import Footer from '@/components/Home/Layouts/Footer';
 
 export const runtime = 'edge';
 
