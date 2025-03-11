@@ -1,17 +1,15 @@
-'use client';
-
-import Contact from '@/components/Home/Pages/Contact';
+import ContactPage from '@/components/Pages/Contact';
 import Header from '@/components/Common/Layouts/Header';
 import Footer from '@/components/Common/Layouts/Footer';
 
 export const runtime = 'edge';
 
-export default function DashBoardPage() {
+export default function Page() {
   return (
     <>
       <Header />
       <div style={{ marginTop: '72px' }}>
-        <Contact />
+        <ContactPage />
       </div>
       <Footer />
     </>

@@ -1,15 +1,7 @@
-'use client';
-
-import Selection from '@/components/Service/Pages/Selection';
-import { useAuthMainCheck } from '@/hooks/Middleware/Main';
+import SelectionPage from '@/components/Pages/Selection';
 
 export const runtime = 'edge';
 
-export default function SelectionPage() {
-  const { userChecked } = useAuthMainCheck();
-
-  if (!userChecked) {
-    return null;
-  }
-  return <Selection />;
+export default function Page() {
+  return <SelectionPage />;
 }
