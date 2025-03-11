@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
-import MainLayout from '@/components/Common/Layouts/MainLayout';
+import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
-import { useMutationObserver } from '@/hooks/useMutationObserver';
+import Display from '@/components/Common/Adsense/Display';
+import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 import { Fragment } from 'react';
 import {
   ExclamationTriangleIcon,
@@ -32,7 +32,7 @@ type AnalysisTitle = {
 };
 
 export default function Flow() {
-  useMutationObserver();
+  useHeightGuardObserver();
   const { id } = useParams();
   const router = useRouter();
 
@@ -469,8 +469,8 @@ export default function Flow() {
     <>
       <div>
         <MainLayout />
-        <div className="lg:pl-72 mut-guard">
-          <main className="h-screen mut-guard">
+        <div className="lg:pl-72 mut-height-guard">
+          <main className="h-screen mut-height-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>
@@ -537,7 +537,7 @@ export default function Flow() {
 
             {/* メインコンテンツ */}
             <div
-              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 mut-guard"
+              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 mut-height-guard"
               style={{
                 paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
               }}
@@ -624,7 +624,13 @@ export default function Flow() {
                 ))
               )}
 
-              {loading ? <></> : <AdUnit slot="7998948559" style={{ marginBottom: '1.25rem' }} />}
+              {loading ? (
+                <></>
+              ) : (
+                <div className="FirstAd mb-5">
+                  <Display slot="7998948559" />
+                </div>
+              )}
             </div>
           </main>
         </div>

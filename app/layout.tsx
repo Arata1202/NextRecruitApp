@@ -4,8 +4,8 @@ import localFont from 'next/font/local';
 import './globals.css';
 import Script from 'next/script';
 import type { Viewport } from 'next';
-import ScrollTopButton from '@/components/Common/Layouts/ScrollToTop';
-import GoogleAdSense from '@/components/Common/ThirdParties/GoogleAdSense';
+import ScrollTopButton from '@/components/Service/Common/ScrollToTop';
+import { Adsense } from '@/components/Common/Adsense/AdsenseScript';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -112,7 +112,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-white`}>
         <div className="LightTheme">{children}</div>
         <ScrollTopButton />
-        <GoogleAdSense />
+        <Adsense />
       </body>
     </html>
   );

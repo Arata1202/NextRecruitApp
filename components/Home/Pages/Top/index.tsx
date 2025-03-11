@@ -3,7 +3,7 @@ import {
   CalendarDaysIcon,
   ClipboardDocumentListIcon,
 } from '@heroicons/react/24/outline';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import Display from '@/components/Common/Adsense/Display';
 
 const features = [
   {
@@ -225,7 +225,10 @@ export default function Top() {
             </div>
           </div>
         </div>
-        <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
+
+        <div className="TopTitle FirstAd overflow-hidden mx-auto mb-5 max-w-7xl px-6 lg:px-8">
+          <Display slot="7998948559" />
+        </div>
       </div>
     </>
   );

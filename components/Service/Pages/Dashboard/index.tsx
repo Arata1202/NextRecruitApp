@@ -1,11 +1,11 @@
 'use client';
 
-import MainLayout from '@/components/Common/Layouts/MainLayout';
+import MainLayout from '@/components/Service/Layouts/MainLayout';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
 import { format, isSameDay, addDays, subHours } from 'date-fns';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
-import { useMutationObserver } from '@/hooks/useMutationObserver';
+import Display from '@/components/Common/Adsense/Display';
+import { useHeightGuardObserver } from '@/hooks/MutationObserver';
 import { ja } from 'date-fns/locale';
 import { supabase } from '@/libs/supabase';
 import { useRouter } from 'next/navigation';
@@ -26,7 +26,7 @@ interface EventData {
 }
 
 export default function DashBoard() {
-  useMutationObserver();
+  useHeightGuardObserver();
   const [currentDate, setCurrentDate] = useState('');
   const [tomorrowDate, setTomorrowDate] = useState('');
   const [dayAfterTomorrowDate, setDayAfterTomorrowDate] = useState('');
@@ -363,8 +363,8 @@ export default function DashBoard() {
     <>
       <div>
         <MainLayout />
-        <div className="lg:pl-72 mut-guard">
-          <main className="h-screen mut-guard">
+        <div className="lg:pl-72 mut-height-guard">
+          <main className="h-screen mut-height-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>
@@ -428,12 +428,12 @@ export default function DashBoard() {
               <></>
             ) : (
               <div
-                className="FirstAd bg-gray-100 px-4 sm:px-6 lg:px-8 mut-guard"
+                className="FirstAd bg-gray-100 px-4 sm:px-6 lg:px-8 mut-height-guard"
                 style={{
                   paddingBottom: `calc(60px + env(safe-area-inset-bottom))`,
                 }}
               >
-                <AdUnit slot="7998948559" />
+                <Display slot="7998948559" />
               </div>
             )}
           </main>
