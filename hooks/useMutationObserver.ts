@@ -1,8 +1,8 @@
 import { useEffect } from 'react';
 
-export const useHeightGuardObserver = () => {
+export const useMutationObserver = () => {
   useEffect(() => {
-    const targets = document.querySelectorAll<HTMLElement>('.mut-height-guard');
+    const targets = document.querySelectorAll<HTMLElement>('.mut-guard');
     const observers: MutationObserver[] = [];
 
     targets.forEach((target) => {

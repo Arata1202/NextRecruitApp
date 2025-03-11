@@ -1,8 +1,8 @@
 'use client';
 
 import Contact from '@/components/Home/Pages/Contact';
-import Header from '@/components/Home/Layouts/Header';
-import Footer from '@/components/Home/Layouts/Footer';
+import Header from '@/components/Common/Layouts/Header';
+import Footer from '@/components/Common/Layouts/Footer';
 
 export const runtime = 'edge';
 
