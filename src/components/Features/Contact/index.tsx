@@ -59,7 +59,7 @@ export default function ContactFeature() {
     })
       .then((response) => response.json())
       .then((data) => {
-        if (data.status === 'success') {
+        if (data.success) {
           console.log('Email sent successfully');
           setContactConfirmShow(true);
           reset();
