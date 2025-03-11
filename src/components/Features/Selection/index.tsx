@@ -296,7 +296,7 @@ export default function SelectionFeature() {
   }, [searchTerm, selectedStarTitle, analyses]);
 
   const handleNavigateToDetail = (id: number) => {
-    router.push(`/service/selection/${id}/detail`);
+    router.push(`/service/selection/detail?id=${id}`);
   };
 
   return (

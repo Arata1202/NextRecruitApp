@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Common/Layouts/MainLayout';
@@ -32,7 +32,8 @@ type AnalysisTitle = {
 
 export default function DetailFeature() {
   useMutationObserver();
-  const { id } = useParams();
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
   const router = useRouter();
 
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
@@ -381,6 +382,8 @@ export default function DetailFeature() {
     return null;
   }
 
+  if (!id) router.push('/service/selection');
+
   const formatDescription = (description: string) => {
     const urlRegex = /(https?:\/\/[^\s]+)/g;
     const parts = description.split(urlRegex);
@@ -404,8 +407,8 @@ export default function DetailFeature() {
 
   const tabs = [
     { name: '企業情報', href: '#', current: true },
-    { name: '選考状況', href: './flow', current: false },
-    { name: '企業一覧へ戻る', href: '../', current: false },
+    { name: '選考状況', href: `/service/selection/flow?id=${id}`, current: false },
+    { name: '企業一覧へ戻る', href: '/service/selection', current: false },
   ];
 
   function classNames(...classes: (string | false | null | undefined)[]): string {

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useSearchParams, useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Common/Layouts/MainLayout';
@@ -33,8 +33,9 @@ type AnalysisTitle = {
 
 export default function FlowFeature() {
   useMutationObserver();
-  const { id } = useParams();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const id = searchParams.get('id');
 
   const [analyses, setAnalyses] = useState<Analysis[]>([]);
   const [analysisTitles, setAnalysisTitles] = useState<AnalysisTitle[]>([]);
@@ -448,6 +449,8 @@ export default function FlowFeature() {
     fetchPageTitle();
   }, [id]);
 
+  if (!id) router.push('/service/selection');
+
   const formatDateWithoutTimezone = (datetime: string) => {
     const [datePart, timePart] = datetime.split('T');
     const [year, month, day] = datePart.split('-');
@@ -456,9 +459,9 @@ export default function FlowFeature() {
   };
 
   const tabs = [
-    { name: '企業情報', href: './detail', current: false },
+    { name: '企業情報', href: `/service/selection/detail?id=${id}`, current: false },
     { name: '選考状況', href: '#', current: true },
-    { name: '企業一覧へ戻る', href: '../', current: false },
+    { name: '企業一覧へ戻る', href: '/service/selection', current: false },
   ];
 
   function classNames(...classes: (string | false | null | undefined)[]): string {
