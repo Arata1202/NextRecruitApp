@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import MainLayout from '@/components/Service/Layouts/MainLayout';
+import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
 import { supabase } from '@/libs/supabase';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import Display from '@/components/Common/Adsense/Display';
-import { useHeightGuardObserver } from '@/hooks/MutationObserver';
+import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import { useMutationObserver } from '@/hooks/useMutationObserver';
 
 interface EventData {
   started_at: string;
@@ -32,7 +32,7 @@ interface MappedEvent {
 }
 
 export default function Calendar() {
-  useHeightGuardObserver();
+  useMutationObserver();
   const [events, setEvents] = useState<MappedEvent[]>([]);
   const [holidays, setHolidays] = useState<string[]>([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -159,8 +159,8 @@ export default function Calendar() {
     <>
       <div>
         <MainLayout />
-        <div className="lg:pl-72 mut-height-guard">
-          <main className="h-screen mut-height-guard">
+        <div className="lg:pl-72 mut-guard">
+          <main className="h-screen mut-guard">
             {/* タイトル */}
             <div className="bg-white px-4 sm:px-6 lg:px-8 MobileHeader">
               <div>
@@ -178,7 +178,7 @@ export default function Calendar() {
             </div>
             {/* メインコンテンツ */}
             <div
-              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 mut-height-guard"
+              className="px-4 sm:px-6 lg:px-8 mt-5 bg-gray-100 mut-guard"
               style={{
                 paddingBottom: `calc(40px + env(safe-area-inset-bottom))`,
               }}
@@ -202,10 +202,7 @@ export default function Calendar() {
                 height="auto"
                 dayCellDidMount={dayCellDidMount}
               />
-
-              <div className="FirstAd mb-5 mt-5">
-                <Display slot="7998948559" />
-              </div>
+              <AdUnit slot="7998948559" style={{ marginBottom: '1.25rem', marginTop: '1.25rem' }} />
             </div>
           </main>
         </div>

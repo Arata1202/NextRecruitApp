@@ -1,7 +1,7 @@
 import styles from './index.module.css';
 import { HomeIcon, LockClosedIcon } from '@heroicons/react/24/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
-import Display from '@/components/Common/Adsense/Display';
+import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
 export default function Privacy() {
   return (
     <>
@@ -258,10 +258,7 @@ export default function Privacy() {
               </div>
             </div>
           </div>
-
-          <div className="FirstAd mt-5">
-            <Display slot="7998948559" />
-          </div>
+          <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
         </div>
       </div>
     </>
