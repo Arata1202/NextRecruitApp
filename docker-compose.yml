@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  js:
+    container_name: js
+    build:
+      context: .
+      dockerfile: ./.docker/js/Dockerfile
+    volumes:
+      - './:/var/www/html/js'
+    working_dir: '/var/www/html/js'
+    ports:
+      - '3000:3000'
+    command: sh -c "npm install && npm run dev"
+    networks:
+      - network
+
+  nginx:
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ./.docker/nginx/Dockerfile
+    ports:
+      - '80:80'
+    volumes:
+      - .:/var/www/html
+    networks:
+      - network
+
+networks:
+  network:
