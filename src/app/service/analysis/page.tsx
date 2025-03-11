@@ -1,15 +1,7 @@
-'use client';
-
-import Analysis from '@/components/Service/Pages/Analysis';
-import { useAuthMainCheck } from '@/hooks/Middleware/Main';
+import AnalysisPage from '@/components/Pages/Analysis';
 
 export const runtime = 'edge';
 
-export default function AnalysisPage() {
-  const { userChecked } = useAuthMainCheck();
-
-  if (!userChecked) {
-    return null;
-  }
-  return <Analysis />;
+export default function Page() {
+  return <AnalysisPage />;
 }

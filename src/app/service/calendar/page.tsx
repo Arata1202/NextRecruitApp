@@ -1,15 +1,7 @@
-'use client';
-
-import Calendar from '@/components/Service/Pages/Calendar';
-import { useAuthMainCheck } from '@/hooks/Middleware/Main';
+import CalendarPage from '@/components/Pages/Calendar';
 
 export const runtime = 'edge';
 
-export default function CalendarPage() {
-  const { userChecked } = useAuthMainCheck();
-
-  if (!userChecked) {
-    return null;
-  }
-  return <Calendar />;
+export default function Page() {
+  return <CalendarPage />;
 }
