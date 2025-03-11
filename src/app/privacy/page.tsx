@@ -1,15 +1,17 @@
-import PrivacyPage from '@/components/Pages/Privacy';
+'use client';
+
+import Privacy from '@/components/Home/Pages/Privacy';
 import Header from '@/components/Common/Layouts/Header';
 import Footer from '@/components/Common/Layouts/Footer';
 
 export const runtime = 'edge';
 
-export default function Page() {
+export default function DashBoardPage() {
   return (
     <>
       <Header />
       <div style={{ marginTop: '72px' }}>
-        <PrivacyPage />
+        <Privacy />
       </div>
       <Footer />
     </>
