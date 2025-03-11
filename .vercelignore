@@ -1,0 +1,5 @@
+*
+!api
+!api/*
+!go.mod
+!vercel.json
