@@ -1,15 +1,22 @@
-import SignUpPage from '@/components/Pages/SignUp';
+'use client';
+
+import SignUp from '@/components/Service/Auth/SignUp';
+import { useAuthAuthCheck } from '@/hooks/Middleware/Auth';
 import Header from '@/components/Common/Layouts/Header';
 import Footer from '@/components/Common/Layouts/Footer';
 
 export const runtime = 'edge';
 
-export default function Page() {
+export default function SignUpPage() {
+  const { userChecked } = useAuthAuthCheck();
+  if (!userChecked) {
+    return null;
+  }
   return (
     <>
       <Header />
       <div style={{ marginTop: '72px' }}>
-        <SignUpPage />
+        <SignUp />
       </div>
       <Footer />
     </>

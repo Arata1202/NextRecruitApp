@@ -1,15 +1,17 @@
-import SendEmailPage from '@/components/Pages/SendEmail';
+'use client';
+
+import SendEmail from '@/components/Service/Auth/SendEmail';
 import Header from '@/components/Common/Layouts/Header';
 import Footer from '@/components/Common/Layouts/Footer';
 
 export const runtime = 'edge';
 
-export default function Page() {
+export default function SendEmailPage() {
   return (
     <>
       <Header />
       <div style={{ marginTop: '72px' }}>
-        <SendEmailPage />
+        <SendEmail />
       </div>
       <Footer />
     </>

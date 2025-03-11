@@ -1,7 +1,15 @@
-import FlowPage from '@/components/Pages/Selection/Flow';
+'use client';
+
+import Flow from '@/components/Service/Pages/Selection/Flow';
+import { useAuthMainCheck } from '@/hooks/Middleware/Main';
 
 export const runtime = 'edge';
 
-export default function Page() {
-  return <FlowPage />;
+export default function TemplatePage() {
+  const { userChecked } = useAuthMainCheck();
+
+  if (!userChecked) {
+    return null;
+  }
+  return <Flow />;
 }
