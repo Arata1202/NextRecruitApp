@@ -5,7 +5,7 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
 import ConfirmAlert from '@/components/Service/Common/Alert/ConfirmAlert';
-import Display from '@/components/Common/Adsense/Display';
+import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
   email: string;
@@ -134,10 +134,15 @@ export default function Login() {
             </div>
           </div>
         </div>
-
-        <div className="FirstAd mt-5 mb-11 px-6 lg:px-0">
-          <Display slot="7998948559" />
-        </div>
+        <AdUnit
+          slot="7998948559"
+          style={{
+            marginTop: '1.25rem',
+            marginBottom: '2.75rem',
+            paddingLeft: '1.5rem',
+            paddingRight: '1.5rem',
+          }}
+        />
       </div>
 
       <ConfirmAlert
