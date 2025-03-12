@@ -2,11 +2,11 @@ import React from 'react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
-import Script from 'next/script';
 import type { Viewport } from 'next';
 import ScrollTopButton from '@/components/Common/Layouts/ScrollToTop';
 import GoogleAdSense from '@/components/Common/ThirdParties/GoogleAdSense';
 import GoogleAnalytics from '@/components/Common/ThirdParties/GoogleAnalytics';
+import OneSignal from '@/components/Common/ThirdParties/OneSignal';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -47,24 +47,9 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const onesignalAppId = process.env.NEXT_PUBLIC_ONESIGNAL_APP_ID;
   return (
     <html lang="ja">
       <head>
-        <Script
-          src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
-          strategy="afterInteractive"
-        />
-        <Script id="onesignal-init" strategy="afterInteractive">
-          {`
-          window.OneSignalDeferred = window.OneSignalDeferred || [];
-          OneSignalDeferred.push(async function(OneSignal) {
-            await OneSignal.init({
-              appId: "${onesignalAppId}",
-            });
-          });
-        `}
-        </Script>
         <meta name="format-detection" content="email=no,telephone=no,address=no" />
         <link rel="manifest" href="/manifest.json" />
         <link
@@ -100,6 +85,7 @@ export default function RootLayout({
         <ScrollTopButton />
         <GoogleAdSense />
         <GoogleAnalytics />
+        <OneSignal />
       </body>
     </html>
   );
