@@ -6,6 +6,7 @@ import Script from 'next/script';
 import type { Viewport } from 'next';
 import ScrollTopButton from '@/components/Common/Layouts/ScrollToTop';
 import GoogleAdSense from '@/components/Common/ThirdParties/GoogleAdSense';
+import GoogleAnalytics from '@/components/Common/ThirdParties/GoogleAnalytics';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -50,21 +51,6 @@ export default function RootLayout({
   return (
     <html lang="ja">
       <head>
-        <Script async strategy="lazyOnload" src={process.env.GOOGLE_ANALYTICS_ID} />
-        <Script
-          id="google-analytics"
-          strategy="lazyOnload"
-          dangerouslySetInnerHTML={{
-            __html: `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', 'G-VGGHGRNHTM', {
-              page_path: window.location.pathname,
-            });
-          `,
-          }}
-        />
         <Script
           src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js"
           strategy="afterInteractive"
@@ -113,6 +99,7 @@ export default function RootLayout({
         <div className="LightTheme">{children}</div>
         <ScrollTopButton />
         <GoogleAdSense />
+        <GoogleAnalytics />
       </body>
     </html>
   );
