@@ -10,6 +10,7 @@ import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './index.module.css';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import HomeContainer from '@/components/Common/Layouts/Container/HomeContainer';
 
 export default function ContactFeature() {
   const [show, setContactConfirmShow] = useState(false);
@@ -113,130 +114,133 @@ export default function ContactFeature() {
 
   return (
     <>
-      <div className="bg-white pb-5">
-        <nav aria-label="Breadcrumb" className="flex border-b border-gray-200 bg-white">
-          <ol
-            role="list"
-            className="mx-auto flex w-full max-w-screen-xl space-x-4 px-4 sm:px-6 lg:px-8"
-          >
-            <li className="flex">
-              <div className="flex items-center">
-                <Link href="/" className="text-gray-500 hover:text-blue-500">
-                  <HomeIcon aria-hidden="true" className="size-5 shrink-0" />
-                  <span className="sr-only">Home</span>
-                </Link>
+      <HomeContainer>
+        <div className="bg-white pb-5">
+          <nav aria-label="Breadcrumb" className="flex border-b border-gray-200 bg-white">
+            <ol
+              role="list"
+              className="mx-auto flex w-full max-w-screen-xl space-x-4 px-4 sm:px-6 lg:px-8"
+            >
+              <li className="flex">
+                <div className="flex items-center">
+                  <Link href="/" className="text-gray-500 hover:text-blue-500">
+                    <HomeIcon aria-hidden="true" className="size-5 shrink-0" />
+                    <span className="sr-only">Home</span>
+                  </Link>
+                </div>
+              </li>
+              <li className="flex">
+                <div className="flex items-center">
+                  <svg
+                    fill="currentColor"
+                    viewBox="0 0 24 44"
+                    preserveAspectRatio="none"
+                    aria-hidden="true"
+                    className="h-full w-6 shrink-0 text-gray-200"
+                  >
+                    <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
+                  </svg>
+                  <Link
+                    href="/contact"
+                    className="ml-4 text-sm font-medium text-gray-500 hover:text-blue-500"
+                  >
+                    お問い合わせ
+                  </Link>
+                </div>
+              </li>
+            </ol>
+          </nav>
+          <div className="mx-auto max-w-7xl p-6 lg:px-8">
+            <div className="mx-auto max-w-3xl text-base/7">
+              <div className={`${styles.content} mb-5`}>
+                <div className="flex">
+                  <EnvelopeIcon className="h-7 w-7 mr-2" aria-hidden="true" />
+                  <h1 className="">お問い合わせ</h1>
+                </div>
+                <p className="mt-2 text-lg/8">
+                  リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
+                </p>
               </div>
-            </li>
-            <li className="flex">
-              <div className="flex items-center">
-                <svg
-                  fill="currentColor"
-                  viewBox="0 0 24 44"
-                  preserveAspectRatio="none"
-                  aria-hidden="true"
-                  className="h-full w-6 shrink-0 text-gray-200"
-                >
-                  <path d="M.293 0l22 22-22 22h1.414l22-22-22-22H.293z" />
-                </svg>
-                <Link
-                  href="/contact"
-                  className="ml-4 text-sm font-medium text-gray-500 hover:text-blue-500"
-                >
-                  お問い合わせ
-                </Link>
-              </div>
-            </li>
-          </ol>
-        </nav>
-        <div className="mx-auto max-w-7xl p-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-base/7">
-            <div className={`${styles.content} mb-5`}>
-              <div className="flex">
-                <EnvelopeIcon className="h-7 w-7 mr-2" aria-hidden="true" />
-                <h1 className="">お問い合わせ</h1>
-              </div>
-              <p className="mt-2 text-lg/8">
-                リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
-              </p>
+              <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">
+                <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+                  <div className="sm:col-span-2">
+                    <label htmlFor="email" className={`block text-sm font-semibold leading-6`}>
+                      メールアドレス
+                    </label>
+                    <div className="mt-2.5">
+                      <input
+                        {...register('email', {
+                          required: '※ メールアドレスを入力してください',
+                          pattern: {
+                            value: /^\S+@\S+$/i,
+                            message: '※ 有効なメールアドレスを入力してください',
+                          },
+                        })}
+                        type="text"
+                        name="email"
+                        id="email"
+                        autoComplete="email"
+                        className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                      />
+                      {errors.email && <p className="text-red-500">{errors.email.message}</p>}
+                    </div>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="last-name" className={`block text-sm font-semibold leading-6`}>
+                      件名
+                    </label>
+                    <div className="mt-2.5">
+                      <input
+                        {...register('title', { required: '※ 件名を入力してください' })}
+                        type="text"
+                        name="title"
+                        id="title"
+                        autoComplete="family-name"
+                        className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                      />
+                      {errors.title && <p className="text-red-500">{errors.title.message}</p>}
+                    </div>
+                  </div>
+                  <div className="sm:col-span-2">
+                    <label htmlFor="message" className={`block text-sm font-semibold leading-6`}>
+                      内容
+                    </label>
+                    <div className="mt-2.5">
+                      <textarea
+                        {...register('message', { required: '※ 内容を入力してください' })}
+                        name="message"
+                        id="message"
+                        rows={4}
+                        className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                        defaultValue={''}
+                      />
+                      {errors.message && <p className="text-red-500">{errors.message.message}</p>}
+                    </div>
+                  </div>
+                </div>
+                {/* スパム */}
+                <ReCAPTCHA
+                  ref={recaptchaRef}
+                  sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+                  onChange={onChange}
+                  className="mt-3"
+                />
+                <div className="mt-3">
+                  <button
+                    type="submit"
+                    disabled={!captchaValue}
+                    className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
+                  >
+                    送信
+                  </button>
+                </div>
+              </form>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">
-              <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                <div className="sm:col-span-2">
-                  <label htmlFor="email" className={`block text-sm font-semibold leading-6`}>
-                    メールアドレス
-                  </label>
-                  <div className="mt-2.5">
-                    <input
-                      {...register('email', {
-                        required: '※ メールアドレスを入力してください',
-                        pattern: {
-                          value: /^\S+@\S+$/i,
-                          message: '※ 有効なメールアドレスを入力してください',
-                        },
-                      })}
-                      type="text"
-                      name="email"
-                      id="email"
-                      autoComplete="email"
-                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                    />
-                    {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-                  </div>
-                </div>
-                <div className="sm:col-span-2">
-                  <label htmlFor="last-name" className={`block text-sm font-semibold leading-6`}>
-                    件名
-                  </label>
-                  <div className="mt-2.5">
-                    <input
-                      {...register('title', { required: '※ 件名を入力してください' })}
-                      type="text"
-                      name="title"
-                      id="title"
-                      autoComplete="family-name"
-                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                    />
-                    {errors.title && <p className="text-red-500">{errors.title.message}</p>}
-                  </div>
-                </div>
-                <div className="sm:col-span-2">
-                  <label htmlFor="message" className={`block text-sm font-semibold leading-6`}>
-                    内容
-                  </label>
-                  <div className="mt-2.5">
-                    <textarea
-                      {...register('message', { required: '※ 内容を入力してください' })}
-                      name="message"
-                      id="message"
-                      rows={4}
-                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                      defaultValue={''}
-                    />
-                    {errors.message && <p className="text-red-500">{errors.message.message}</p>}
-                  </div>
-                </div>
-              </div>
-              {/* スパム */}
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey="6LeRcoEqAAAAADAy9S_y6Xn_ZKtWqSs5lXekEwFp"
-                onChange={onChange}
-                className="mt-3"
-              />
-              <div className="mt-3">
-                <button
-                  type="submit"
-                  disabled={!captchaValue}
-                  className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
-                >
-                  送信
-                </button>
-              </div>
-            </form>
+            <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
           </div>
-          <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
         </div>
-      </div>
+      </HomeContainer>
+
       {/* 送信確認モーダル */}
       <Transition.Root show={open} as={Fragment}>
         <Dialog
