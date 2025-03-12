@@ -6,7 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
 import ConfirmAlert from '../../Common/ConfirmAlert';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
   email: string;

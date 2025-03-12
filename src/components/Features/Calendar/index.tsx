@@ -9,7 +9,7 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import { useMutationObserver } from '@/hooks/useMutationObserver';
 
 interface EventData {

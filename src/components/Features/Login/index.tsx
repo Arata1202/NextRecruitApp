@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { Switch } from '@headlessui/react';
 import ErrorAlert from '../../Common/ErrorAlert';
 import { HomeIcon } from '@heroicons/react/24/solid';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
   email: string;

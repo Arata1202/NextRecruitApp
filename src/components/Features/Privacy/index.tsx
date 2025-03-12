@@ -2,7 +2,7 @@ import Link from 'next/link';
 import styles from './index.module.css';
 import { HomeIcon, LockClosedIcon } from '@heroicons/react/24/solid';
 import { ClockIcon } from '@heroicons/react/24/outline';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 export default function PrivacyFeature() {
   return (

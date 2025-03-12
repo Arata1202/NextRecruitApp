@@ -7,7 +7,7 @@ import { supabase } from '@/libs/supabase';
 import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { Fragment } from 'react';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import { useMutationObserver } from '@/hooks/useMutationObserver';
 import {
   ExclamationTriangleIcon,

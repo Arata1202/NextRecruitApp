@@ -9,7 +9,7 @@ import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
 import ConfirmAlert from '../../Common/ConfirmAlert';
 import ErrorAlert from '../../Common/ErrorAlert';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
   password: string;

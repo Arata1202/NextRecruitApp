@@ -1,18 +1,18 @@
-import React from 'react';
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import '../styles/globals.css';
-import type { Viewport } from 'next';
+import { DESCRIPTION } from '@/constants/data';
 import ScrollTopButton from '@/components/Common/Layouts/ScrollToTop';
-import GoogleAdSense from '@/components/Common/ThirdParties/GoogleAdSense';
-import GoogleAnalytics from '@/components/Common/ThirdParties/GoogleAnalytics';
-import OneSignal from '@/components/Common/ThirdParties/OneSignal';
+import GoogleAdSense from '@/components/ThirdParties/GoogleAdSense';
+import GoogleAnalytics from '@/components/ThirdParties/GoogleAnalytics';
+import OneSignal from '@/components/ThirdParties/OneSignal';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
   variable: '--font-geist-sans',
   weight: '100 900',
 });
+
 const geistMono = localFont({
   src: './fonts/GeistMonoVF.woff',
   variable: '--font-geist-mono',
@@ -25,33 +25,40 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL(process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'),
-  title: 'リクビジョン',
-  description:
-    '就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。',
-  openGraph: {
-    title: 'リクビジョン',
-    description:
-      '就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。',
-    images: '/images/og/1.png',
-    url: 'https://rikuvision.realunivlog.com',
-  },
-  icons: {
-    icon: '/favicon.ico',
-  },
+export async function generateMetadata(): Promise<Metadata> {
+  const defaultUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const defaultTitle = process.env.NEXT_PUBLIC_BASE_TITLE;
+
+  const title = `${defaultTitle}`;
+  const description = DESCRIPTION;
+  const images = `${defaultUrl}/images/og/1.png`;
+  const url = `${defaultUrl}`;
+
+  return {
+    title: title,
+    description: description,
+    openGraph: {
+      title: title,
+      description: description,
+      images: images,
+      url: url,
+    },
+    alternates: {
+      canonical: url,
+    },
+  };
+}
+
+type Props = {
+  children: React.ReactNode;
 };
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
-}>) {
+export default async function RootLayout({ children }: Props) {
   return (
     <html lang="ja">
       <head>
         <meta name="format-detection" content="email=no,telephone=no,address=no" />
-        <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" />
         <link
           rel="icon"
           href="/images/icons/favicon/icon-16x16.png"
@@ -75,8 +82,8 @@ export default function RootLayout({
         <meta name="msapplication-TileColor" content="#E0CBBA" />
         <meta property="og:type" content="website" />
         <meta name="twitter:card" content="summary_large_image" />
-        {/* <meta name="twitter:creator" content="" /> */}
-        {/* <meta name="twitter:site" content="" /> */}
+        <meta name="twitter:creator" content="@Aokumoblog" />
+        <meta name="twitter:site" content="@Aokumoblog" />
         <meta property="og:site_name" content="リクビジョン" />
         <meta property="og:locale" content="ja_JP" />
       </head>

@@ -9,7 +9,7 @@ import { HomeIcon } from '@heroicons/react/24/solid';
 import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import ReCAPTCHA from 'react-google-recaptcha';
 import styles from './index.module.css';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 export default function ContactFeature() {
   const [show, setContactConfirmShow] = useState(false);

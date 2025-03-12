@@ -4,7 +4,7 @@ import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
 import { format, isSameDay, addDays, subHours } from 'date-fns';
-import AdUnit from '@/components/Common/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import { useMutationObserver } from '@/hooks/useMutationObserver';
 import { ja } from 'date-fns/locale';
 import { supabase } from '@/libs/supabase';
