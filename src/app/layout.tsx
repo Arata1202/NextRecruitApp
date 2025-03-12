@@ -25,6 +25,10 @@ export const viewport: Viewport = {
   viewportFit: 'cover',
 };
 
+type Props = {
+  children: React.ReactNode;
+};
+
 export async function generateMetadata(): Promise<Metadata> {
   const defaultUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const defaultTitle = process.env.NEXT_PUBLIC_BASE_TITLE;
@@ -48,10 +52,6 @@ export async function generateMetadata(): Promise<Metadata> {
     },
   };
 }
-
-type Props = {
-  children: React.ReactNode;
-};
 
 export default async function RootLayout({ children }: Props) {
   return (
