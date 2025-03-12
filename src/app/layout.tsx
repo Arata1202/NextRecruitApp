@@ -1,7 +1,7 @@
 import React from 'react';
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import './globals.css';
+import '../styles/globals.css';
 import type { Viewport } from 'next';
 import ScrollTopButton from '@/components/Common/Layouts/ScrollToTop';
 import GoogleAdSense from '@/components/Common/ThirdParties/GoogleAdSense';
