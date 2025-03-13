@@ -312,7 +312,7 @@ export default function MainLayout() {
         onClose={handleShareCancel}
         cancelText="閉じる"
       >
-        <div className="flex justify-center mt-4">
+        <div className="flex justify-center">
           <TwitterShareButton
             aria-label="シェアボタン"
             url="https://rikuvision.realunivlog.com"
@@ -388,12 +388,12 @@ export default function MainLayout() {
         onClose={handleClose}
         cancelText="閉じる"
       >
-        <div className="text-sm text-gray-500 text-left mt-4">
+        <div className="text-sm text-gray-500 text-left">
           <div className="text-left flex">
             ブラウザの
             <div className="flex">
               「シェアアイコン
-              <ArrowUpOnSquareIcon aria-hidden="true" className="h-4 w-4" />
+              <ArrowUpOnSquareIcon className="h-4 w-4" />
               」をタップして
             </div>
           </div>

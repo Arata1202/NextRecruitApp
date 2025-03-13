@@ -50,7 +50,7 @@ export default function ChildrenModal({
               <Dialog.Panel
                 className={`${styles.panel} m-auto text-gray-700 bg-white relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6`}
               >
-                <div className="sm:flex sm:items-start">
+                <div className="sm:flex sm:items-start mb-5">
                   <div
                     className={`${styles.iconBg} mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10`}
                   >
@@ -66,7 +66,7 @@ export default function ChildrenModal({
                 <div className="mt-5 sm:mt-6 grid grid-flow-row-dense gap-3">
                   <button
                     type="button"
-                    className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
+                    className={`${styles.cancel} mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                     onClick={onClose}
                     ref={cancelButtonRef}
                   >
