@@ -2,27 +2,26 @@
 
 import { Fragment, useState } from 'react';
 import Link from 'next/link';
-import styles from './index.module.css';
 import { Dialog, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import {
-  ArrowRightEndOnRectangleIcon,
-  EnvelopeIcon,
-  UserPlusIcon,
-} from '@heroicons/react/24/solid';
+import styles from './index.module.css';
+import { PROJECT_IMAGE, HEADER_NAVIGATION } from '@/constants/data';
 
 export default function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
     <header className={`${styles.header} fixed top-0 left-0 w-full z-50 bg-white`}>
-      <nav
-        className="mx-auto flex max-w-7xl items-center justify-between py-4 px-6 lg:px-8"
-        aria-label="Global"
-      >
+      <nav className="mx-auto flex max-w-7xl items-center justify-between py-4 px-6 lg:px-8">
         <Link href="/" className="-m-1.5 p-1.5 hover:scale-110 transition-transform">
-          <span className="sr-only">Your Company</span>
-          <img alt="" src="/images/head/1.png" className="w-auto" style={{ height: '45px' }} />
+          {PROJECT_IMAGE.map((image) => (
+            <img
+              key={image.alt}
+              alt={image.alt}
+              src={image.path}
+              className={`${styles.image} w-auto`}
+            />
+          ))}
         </Link>
         <div className="flex lg:hidden">
           {mobileMenuOpen ? (
@@ -31,8 +30,7 @@ export default function Header() {
               className={`-m-2.5 inline-flex items-center justify-center rounded-md p-2.5`}
               onClick={() => setMobileMenuOpen(false)}
             >
-              <span className="sr-only">Close main menu</span>
-              <XMarkIcon className="h-6 w-6 text-gray-700" aria-hidden="true" />
+              <XMarkIcon className="h-6 w-6 text-gray-700" />
             </button>
           ) : (
             <div className="flex">
@@ -41,31 +39,25 @@ export default function Header() {
                 className={`-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 ml-1`}
                 onClick={() => setMobileMenuOpen(true)}
               >
-                <span className="sr-only">Open main menu</span>
-                <Bars3Icon className="h-6 w-6 text-gray-700" aria-hidden="true" />
+                <Bars3Icon className="h-6 w-6 text-gray-700" />
               </button>
             </div>
           )}
         </div>
-
         <div className="hidden lg:flex lg:gap-x-12 font-bold">
-          <Link href="/contact" className={`flex text-sm leading-6 hover:text-blue-500`}>
-            <EnvelopeIcon className="h-5 w-5 mr-2" aria-hidden="true" />
-            お問い合わせ
-          </Link>
-          <Link
-            href="/service/auth/signup"
-            className={`flex text-sm leading-6 hover:text-blue-500`}
-          >
-            <UserPlusIcon className="h-5 w-5 mr-2" aria-hidden="true" />
-            アカウント登録
-          </Link>
-          <Link href="/service/auth/login" className={`flex text-sm leading-6 hover:text-blue-500`}>
-            <ArrowRightEndOnRectangleIcon className="h-5 w-5 mr-2" aria-hidden="true" />
-            ログイン
-          </Link>
+          {HEADER_NAVIGATION.map((item) => (
+            <Link
+              key={item.path}
+              href={item.path}
+              className={`flex text-sm leading-6 hover:text-blue-500`}
+            >
+              <item.icon className="h-5 w-5 mr-2" />
+              {item.name}
+            </Link>
+          ))}
         </div>
       </nav>
+
       <Transition.Root show={mobileMenuOpen} as={Fragment}>
         <Dialog as="div" className="relative lg:hidden z-50" onClose={setMobileMenuOpen}>
           <Transition.Child
@@ -98,49 +90,21 @@ export default function Header() {
                   className="-ml-2 flex items-center justify-end p-2"
                   onClick={() => setMobileMenuOpen(false)}
                 >
-                  <XMarkIcon className={`h-6 w-6" aria-hidden="true text-gray-700`} />
-                  <span className="sr-only">Close menu</span>
+                  <XMarkIcon className={`h-6 w-6 text-gray-700`} />
                 </button>
-                {/* <div
-                  className={`text-center py-2 text-xl font-bold`}
-                  style={{ backgroundColor: '#93ceff' }}
-                >
-                  Menu
-                </div> */}
                 <ul className="mt-5 space-y-6">
-                  <li>
-                    <Link href="/service/auth/signup">
-                      <div
-                        className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
-                      >
-                        <UserPlusIcon className="h-6 w-6 mr-2 ml-2" aria-hidden="true" />
-                        アカウント登録
-                      </div>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/service/auth/login">
-                      <div
-                        className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
-                      >
-                        <ArrowRightEndOnRectangleIcon
-                          className="h-6 w-6 mr-2 ml-2"
-                          aria-hidden="true"
-                        />
-                        ログイン
-                      </div>
-                    </Link>
-                  </li>
-                  <li>
-                    <Link href="/contact">
-                      <div
-                        className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
-                      >
-                        <EnvelopeIcon className="h-6 w-6 mr-2 ml-2" aria-hidden="true" />
-                        お問い合わせ
-                      </div>
-                    </Link>
-                  </li>
+                  {HEADER_NAVIGATION.map((item) => (
+                    <li key={item.path}>
+                      <Link href={item.path}>
+                        <div
+                          className={`flex items-center py-1 text-base font-bold text-gray-700 hover:text-blue-500`}
+                        >
+                          <item.icon className="h-6 w-6 mr-2 ml-2" />
+                          {item.name}
+                        </div>
+                      </Link>
+                    </li>
+                  ))}
                 </ul>
               </div>
             </Dialog.Panel>

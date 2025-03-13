@@ -1,3 +1,10 @@
+import {
+  EnvelopeIcon,
+  HomeIcon,
+  UserPlusIcon,
+  ArrowRightEndOnRectangleIcon,
+} from '@heroicons/react/24/solid';
+
 export const DESCRIPTION =
   '就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。';
 
@@ -6,6 +13,13 @@ export const PROJECT_IMAGE = [
     path: '/images/head/1.png',
     alt: 'タイトル',
   },
+];
+
+export const HEADER_NAVIGATION = [
+  { name: 'ホーム', path: '/', icon: HomeIcon },
+  { name: 'お問い合わせ', path: '/contact', icon: EnvelopeIcon },
+  { name: 'アカウント登録', path: '/service/auth/signup', icon: UserPlusIcon },
+  { name: 'ログイン', path: '/service/auth/login', icon: ArrowRightEndOnRectangleIcon },
 ];
 
 export const FOOTER_NAVIGATION = {
