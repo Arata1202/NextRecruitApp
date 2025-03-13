@@ -6,9 +6,7 @@ export default function Page() {
   return (
     <>
       <Header />
-      <div style={{ marginTop: '72px' }}>
-        <SendEmailPage />
-      </div>
+      <SendEmailPage />
       <Footer />
     </>
   );
