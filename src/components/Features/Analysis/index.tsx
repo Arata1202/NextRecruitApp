@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
-import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import { useMutationObserver } from '@/hooks/useMutationObserver';
@@ -371,7 +370,6 @@ export default function AnalysisFeature() {
   return (
     <>
       <div>
-        <MainLayout />
         <div className="lg:pl-72 mut-guard">
           <main className="h-screen mut-guard">
             {/* タイトル */}

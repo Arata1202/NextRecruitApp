@@ -1,6 +1,5 @@
 'use client';
 
-import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { InformationCircleIcon } from '@heroicons/react/24/solid';
 import { useState, useEffect } from 'react';
 import { format, isSameDay, addDays, subHours } from 'date-fns';
@@ -362,7 +361,6 @@ export default function DashBoardFeature() {
   return (
     <>
       <div>
-        <MainLayout />
         <div className="lg:pl-72 mut-guard">
           <main className="h-screen mut-guard">
             {/* タイトル */}

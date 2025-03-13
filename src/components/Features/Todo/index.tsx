@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
-import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { isSameDay } from 'date-fns';
 import { Fragment } from 'react';
@@ -477,7 +476,6 @@ export default function TodoFeature() {
   return (
     <>
       <div>
-        <MainLayout />
         <div className="lg:pl-72 mut-guard">
           <main className="h-screen mut-guard">
             {/* タイトル */}

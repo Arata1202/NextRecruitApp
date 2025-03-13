@@ -4,7 +4,6 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
-import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { Dialog, Transition, DialogBackdrop, DialogPanel, DialogTitle } from '@headlessui/react';
 import { Fragment } from 'react';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
@@ -370,7 +369,6 @@ export default function DoneFeature() {
   return (
     <>
       <div>
-        <MainLayout />
         <div className="lg:pl-72 mut-guard">
           <main className="h-screen mut-guard">
             {/* タイトル */}

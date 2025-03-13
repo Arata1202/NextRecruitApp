@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import MainLayout from '@/components/Common/Layouts/MainLayout';
 import { CalendarDaysIcon } from '@heroicons/react/20/solid';
 import { supabase } from '@/libs/supabase';
 import FullCalendar from '@fullcalendar/react';
@@ -154,7 +153,6 @@ export default function CalendarFeature() {
   return (
     <>
       <div>
-        <MainLayout />
         <div className="lg:pl-72 mut-guard">
           <main className="h-screen mut-guard">
             {/* タイトル */}
