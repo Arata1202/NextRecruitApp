@@ -1,0 +1,14 @@
+.button {
+  transition:
+    opacity 0.3s,
+    visibility 0.3s;
+  width: 40px;
+  height: 40px;
+  bottom: calc(10px + env(safe-area-inset-bottom));
+  right: 10px;
+}
+
+.icon {
+  width: 25px;
+  height: 25px;
+}

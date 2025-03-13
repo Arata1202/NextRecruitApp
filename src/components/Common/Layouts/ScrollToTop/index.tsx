@@ -1,9 +1,9 @@
 'use client';
 
-import React from 'react';
 import { ChevronDoubleUpIcon } from '@heroicons/react/20/solid';
+import styles from './index.module.css';
 
-const ScrollTopButton: React.FC = () => {
+export default function ScrollTopButton() {
   const scrollToTop = () => {
     window.scrollTo({
       top: 0,
@@ -14,19 +14,9 @@ const ScrollTopButton: React.FC = () => {
   return (
     <button
       onClick={scrollToTop}
-      className="fixed z-50 flex items-center bg-white justify-center text-gray-700 shadow border border-gray-300 hover:text-blue-500"
-      aria-label="Scroll to top"
-      style={{
-        transition: 'opacity 0.3s, visibility 0.3s',
-        width: '40px',
-        height: '40px',
-        bottom: `calc(10px + env(safe-area-inset-bottom))`,
-        right: '10px',
-      }}
+      className={`${styles.button} fixed z-50 flex items-center bg-white justify-center text-gray-700 shadow border border-gray-300 hover:text-blue-500`}
     >
-      <ChevronDoubleUpIcon aria-hidden="true" style={{ height: '25px', width: '25px' }} />
+      <ChevronDoubleUpIcon className={styles.icon} />
     </button>
   );
-};
-
-export default ScrollTopButton;
+}
