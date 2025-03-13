@@ -1,0 +1,21 @@
+.image {
+  height: 45px;
+}
+
+.pwaHeight {
+  padding-bottom: calc(env(safe-area-inset-bottom)) !important;
+}
+
+.header {
+  display: none;
+}
+
+.sidebar {
+  margin-top: 7px;
+}
+
+@media (max-width: 1023px) {
+  .header {
+    display: block;
+  }
+}

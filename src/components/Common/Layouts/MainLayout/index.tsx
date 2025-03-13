@@ -5,19 +5,14 @@ import { supabase } from '@/libs/supabase';
 import { useState, useRef, Fragment } from 'react';
 import { useRouter, usePathname } from 'next/navigation';
 import { isAndroid, isIOS } from 'react-device-detect';
+import styles from './index.module.css';
 import { useA2HS } from '@/hooks/A2hs';
+import { PROJECT_IMAGE, SERVICE_NAVIGATION, SERVICE_SETTING_NAVIGATION } from '@/constants/data';
 import {
   Bars3Icon,
-  CalendarDaysIcon,
-  ChartBarIcon,
-  InformationCircleIcon,
-  BuildingOffice2Icon,
   XMarkIcon,
   ArrowRightStartOnRectangleIcon,
-  ClipboardDocumentListIcon,
-  NumberedListIcon,
   ShareIcon,
-  EnvelopeIcon,
   DevicePhoneMobileIcon,
   ArrowUpOnSquareIcon,
 } from '@heroicons/react/24/outline';
@@ -54,19 +49,12 @@ export default function MainLayout() {
 
   const [A2hsOpen, setA2hsOpen] = useState(false);
 
-  const SidebarNavigation = [
-    { name: '就活イベント', href: '/service', icon: InformationCircleIcon },
-    { name: 'カレンダー', href: '/service/calendar', icon: CalendarDaysIcon },
-    { name: '企業管理', href: '/service/selection', icon: BuildingOffice2Icon },
-    { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
-    { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
-    { name: 'ToDoリスト', href: '/service/todo', icon: NumberedListIcon },
-    // { name: '設定', href: '/service/settings', icon: Cog6ToothIcon },
-  ].map((item) => ({
+  const SERVICE_NAVIGATION_ITEMS = SERVICE_NAVIGATION.map((item) => ({
     ...item,
     current:
       pathname === item.href || (pathname.startsWith(item.href + '/') && item.href !== '/service'),
   }));
+  const SERVICE_SETTING_NAVIGATION_ITEMS = SERVICE_SETTING_NAVIGATION;
 
   const isPWA =
     typeof window !== 'undefined' && window.matchMedia('(display-mode: standalone)').matches;
@@ -117,7 +105,6 @@ export default function MainLayout() {
           transition
           className="fixed inset-0 bg-gray-900/80 transition-opacity duration-300 ease-linear data-[closed]:opacity-0"
         />
-
         <div className="fixed inset-0 flex">
           <DialogPanel
             transition
@@ -130,26 +117,26 @@ export default function MainLayout() {
                   onClick={() => setSidebarOpen(false)}
                   className="-m-2.5 p-2.5"
                 >
-                  <span className="sr-only">Close sidebar</span>
-                  <XMarkIcon aria-hidden="true" className="size-6 text-white" />
+                  <XMarkIcon className="size-6 text-white" />
                 </button>
               </div>
             </TransitionChild>
-
             <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-white px-6 pb-4">
               <div className="flex h-16 shrink-0 items-center">
-                <img
-                  alt="Your Company"
-                  src="/images/head/1.png"
-                  className="w-auto"
-                  style={{ height: '45px' }}
-                />
+                {PROJECT_IMAGE.map((item) => (
+                  <img
+                    key={item.alt}
+                    alt={item.alt}
+                    src={item.path}
+                    className={`${styles.image} w-auto`}
+                  />
+                ))}
               </div>
-              <nav className="flex flex-1 flex-col HomeBar">
-                <ul role="list" className="flex flex-1 flex-col gap-y-7">
+              <nav className={`${styles.pwaHeight} flex flex-1 flex-col`}>
+                <ul className="flex flex-1 flex-col gap-y-7">
                   <li>
-                    <ul role="list" className="-mx-2 space-y-1">
-                      {SidebarNavigation.map((item) => (
+                    <ul className="-mx-2 space-y-1">
+                      {SERVICE_NAVIGATION_ITEMS.map((item) => (
                         <li key={item.name}>
                           <Link
                             href={item.href}
@@ -161,7 +148,6 @@ export default function MainLayout() {
                             )}
                           >
                             <item.icon
-                              aria-hidden="true"
                               className={classNames(
                                 item.current
                                   ? 'text-blue-500'
@@ -176,88 +162,37 @@ export default function MainLayout() {
                     </ul>
                   </li>
                   <li className="mt-auto">
-                    <ul role="list" className="-mx-2 space-y-1">
+                    <ul className="-mx-2 space-y-1">
                       {(isAndroid || isIOS) && !isPWA && (
-                        <>
-                          {isAndroid ? (
-                            <li>
-                              <a
-                                onClick={promptToInstall}
-                                className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                              >
-                                <DevicePhoneMobileIcon
-                                  aria-hidden="true"
-                                  className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                                />
-                                アプリ登録
-                              </a>
-                            </li>
-                          ) : isIOS ? (
-                            <li>
-                              <a
-                                onClick={() => setA2hsOpen(true)}
-                                className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                              >
-                                <DevicePhoneMobileIcon
-                                  aria-hidden="true"
-                                  className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                                />
-                                アプリ登録
-                              </a>
-                            </li>
-                          ) : null}
-                        </>
+                        <li>
+                          <a
+                            onClick={(isAndroid && promptToInstall) || (() => setA2hsOpen(true))}
+                            className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                          >
+                            <DevicePhoneMobileIcon className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500" />
+                            アプリ登録
+                          </a>
+                        </li>
                       )}
-                      {/* <li>
-                        <Link
-                          onClick={() =>
-                            window.open('https://www.instagram.com/riku.vision', '_blank')
-                          }
-                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                        >
-                          <BookOpenIcon
-                            aria-hidden="true"
-                            className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                          />
-                          ご利用ガイド
-                        </Link>
-                      </li> */}
-                      <li>
-                        <Link
-                          href="/contact"
-                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                        >
-                          <EnvelopeIcon
-                            aria-hidden="true"
-                            className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                          />
-                          お問い合わせ
-                        </Link>
-                      </li>
-                      <li>
-                        <a
-                          onClick={handleShare}
-                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                        >
-                          <ShareIcon
-                            aria-hidden="true"
-                            className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                          />
-                          シェアする
-                        </a>
-                      </li>
-                      <li>
-                        <a
-                          onClick={handleLogout}
-                          className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                        >
-                          <ArrowRightStartOnRectangleIcon
-                            aria-hidden="true"
-                            className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                          />
-                          ログアウト
-                        </a>
-                      </li>
+                      {SERVICE_SETTING_NAVIGATION_ITEMS.map((item) => (
+                        <li key={item.name}>
+                          <a
+                            onClick={
+                              item.name === 'シェアする'
+                                ? handleShare
+                                : item.name === 'ログアウト'
+                                  ? handleLogout
+                                  : item.name === 'お問い合わせ'
+                                    ? () => router.push('/contact')
+                                    : undefined
+                            }
+                            className="cursor-pointer group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                          >
+                            <item.icon className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500" />
+                            {item.name}
+                          </a>
+                        </li>
+                      ))}
                     </ul>
                   </li>
                 </ul>
@@ -269,19 +204,21 @@ export default function MainLayout() {
 
       <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
         <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-300 bg-white px-6 pb-4">
-          <div className="flex h-16 shrink-0 items-center" style={{ marginTop: '7px' }}>
-            <img
-              alt="Your Company"
-              src="/images/head/1.png"
-              className="w-auto"
-              style={{ height: '45px' }}
-            />
+          <div className={`${styles.sidebar} flex h-16 shrink-0 items-center`}>
+            {PROJECT_IMAGE.map((item) => (
+              <img
+                key={item.alt}
+                alt={item.alt}
+                src={item.path}
+                className={`${styles.image} w-auto`}
+              />
+            ))}
           </div>
           <nav className="flex flex-1 flex-col">
-            <ul role="list" className="flex flex-1 flex-col gap-y-7">
+            <ul className="flex flex-1 flex-col gap-y-7">
               <li>
-                <ul role="list" className="-mx-2 space-y-1">
-                  {SidebarNavigation.map((item) => (
+                <ul className="-mx-2 space-y-1">
+                  {SERVICE_NAVIGATION_ITEMS.map((item) => (
                     <li key={item.name}>
                       <Link
                         href={item.href}
@@ -308,55 +245,26 @@ export default function MainLayout() {
                 </ul>
               </li>
               <li className="mt-auto">
-                <ul role="list" className="-mx-2 space-y-1">
-                  {/* <li>
-                    <button
-                      onClick={() => window.open('https://www.instagram.com/riku.vision', '_blank')}
-                      className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                    >
-                      <BookOpenIcon
-                        aria-hidden="true"
-                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                      />
-                      ご利用ガイド
-                    </button>
-                  </li> */}
-                  <li>
-                    <button
-                      onClick={() => router.push('/contact')}
-                      className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                    >
-                      <EnvelopeIcon
-                        aria-hidden="true"
-                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                      />
-                      お問い合わせ
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={handleShare}
-                      className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                    >
-                      <ShareIcon
-                        aria-hidden="true"
-                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                      />
-                      シェアする
-                    </button>
-                  </li>
-                  <li>
-                    <button
-                      onClick={handleLogout}
-                      className="w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
-                    >
-                      <ArrowRightStartOnRectangleIcon
-                        aria-hidden="true"
-                        className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500"
-                      />
-                      ログアウト
-                    </button>
-                  </li>
+                <ul className="-mx-2 space-y-1">
+                  {SERVICE_SETTING_NAVIGATION_ITEMS.map((item) => (
+                    <li key={item.name}>
+                      <a
+                        className="cursor-pointer w-full group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
+                        onClick={
+                          item.name === 'シェアする'
+                            ? handleShare
+                            : item.name === 'ログアウト'
+                              ? handleLogout
+                              : item.name === 'お問い合わせ'
+                                ? () => router.push('/contact')
+                                : undefined
+                        }
+                      >
+                        <item.icon className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500" />
+                        {item.name}
+                      </a>
+                    </li>
+                  ))}
                 </ul>
               </li>
             </ul>
@@ -364,27 +272,26 @@ export default function MainLayout() {
         </div>
       </div>
 
-      <div className="SidebarLayout">
+      <div className={styles.header}>
         <div className="fixed top-0 z-40 w-full flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-300 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8">
           <button
             type="button"
             onClick={() => setSidebarOpen(true)}
             className="-m-2.5 p-2.5 text-gray-700 lg:hidden"
           >
-            <span className="sr-only">Open sidebar</span>
-            <Bars3Icon aria-hidden="true" className="size-6" />
+            <Bars3Icon className="size-6" />
           </button>
-
-          <div aria-hidden="true" className="h-6 w-px bg-gray-300 lg:hidden" />
-
+          <div className="h-6 w-px bg-gray-300 lg:hidden" />
           <div className="flex ml-auto">
             <div className="flex h-16 shrink-0 items-center">
-              <img
-                alt="Your Company"
-                src="/images/head/1.png"
-                className="w-auto"
-                style={{ height: '45px' }}
-              />
+              {PROJECT_IMAGE.map((item) => (
+                <img
+                  key={item.alt}
+                  alt={item.alt}
+                  src={item.path}
+                  className={`${styles.image} w-auto`}
+                />
+              ))}
             </div>
           </div>
         </div>

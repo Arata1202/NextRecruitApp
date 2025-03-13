@@ -13,15 +13,7 @@
 .FirstAd {
   min-height: 280px !important;
 }
-/* PWA ホームバー */
-.HomeBar {
-  padding-bottom: calc(env(safe-area-inset-bottom)) !important;
-}
 
-/* メディアクエリ */
-.SidebarLayout {
-  display: none;
-}
 .TitleBanner {
   padding: 20px 0 10px 0;
 }
@@ -52,9 +44,6 @@
   }
   .MobileHeader {
     margin-top: 64px;
-  }
-  .SidebarLayout {
-    display: block;
   }
   .Search {
     margin-top: 0px;

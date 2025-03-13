@@ -4,6 +4,17 @@ import {
   UserPlusIcon,
   ArrowRightEndOnRectangleIcon,
 } from '@heroicons/react/24/solid';
+import {
+  CalendarDaysIcon,
+  ChartBarIcon,
+  InformationCircleIcon,
+  BuildingOffice2Icon,
+  ClipboardDocumentListIcon,
+  NumberedListIcon,
+  ShareIcon,
+  ArrowRightStartOnRectangleIcon,
+  EnvelopeIcon as EnvelopeIconOutline,
+} from '@heroicons/react/24/outline';
 
 export const DESCRIPTION =
   '就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。';
@@ -38,3 +49,18 @@ export const FOOTER_NAVIGATION = {
 };
 
 export const COPYRIGHT = 'Copyright © 2024 リクビジョン All Rights Reserved.';
+
+export const SERVICE_NAVIGATION = [
+  { name: '就活イベント', href: '/service', icon: InformationCircleIcon },
+  { name: 'カレンダー', href: '/service/calendar', icon: CalendarDaysIcon },
+  { name: '企業管理', href: '/service/selection', icon: BuildingOffice2Icon },
+  { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
+  { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
+  { name: 'ToDoリスト', href: '/service/todo', icon: NumberedListIcon },
+];
+
+export const SERVICE_SETTING_NAVIGATION = [
+  { name: 'お問い合わせ', icon: EnvelopeIconOutline },
+  { name: 'シェアする', icon: ShareIcon },
+  { name: 'ログアウト', icon: ArrowRightStartOnRectangleIcon },
+];
