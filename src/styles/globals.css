@@ -81,16 +81,6 @@
     text-align: left;
   }
 }
-@media (max-width: 768px) {
-  /* フッター */
-  .underLogo {
-    display: flex;
-    justify-content: center;
-  }
-  .footerMenu {
-    text-align: center;
-  }
-}
 @media (max-width: 639px) {
   .TitleIcon {
     height: 25px;
