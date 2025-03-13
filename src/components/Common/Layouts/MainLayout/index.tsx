@@ -39,7 +39,7 @@ import {
   LinkedinShareButton,
   LinkedinIcon,
 } from 'react-share';
-import Modal from '../../Modal';
+import BooleanModal from '../../Modal/BooleanModal';
 
 export default function MainLayout() {
   const pathname = usePathname();
@@ -298,7 +298,7 @@ export default function MainLayout() {
         </div>
       </div>
 
-      <Modal
+      <BooleanModal
         open={open}
         title="ログアウトしますか？"
         Icon={ArrowRightStartOnRectangleIcon}
