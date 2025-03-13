@@ -1,4 +1,4 @@
-import DetailPage from '@/components/Pages/Selection/Detail';
+import DetailPage from '@/components/Pages/Service/Selection/Detail';
 import MainLayout from '@/components/Common/Layouts/MainLayout';
 
 export default function Page() {
