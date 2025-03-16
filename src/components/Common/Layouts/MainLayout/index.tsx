@@ -14,7 +14,7 @@ import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessu
 import { isAndroid, isIOS } from 'react-device-detect';
 import { supabase } from '@/libs/supabase';
 import styles from './index.module.css';
-import { useA2HS } from '@/hooks/A2hs';
+import { useA2hs } from '@/hooks/useA2hs';
 import { PROJECT_IMAGE, SERVICE_NAVIGATION, SERVICE_SETTING_NAVIGATION } from '@/constants/data';
 import Modal from '../../Modal';
 import Share from './Elements/Share';
@@ -61,7 +61,7 @@ export default function MainLayout() {
     setShareModalOpen(false);
   };
 
-  const [, promptToInstall] = useA2HS();
+  const [, promptToInstall] = useA2hs();
   const handleA2hs = () => {
     promptToInstall();
   };
