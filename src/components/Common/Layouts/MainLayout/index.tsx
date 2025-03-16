@@ -14,11 +14,11 @@ import {
   ArrowRightStartOnRectangleIcon,
   ShareIcon,
   DevicePhoneMobileIcon,
-  ArrowUpOnSquareIcon,
 } from '@heroicons/react/24/outline';
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react';
 import Modal from '../../Modal';
 import Share from './Elements/Share';
+import A2hs from './Elements/A2hs';
 
 export default function MainLayout() {
   const pathname = usePathname();
@@ -307,17 +307,7 @@ export default function MainLayout() {
         onClose={handleClose}
         cancelText="閉じる"
       >
-        <div className="text-sm text-gray-500 text-left">
-          <div className="text-left flex">
-            ブラウザの
-            <div className="flex">
-              「シェアアイコン
-              <ArrowUpOnSquareIcon className="h-4 w-4" />
-              」をタップして
-            </div>
-          </div>
-          「ホーム画面に追加」を選択してください。
-        </div>
+        <A2hs />
       </Modal>
     </>
   );
