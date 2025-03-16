@@ -1,23 +1,22 @@
 import { Fragment } from 'react';
 import { Transition } from '@headlessui/react';
-import { ExclamationCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { ExclamationCircleIcon, CheckCircleIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import styles from './index.module.css';
 
-type AlertProps = {
-  show: boolean;
-  onClose: () => void;
+type Props = {
   title: string;
-  message: string;
+  description: string;
+  Icon: any;
+  open: boolean;
+  onClose: () => void;
 };
 
-const ErrorAlert: React.FC<AlertProps> = ({ show, onClose, title, message }) => {
+export default function Alert({ open, onClose, title, description, Icon }: Props) {
   return (
-    <div
-      aria-live="assertive"
-      className="confirmAlert pointer-events-none fixed inset-0 flex items-start px-4 py-6 sm:items-start sm:p-6"
-    >
+    <div className="pointer-events-none fixed inset-0 flex items-start px-4 py-6 sm:items-start sm:p-6">
       <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
         <Transition
-          show={show}
+          show={open}
           as={Fragment}
           enter="transform ease-out duration-300 transition"
           enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
@@ -32,15 +31,13 @@ const ErrorAlert: React.FC<AlertProps> = ({ show, onClose, title, message }) => 
             <div className="p-4 bg-white">
               <div className="flex items-start">
                 <div className="flex-shrink-0">
-                  <ExclamationCircleIcon className="h-6 w-6 text-red-500" aria-hidden="true" />
+                  <Icon
+                    className={`h-6 w-6 ${Icon === ExclamationCircleIcon ? 'text-red-500' : Icon === CheckCircleIcon ? 'text-green-500' : null}`}
+                  />
                 </div>
                 <div className="ml-3 w-0 flex-1 pt-0.5">
-                  <p className="font-semibold" style={{ fontSize: '16px' }}>
-                    {title}
-                  </p>
-                  <p className="mt-1 text-gray-500" style={{ fontSize: '14px' }}>
-                    {message}
-                  </p>
+                  <p className={`${styles.title} font-semibold`}>{title}</p>
+                  <p className={`${styles.description} mt-1 text-gray-500`}>{description}</p>
                 </div>
                 <div className="ml-4 flex flex-shrink-0">
                   <button
@@ -48,8 +45,7 @@ const ErrorAlert: React.FC<AlertProps> = ({ show, onClose, title, message }) => 
                     className={`inline-flex rounded-md hover:text-blue-500`}
                     onClick={onClose}
                   >
-                    <span className="sr-only">Close</span>
-                    <XMarkIcon className="h-5 w-5" aria-hidden="true" />
+                    <XMarkIcon className="h-5 w-5" />
                   </button>
                 </div>
               </div>
@@ -59,6 +55,4 @@ const ErrorAlert: React.FC<AlertProps> = ({ show, onClose, title, message }) => 
       </div>
     </div>
   );
-};
-
-export default ErrorAlert;
+}

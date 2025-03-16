@@ -8,8 +8,8 @@ import { useRouter } from 'next/navigation';
 import { Switch } from '@headlessui/react';
 import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
-import ConfirmAlert from '../../../../Common/ConfirmAlert';
-import ErrorAlert from '../../../../Common/ErrorAlert';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import Alert from '@/components/Common/Alert';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
@@ -234,18 +234,20 @@ export default function PasswordResetFeature() {
         </div>
       </HomeContainer>
 
-      <ConfirmAlert
-        show={confirmShow}
+      <Alert
+        open={confirmShow}
         onClose={() => setConfirmShow(false)}
         title={ConfirmTitle}
-        message={ConfirmMessage}
+        description={ConfirmMessage}
+        Icon={CheckCircleIcon}
       />
 
-      <ErrorAlert
-        show={errorShow}
+      <Alert
+        open={errorShow}
         onClose={() => setErrorShow(false)}
         title={errorTitle}
-        message={errorMessage}
+        description={errorMessage}
+        Icon={ExclamationCircleIcon}
       />
     </>
   );

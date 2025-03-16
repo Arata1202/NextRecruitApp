@@ -6,8 +6,9 @@ import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Switch } from '@headlessui/react';
-import ErrorAlert from '../../../../Common/ErrorAlert';
+import Alert from '@/components/Common/Alert';
 import { HomeIcon } from '@heroicons/react/24/solid';
+import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import HomeContainer from '@/components/Common/Layouts/Container/HomeContainer';
 
@@ -322,11 +323,12 @@ export default function LoginFeature() {
         </div>
       </HomeContainer>
 
-      <ErrorAlert
-        show={errorShow}
+      <Alert
+        open={errorShow}
         onClose={() => setErrorShow(false)}
         title={errorTitle}
-        message={errorMessage}
+        description={errorMessage}
+        Icon={ExclamationCircleIcon}
       />
     </>
   );

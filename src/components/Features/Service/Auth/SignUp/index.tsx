@@ -8,8 +8,8 @@ import { Switch } from '@headlessui/react';
 import { useState, useRef, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { HomeIcon } from '@heroicons/react/24/solid';
-import ErrorAlert from '../../../../Common/ErrorAlert';
-import ConfirmAlert from '../../../../Common/ConfirmAlert';
+import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import Alert from '@/components/Common/Alert';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 
 type FormData = {
@@ -443,18 +443,20 @@ export default function SignUpFeature() {
         </div>
       </HomeContainer>
 
-      <ErrorAlert
-        show={errorShow}
+      <Alert
+        open={errorShow}
         onClose={() => setErrorShow(false)}
         title={errorTitle}
-        message={errorMessage}
+        description={errorMessage}
+        Icon={ExclamationCircleIcon}
       />
 
-      <ConfirmAlert
-        show={confirmShow}
+      <Alert
+        open={confirmShow}
         onClose={() => setConfirmShow(false)}
         title={ConfirmTitle}
-        message={ConfirmMessage}
+        description={ConfirmMessage}
+        Icon={CheckCircleIcon}
       />
     </>
   );

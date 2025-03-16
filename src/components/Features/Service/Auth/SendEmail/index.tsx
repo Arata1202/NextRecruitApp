@@ -6,8 +6,9 @@ import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { HomeIcon } from '@heroicons/react/24/solid';
-import ConfirmAlert from '../../../../Common/ConfirmAlert';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
+import Alert from '@/components/Common/Alert';
 
 type FormData = {
   email: string;
@@ -151,11 +152,12 @@ export default function SendEmailFeature() {
         </div>
       </HomeContainer>
 
-      <ConfirmAlert
-        show={confirmShow}
+      <Alert
+        open={confirmShow}
         onClose={() => setConfirmShow(false)}
         title={ConfirmTitle}
-        message={ConfirmMessage}
+        description={ConfirmMessage}
+        Icon={CheckCircleIcon}
       />
     </>
   );
