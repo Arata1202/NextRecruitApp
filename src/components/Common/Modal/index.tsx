@@ -11,7 +11,6 @@ type Props = {
   open: boolean;
   onClose: () => void;
   onConfirm?: () => void;
-  cancelButtonRef: any;
 };
 
 export default function Modal({
@@ -23,11 +22,10 @@ export default function Modal({
   open,
   onClose,
   onConfirm,
-  cancelButtonRef,
 }: Props) {
   return (
     <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-50" initialFocus={cancelButtonRef} onClose={() => {}}>
+      <Dialog as="div" className="relative z-50" onClose={() => {}}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"
@@ -73,7 +71,6 @@ export default function Modal({
                       type="button"
                       className={`${styles.cancel} mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                       onClick={onClose}
-                      ref={cancelButtonRef}
                     >
                       {cancelText}
                     </button>
@@ -92,7 +89,6 @@ export default function Modal({
                       type="button"
                       className={`${styles.cancel} mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto`}
                       onClick={onClose}
-                      ref={cancelButtonRef}
                     >
                       {cancelText}
                     </button>
