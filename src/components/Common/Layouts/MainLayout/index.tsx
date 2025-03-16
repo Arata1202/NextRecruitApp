@@ -17,23 +17,8 @@ import {
   ArrowUpOnSquareIcon,
 } from '@heroicons/react/24/outline';
 import { Dialog, DialogBackdrop, DialogPanel, TransitionChild } from '@headlessui/react';
-import {
-  TwitterShareButton,
-  TwitterIcon,
-  FacebookShareButton,
-  FacebookIcon,
-  LineShareButton,
-  LineIcon,
-  HatenaShareButton,
-  HatenaIcon,
-  PinterestShareButton,
-  PinterestIcon,
-  RedditShareButton,
-  RedditIcon,
-  LinkedinShareButton,
-  LinkedinIcon,
-} from 'react-share';
 import Modal from '../../Modal';
+import Share from './Elements/Share';
 
 export default function MainLayout() {
   const pathname = usePathname();
@@ -311,72 +296,7 @@ export default function MainLayout() {
         onClose={handleShareCancel}
         cancelText="閉じる"
       >
-        <div className="flex justify-center">
-          <TwitterShareButton
-            aria-label="シェアボタン"
-            url="https://rikuvision.realunivlog.com"
-            title="リクビジョン"
-            className="m-1 hover:opacity-60"
-          >
-            <TwitterIcon size={40} round={true} />
-          </TwitterShareButton>
-
-          <FacebookShareButton
-            aria-label="シェアボタン"
-            url="https://rikuvision.realunivlog.com"
-            title="リクビジョン"
-            className="m-1 hover:opacity-60"
-          >
-            <FacebookIcon size={40} round={true} />
-          </FacebookShareButton>
-
-          <LineShareButton
-            aria-label="シェアボタン"
-            url="https://rikuvision.realunivlog.com"
-            title="リクビジョン"
-            className="m-1 hover:opacity-60"
-          >
-            <LineIcon size={40} round={true} />
-          </LineShareButton>
-
-          <HatenaShareButton
-            aria-label="シェアボタン"
-            url="https://rikuvision.realunivlog.com"
-            title="リクビジョン"
-            className="m-1 hover:opacity-60"
-          >
-            <HatenaIcon size={40} round={true} />
-          </HatenaShareButton>
-
-          <PinterestShareButton
-            aria-label="シェアボタン"
-            url="https://rikuvision.realunivlog.com"
-            media="/images/og/1.png"
-            description="リクビジョン"
-            className="m-1 hover:opacity-60"
-          >
-            <PinterestIcon size={40} round={true} />
-          </PinterestShareButton>
-
-          <RedditShareButton
-            aria-label="シェアボタン"
-            url="https://rikuvision.realunivlog.com"
-            title="リクビジョン"
-            className="m-1 hover:opacity-60"
-          >
-            <RedditIcon size={40} round={true} />
-          </RedditShareButton>
-
-          <LinkedinShareButton
-            aria-label="シェアボタン"
-            url="https://rikuvision.realunivlog.com"
-            title="リクビジョン"
-            summary="就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。"
-            className="m-1 hover:opacity-60"
-          >
-            <LinkedinIcon size={40} round={true} />
-          </LinkedinShareButton>
-        </div>
+        <Share />
       </Modal>
 
       <Modal
