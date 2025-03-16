@@ -33,8 +33,7 @@ import {
   LinkedinShareButton,
   LinkedinIcon,
 } from 'react-share';
-import BooleanModal from '../../Modal/BooleanModal';
-import ChildrenModal from '../../Modal/ChildrenModal';
+import Modal from '../../Modal';
 
 export default function MainLayout() {
   const pathname = usePathname();
@@ -293,7 +292,7 @@ export default function MainLayout() {
         </div>
       </div>
 
-      <BooleanModal
+      <Modal
         open={open}
         title="ログアウトしますか？"
         Icon={ArrowRightStartOnRectangleIcon}
@@ -302,9 +301,9 @@ export default function MainLayout() {
         onConfirm={handleConfirmLogout}
         cancelText="キャンセル"
         confirmText="ログアウト"
-      />
+      ></Modal>
 
-      <ChildrenModal
+      <Modal
         open={shareOpen}
         title="シェアする"
         Icon={ShareIcon}
@@ -378,9 +377,9 @@ export default function MainLayout() {
             <LinkedinIcon size={40} round={true} />
           </LinkedinShareButton>
         </div>
-      </ChildrenModal>
+      </Modal>
 
-      <ChildrenModal
+      <Modal
         open={A2hsOpen}
         title="アプリを追加する"
         Icon={DevicePhoneMobileIcon}
@@ -399,7 +398,7 @@ export default function MainLayout() {
           </div>
           「ホーム画面に追加」を選択してください。
         </div>
-      </ChildrenModal>
+      </Modal>
     </>
   );
 }
