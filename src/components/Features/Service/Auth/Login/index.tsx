@@ -94,7 +94,7 @@ export default function LoginFeature() {
 
   return (
     <>
-      <HomeContainer auth={true}>
+      <HomeContainer white={true}>
         <BreadCrumb title="ログイン" path="service/auth/login" />
         <div className="pt-6">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">

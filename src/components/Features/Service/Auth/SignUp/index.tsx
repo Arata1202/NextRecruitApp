@@ -150,7 +150,7 @@ export default function SignUpFeature() {
 
   return (
     <>
-      <HomeContainer auth={true}>
+      <HomeContainer white={true}>
         <BreadCrumb title="アカウント登録" path="service/auth/signup" />
         <div className="pt-6">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">

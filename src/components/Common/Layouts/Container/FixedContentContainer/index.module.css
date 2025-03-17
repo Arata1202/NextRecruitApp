@@ -1,72 +1,6 @@
-.main {
-  max-width: 1400px;
-  margin: 0 auto;
-}
-
-@media (max-width: 640px) {
-  .main {
-    width: auto;
-  }
-}
-
-.date {
-  display: flex;
-  align-items: center;
-  line-height: 16px;
-  gap: 8px;
-  margin: 0.5rem 0;
-  font-weight: bold;
-  font-size: 15px !important;
-}
-
-.title {
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 24px;
-  text-align: left;
-}
-
-.description {
-  font-size: 0.9rem;
-  color: var(--color-text-sub);
-  margin: 24px 40px;
-  text-align: center;
-}
-
-.meta {
-  display: flex;
-  align-items: center;
-  margin-bottom: 64px;
-}
-
-.writer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding-right: 40px;
-  border-right: 1px solid var(--color-border);
-  margin-right: 40px;
-}
-
-.writerIcon {
-  display: block;
-  width: 48px;
-  height: 48px;
-  border-radius: 50%;
-}
-
-.writerName {
-  margin-left: 16px;
-}
-
-.thumbnail {
-  width: 960px;
-  height: auto;
-  margin-bottom: 64px;
-}
-
 .content {
   width: 100%;
+  font-size: 18px;
 }
 
 .content *:first-child {
@@ -77,31 +11,31 @@
   font-size: 1.8rem;
   font-weight: bold;
   border-bottom: 1px solid var(--color-border);
-  /* margin: 2.8rem 0 1rem; */
+  /* margin: 1.25rem 0 1rem; */
 }
 
 .content > h2 {
   font-size: 1.6rem;
   font-weight: bold;
-  margin: 2.8em 0 1rem;
+  margin: 1.25rem 0 1rem;
 }
 
 .content > h3 {
   font-size: 1.4rem;
   font-weight: bold;
-  margin: 2.8rem 0 1rem;
+  margin: 1.25rem 0 1rem;
 }
 
 .content > h4 {
   font-size: 1.2rem;
   font-weight: bold;
-  margin: 2.8rem 0 1rem;
+  margin: 1.25rem 0 1rem;
 }
 
 .content > h5 {
   font-size: 1.1rem;
   font-weight: bold;
-  margin: 2.8rem 0 1rem;
+  margin: 1.25rem 0 1rem;
 }
 
 .content > p {
@@ -210,47 +144,6 @@
 }
 
 @media (max-width: 640px) {
-  .title {
-    font-size: 2rem;
-    margin-bottom: 20px;
-    text-align: center;
-  }
-
-  .description {
-    font-size: 0.9rem;
-    color: var(--color-text-sub);
-    margin: 24px 0 40px;
-    text-align: center;
-  }
-
-  .meta {
-    display: flex;
-    align-items: center;
-    margin-bottom: 40px;
-    font-size: 0.9rem;
-  }
-
-  .writer {
-    padding-right: 24px;
-    margin-right: 24px;
-  }
-
-  .writerIcon {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-  }
-
-  .writerName {
-    margin-left: 16px;
-  }
-
-  .thumbnail {
-    width: 100%;
-    height: auto;
-    margin-bottom: 40px;
-  }
-
   .content {
     width: 100%;
   }

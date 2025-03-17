@@ -76,7 +76,7 @@ export default function PasswordResetFeature() {
 
   return (
     <>
-      <HomeContainer auth={true}>
+      <HomeContainer white={true}>
         <BreadCrumb title="パスワードリセット" path="service/auth/sendemail" />
         <div className="pt-6">
           <div className="sm:mx-auto sm:w-full sm:max-w-md">
