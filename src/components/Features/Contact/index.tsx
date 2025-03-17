@@ -10,6 +10,7 @@ import styles from './index.module.css';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import HomeContainer from '@/components/Common/Layouts/Container/HomeContainer';
 import BreadCrumb from '@/components/Common/BreadCrumb';
+import HomeTitle from '@/components/Common/HomeTitle';
 
 export default function ContactFeature() {
   const [show, setContactConfirmShow] = useState(false);
@@ -119,10 +120,7 @@ export default function ContactFeature() {
           <div className="mx-auto max-w-7xl p-6 lg:px-8">
             <div className="mx-auto max-w-3xl text-base/7">
               <div className={`${styles.content} mb-5`}>
-                <div className="flex">
-                  <EnvelopeIcon className="h-7 w-7 mr-2" aria-hidden="true" />
-                  <h1 className="">お問い合わせ</h1>
-                </div>
+                <HomeTitle title="お問い合わせ" Icon={EnvelopeIcon} />
                 <p className="mt-2 text-lg/8">
                   リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
                 </p>

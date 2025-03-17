@@ -4,6 +4,7 @@ import { ClockIcon } from '@heroicons/react/24/outline';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import HomeContainer from '@/components/Common/Layouts/Container/HomeContainer';
 import BreadCrumb from '@/components/Common/BreadCrumb';
+import HomeTitle from '@/components/Common/HomeTitle';
 
 export default function DisclaimerFeature() {
   return (
@@ -15,10 +16,7 @@ export default function DisclaimerFeature() {
             <div className="bg-white">
               <div className="mx-auto max-w-3xl text-base/7">
                 <div className={`${styles.content}`}>
-                  <div className="flex">
-                    <ExclamationCircleIcon className="h-7 w-7 mr-2" aria-hidden="true" />
-                    <h1 className="">免責事項</h1>
-                  </div>
+                  <HomeTitle title="免責事項" Icon={ExclamationCircleIcon} />
                   <span
                     className={`${styles.date} flex justify-end`}
                     style={{ marginTop: '1.25rem' }}
