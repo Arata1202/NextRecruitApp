@@ -1,9 +1,8 @@
 'use client';
 
-import React, { useState, useEffect, useRef, useCallback, Fragment } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
-import { Dialog, Transition } from '@headlessui/react';
-import { XMarkIcon, CheckCircleIcon } from '@heroicons/react/24/outline';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import ReCAPTCHA from 'react-google-recaptcha';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
@@ -12,15 +11,16 @@ import BreadCrumb from '@/components/Common/BreadCrumb';
 import HomeTitle from '@/components/Common/HomeTitle';
 import FixedMainContainer from '@/components/Common/Layouts/Container/FixedMainContainer';
 import FixedContentContainer from '@/components/Common/Layouts/Container/FixedContentContainer';
+import Modal from '@/components/Common/Modal';
+import Alert from '@/components/Common/Alert';
 
 export default function ContactFeature() {
-  const [show, setContactConfirmShow] = useState(false);
+  const [confirmSendEmailOpen, setConfirmSendEmailModalOpen] = useState(false);
+  const [successSendEmailOpen, setSuccessSendEmailAlertOpen] = useState(false);
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const [formData, setContactFormData] = useState<FormData | null>(null);
-  const [open, setContactDialogOpen] = useState(false);
 
   const recaptchaRef = useRef<ReCAPTCHA>(null);
-  const cancelButtonRef = useRef<HTMLButtonElement>(null);
 
   const {
     register,
@@ -49,7 +49,7 @@ export default function ContactFeature() {
 
   const onSubmit = (data: FormData) => {
     setContactFormData(data);
-    setContactDialogOpen(true);
+    setConfirmSendEmailModalOpen(true);
   };
 
   const sendEmail = useCallback(() => {
@@ -64,19 +64,19 @@ export default function ContactFeature() {
       .then((data) => {
         if (data.success) {
           console.log('Email sent successfully');
-          setContactConfirmShow(true);
+          setSuccessSendEmailAlertOpen(true);
           reset();
           resetCaptcha();
-          setContactDialogOpen(false);
+          setConfirmSendEmailModalOpen(false);
         } else {
           console.log('Failed to send email');
-          setContactConfirmShow(false);
+          setConfirmSendEmailModalOpen(false);
         }
       })
       .catch((error) => console.error('Error sending email:', error));
   }, [formData, reset, resetCaptcha]);
 
-  const handleConfirmSend = useCallback(() => {
+  const handleConfirmSendEmail = useCallback(() => {
     const verifyCaptcha = async () => {
       try {
         const response = await fetch(`${process.env.NEXT_PUBLIC_API_RECAPTCHA_URL}`, {
@@ -100,18 +100,18 @@ export default function ContactFeature() {
     verifyCaptcha();
   }, [captchaValue, sendEmail]);
 
-  const handleCancel = () => {
-    setContactDialogOpen(false);
+  const handleCancelSendEmail = () => {
+    setConfirmSendEmailModalOpen(false);
   };
 
   useEffect(() => {
-    if (show) {
+    if (successSendEmailOpen) {
       const timer = setTimeout(() => {
-        setContactConfirmShow(false);
+        setSuccessSendEmailAlertOpen(false);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [show]);
+  }, [successSendEmailOpen]);
 
   return (
     <>
@@ -202,135 +202,23 @@ export default function ContactFeature() {
         </FixedMainContainer>
       </HomeContainer>
 
-      {/* 送信確認モーダル */}
-      <Transition.Root show={open} as={Fragment}>
-        <Dialog
-          as="div"
-          className="relative z-10"
-          initialFocus={cancelButtonRef}
-          onClose={setContactDialogOpen}
-        >
-          <Transition.Child
-            as={Fragment}
-            enter="ease-out duration-300"
-            enterFrom="opacity-0"
-            enterTo="opacity-100"
-            leave="ease-in duration-200"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
-          </Transition.Child>
+      <Modal
+        open={confirmSendEmailOpen}
+        title="お問い合わせを送信しますか？"
+        Icon={EnvelopeIcon}
+        onClose={handleCancelSendEmail}
+        onConfirm={handleConfirmSendEmail}
+        cancelText="キャンセル"
+        confirmText="送信"
+      />
 
-          <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
-            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-out duration-300"
-                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-                enterTo="opacity-100 translate-y-0 sm:scale-100"
-                leave="ease-in duration-200"
-                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              >
-                <Dialog.Panel
-                  className={`m-auto relative transform overflow-hidden rounded-lg px-4 pb-4 pt-5 text-left shadow-xl transition-all sm:my-8 sm:w-full sm:max-w-lg sm:p-6 bg-white`}
-                >
-                  <div className="sm:flex sm:items-start">
-                    <div
-                      className="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full sm:mx-0 sm:h-10 sm:w-10"
-                      style={{ backgroundColor: '#eaf4fc' }}
-                    >
-                      <EnvelopeIcon className="h-6 w-6 text-blue-500" aria-hidden="true" />
-                    </div>
-                    <div className="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-                      <Dialog.Title
-                        as="h1"
-                        className={`font-bold leading-6 text-gray-700`}
-                        style={{ fontSize: '16px' }}
-                      >
-                        お問い合わせを送信しますか？
-                      </Dialog.Title>
-                      <div className="mt-2">
-                        <p className={`text-sm text-gray-500`} style={{ fontSize: '14px' }}>
-                          送信ボタンは一度だけ押してください。送信完了まで数秒かかることがあります。
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-3 grid grid-flow-row-dense grid-cols-2 gap-3">
-                    <button
-                      type="button"
-                      className={`DialogButton mt-3 inline-flex w-full justify-center rounded-md px-3 py-2 text-sm font-semibold shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50 sm:mt-0 sm:w-auto text-gray-700`}
-                      onClick={handleCancel}
-                      ref={cancelButtonRef}
-                    >
-                      キャンセル
-                    </button>
-                    <button
-                      type="button"
-                      className="inline-flex w-full justify-center rounded-md bg-blue-500 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-600 sm:ml-3 sm:w-auto"
-                      onClick={handleConfirmSend}
-                    >
-                      送信
-                    </button>
-                  </div>
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </Dialog>
-      </Transition.Root>
-      {/* 送信完了アラート */}
-      <div
-        aria-live="assertive"
-        className="pointer-events-none fixed inset-0 flex items-start px-4 py-6 sm:items-start sm:p-6"
-      >
-        <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
-          <Transition
-            show={show}
-            as={Fragment}
-            enter="transform ease-out duration-300 transition"
-            enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"
-            enterTo="translate-y-0 opacity-100 sm:translate-x-0"
-            leave="transition ease-in duration-100"
-            leaveFrom="opacity-100"
-            leaveTo="opacity-0"
-          >
-            <div
-              className={`pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5 mt-16 bg-white ring-gray-300`}
-            >
-              <div className="p-4">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0">
-                    <CheckCircleIcon className="h-6 w-6 text-green-400" aria-hidden="true" />
-                  </div>
-                  <div className="ml-3 w-0 flex-1 pt-0.5">
-                    <p className={`font-semibold text-gray-700`} style={{ fontSize: '16px' }}>
-                      お問い合わせありがとうございます
-                    </p>
-                    <p className="mt-1 text-gray-500" style={{ fontSize: '14px' }}>
-                      正常に処理が完了しました。
-                    </p>
-                  </div>
-                  <div className="ml-4 flex flex-shrink-0">
-                    <button
-                      type="button"
-                      className={`inline-flex rounded-md hover:text-blue-500`}
-                      onClick={() => {
-                        setContactConfirmShow(false);
-                      }}
-                    >
-                      <span className="sr-only">Close</span>
-                      <XMarkIcon className="h-5 w-5" aria-hidden="true" />
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Transition>
-        </div>
-      </div>
+      <Alert
+        open={successSendEmailOpen}
+        title="お問い合わせありがとうございます"
+        description="正常に処理が完了しました。"
+        Icon={CheckCircleIcon}
+        onClose={() => setSuccessSendEmailAlertOpen(false)}
+      />
     </>
   );
 }
