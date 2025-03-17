@@ -77,127 +77,123 @@ export default function PasswordResetFeature() {
   return (
     <>
       <HomeContainer auth={true}>
-        <div className="flex min-h-full flex-1 flex-col justify-center sm:px-6 lg:px-8 bg-white">
-          <BreadCrumb title="パスワードリセット" path="service/auth/sendemail" />
-          <div className="pt-6">
-            <div className="sm:mx-auto sm:w-full sm:max-w-md">
-              <h2 className="text-center text-2xl/9 font-bold tracking-tight">
-                パスワードリセット
-              </h2>
-              <div className="text-center mt-5" style={{ fontSize: '14px' }}>
-                新しいパスワードを入力して、
-                <br />
-                パスワードリセットを完了させてください。
-              </div>
-            </div>
-
-            <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-              <div className="bg-white px-6 py-12 border border-gray-300 sm:rounded-lg sm:px-12">
-                <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-                  <div>
-                    <label htmlFor="password" className="block text-md font-bold">
-                      パスワード
-                    </label>
-                    <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
-                      8文字以上で入力してください。
-                      <br />
-                      大文字、小文字、数字、記号を含める必要があります。
-                    </div>
-                    <div className="mt-2">
-                      <input
-                        id="password"
-                        type={enabled ? 'text' : 'password'}
-                        required
-                        {...register('password', {
-                          required: 'パスワードを入力してください。',
-                          minLength: {
-                            value: 8,
-                            message: 'パスワードは8文字以上で入力してください。',
-                          },
-                          validate: (value) => {
-                            if (!/[A-Z]/.test(value)) {
-                              return '大文字を1文字以上含めてください。';
-                            }
-                            if (!/[a-z]/.test(value)) {
-                              return '小文字を1文字以上含めてください。';
-                            }
-                            if (!/\d/.test(value)) {
-                              return '数字を1文字以上含めてください。';
-                            }
-                            if (!/[@$!%*?&]/.test(value)) {
-                              return '記号を1文字以上含めてください。';
-                            }
-                            return true;
-                          },
-                        })}
-                        className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                      />
-                      {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-                    </div>
-                  </div>
-
-                  <div>
-                    <label htmlFor="password" className="block text-md font-bold">
-                      パスワード（確認）
-                    </label>
-                    <div className="mt-2">
-                      <input
-                        id="passwordConf"
-                        type={enabled ? 'text' : 'password'}
-                        required
-                        {...register('passwordConf', {
-                          required: 'パスワード（確認）を入力してください。',
-                          validate: (value) => value === password || 'パスワードが一致しません。',
-                        })}
-                        className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                      />
-                      {errors.passwordConf && (
-                        <p className="text-red-500">{errors.passwordConf.message}</p>
-                      )}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center">
-                    <Switch
-                      checked={enabled}
-                      onChange={setEnabled}
-                      className="group relative inline-flex h-4 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-300 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 data-[checked]:bg-blue-500"
-                    >
-                      <span className="sr-only">Use setting</span>
-                      <span
-                        aria-hidden="true"
-                        className="pointer-events-none inline-block size-3 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-5"
-                      />
-                    </Switch>
-                    <div className="ml-3 text-sm/6">
-                      <label htmlFor="privacy" className="font-medium">
-                        パスワードを表示する
-                      </label>
-                    </div>
-                  </div>
-
-                  <div>
-                    <button
-                      type="submit"
-                      className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
-                    >
-                      パスワードをリセットする
-                    </button>
-                  </div>
-                </form>
-              </div>
+        <BreadCrumb title="パスワードリセット" path="service/auth/sendemail" />
+        <div className="pt-6">
+          <div className="sm:mx-auto sm:w-full sm:max-w-md">
+            <h2 className="text-center text-2xl/9 font-bold tracking-tight">パスワードリセット</h2>
+            <div className="text-center mt-5" style={{ fontSize: '14px' }}>
+              新しいパスワードを入力して、
+              <br />
+              パスワードリセットを完了させてください。
             </div>
           </div>
-          <AdUnit
-            slot="7998948559"
-            style={{
-              marginTop: '1.25rem',
-              marginBottom: '2.75rem',
-              paddingLeft: '1.5rem',
-              paddingRight: '1.5rem',
-            }}
-          />
+
+          <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
+            <div className="bg-white px-6 py-12 border border-gray-300 sm:rounded-lg sm:px-12">
+              <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+                <div>
+                  <label htmlFor="password" className="block text-md font-bold">
+                    パスワード
+                  </label>
+                  <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
+                    8文字以上で入力してください。
+                    <br />
+                    大文字、小文字、数字、記号を含める必要があります。
+                  </div>
+                  <div className="mt-2">
+                    <input
+                      id="password"
+                      type={enabled ? 'text' : 'password'}
+                      required
+                      {...register('password', {
+                        required: 'パスワードを入力してください。',
+                        minLength: {
+                          value: 8,
+                          message: 'パスワードは8文字以上で入力してください。',
+                        },
+                        validate: (value) => {
+                          if (!/[A-Z]/.test(value)) {
+                            return '大文字を1文字以上含めてください。';
+                          }
+                          if (!/[a-z]/.test(value)) {
+                            return '小文字を1文字以上含めてください。';
+                          }
+                          if (!/\d/.test(value)) {
+                            return '数字を1文字以上含めてください。';
+                          }
+                          if (!/[@$!%*?&]/.test(value)) {
+                            return '記号を1文字以上含めてください。';
+                          }
+                          return true;
+                        },
+                      })}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                    />
+                    {errors.password && <p className="text-red-500">{errors.password.message}</p>}
+                  </div>
+                </div>
+
+                <div>
+                  <label htmlFor="password" className="block text-md font-bold">
+                    パスワード（確認）
+                  </label>
+                  <div className="mt-2">
+                    <input
+                      id="passwordConf"
+                      type={enabled ? 'text' : 'password'}
+                      required
+                      {...register('passwordConf', {
+                        required: 'パスワード（確認）を入力してください。',
+                        validate: (value) => value === password || 'パスワードが一致しません。',
+                      })}
+                      className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                    />
+                    {errors.passwordConf && (
+                      <p className="text-red-500">{errors.passwordConf.message}</p>
+                    )}
+                  </div>
+                </div>
+
+                <div className="flex items-center">
+                  <Switch
+                    checked={enabled}
+                    onChange={setEnabled}
+                    className="group relative inline-flex h-4 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-300 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 data-[checked]:bg-blue-500"
+                  >
+                    <span className="sr-only">Use setting</span>
+                    <span
+                      aria-hidden="true"
+                      className="pointer-events-none inline-block size-3 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-5"
+                    />
+                  </Switch>
+                  <div className="ml-3 text-sm/6">
+                    <label htmlFor="privacy" className="font-medium">
+                      パスワードを表示する
+                    </label>
+                  </div>
+                </div>
+
+                <div>
+                  <button
+                    type="submit"
+                    className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
+                  >
+                    パスワードをリセットする
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
         </div>
+        <AdUnit
+          slot="7998948559"
+          style={{
+            marginTop: '1.25rem',
+            marginBottom: '2.75rem',
+            paddingLeft: '1.5rem',
+            paddingRight: '1.5rem',
+          }}
+        />
       </HomeContainer>
 
       <Alert
