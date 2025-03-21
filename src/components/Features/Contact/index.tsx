@@ -5,12 +5,6 @@ import { useForm } from 'react-hook-form';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import ReCAPTCHA from 'react-google-recaptcha';
-import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
-import HomeContainer from '@/components/Common/Layouts/Container/HomeContainer';
-import BreadCrumb from '@/components/Common/BreadCrumb';
-import HomeTitle from '@/components/Common/HomeTitle';
-import FixedMainContainer from '@/components/Common/Layouts/Container/FixedMainContainer';
-import FixedContentContainer from '@/components/Common/Layouts/Container/FixedContentContainer';
 import Modal from '@/components/Common/Modal';
 import Alert from '@/components/Common/Alert';
 import InputContainer from './Elements/InputContainer';
@@ -116,62 +110,53 @@ export default function ContactFeature() {
 
   return (
     <>
-      <HomeContainer white={true}>
-        <BreadCrumb title="お問い合わせ" path="contact" />
-        <FixedMainContainer>
-          <FixedContentContainer>
-            <HomeTitle title="お問い合わせ" Icon={EnvelopeIcon} />
-            <p className="mt-2 text-lg/8">
-              リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
-            </p>
-            <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">
-              <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-                <InputContainer
-                  label="メールアドレス"
-                  name="email"
-                  registerResult={register('email', {
-                    required: '※ メールアドレスを入力してください',
-                    pattern: {
-                      value: /^\S+@\S+$/i,
-                      message: '※ 有効なメールアドレスを入力してください',
-                    },
-                  })}
-                  errors={errors.email}
-                />
-                <InputContainer
-                  label="件名"
-                  name="title"
-                  registerResult={register('title', { required: '※ 件名を入力してください' })}
-                  errors={errors.title}
-                />
-                <InputContainer
-                  textarea={true}
-                  label="内容"
-                  name="message"
-                  registerResult={register('message', { required: '※ 内容を入力してください' })}
-                  errors={errors.message}
-                />
-              </div>
-              <ReCAPTCHA
-                ref={recaptchaRef}
-                sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-                onChange={onChange}
-                className="mt-3"
-              />
-              <div className="mt-3">
-                <button
-                  type="submit"
-                  disabled={!captchaValue}
-                  className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
-                >
-                  送信
-                </button>
-              </div>
-            </form>
-          </FixedContentContainer>
-          <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
-        </FixedMainContainer>
-      </HomeContainer>
+      <p className="mt-2 text-lg/8">
+        リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
+      </p>
+      <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">
+        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
+          <InputContainer
+            label="メールアドレス"
+            name="email"
+            registerResult={register('email', {
+              required: '※ メールアドレスを入力してください',
+              pattern: {
+                value: /^\S+@\S+$/i,
+                message: '※ 有効なメールアドレスを入力してください',
+              },
+            })}
+            errors={errors.email}
+          />
+          <InputContainer
+            label="件名"
+            name="title"
+            registerResult={register('title', { required: '※ 件名を入力してください' })}
+            errors={errors.title}
+          />
+          <InputContainer
+            textarea={true}
+            label="内容"
+            name="message"
+            registerResult={register('message', { required: '※ 内容を入力してください' })}
+            errors={errors.message}
+          />
+        </div>
+        <ReCAPTCHA
+          ref={recaptchaRef}
+          sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+          onChange={onChange}
+          className="mt-3"
+        />
+        <div className="mt-3">
+          <button
+            type="submit"
+            disabled={!captchaValue}
+            className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
+          >
+            送信
+          </button>
+        </div>
+      </form>
 
       <Modal
         open={confirmSendEmailOpen}

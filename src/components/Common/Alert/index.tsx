@@ -26,7 +26,7 @@ export default function Alert({ open, onClose, title, description, Icon }: Props
           leaveTo="opacity-0"
         >
           <div
-            className={`mt-16 pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5 ring-gray-300`}
+            className={`${styles.MarginTop} pointer-events-auto w-full max-w-sm overflow-hidden rounded-lg shadow-lg ring-1 ring-opacity-5 ring-gray-300 mt-16`}
           >
             <div className="p-4 bg-white">
               <div className="flex items-start">
