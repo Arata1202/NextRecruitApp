@@ -197,7 +197,7 @@ export default function PasswordResetFeature() {
       </HomeContainer>
 
       <Alert
-        open={confirmShow}
+        show={confirmShow}
         onClose={() => setConfirmShow(false)}
         title={ConfirmTitle}
         description={ConfirmMessage}
@@ -205,7 +205,7 @@ export default function PasswordResetFeature() {
       />
 
       <Alert
-        open={errorShow}
+        show={errorShow}
         onClose={() => setErrorShow(false)}
         title={errorTitle}
         description={errorMessage}

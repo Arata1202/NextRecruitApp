@@ -115,7 +115,7 @@ export default function SendEmailFeature() {
       </HomeContainer>
 
       <Alert
-        open={confirmShow}
+        show={confirmShow}
         onClose={() => setConfirmShow(false)}
         title={ConfirmTitle}
         description={ConfirmMessage}

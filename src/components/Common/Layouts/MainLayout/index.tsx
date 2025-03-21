@@ -264,7 +264,7 @@ export default function MainLayout() {
       </Dialog>
 
       <Modal
-        open={logoutOpen}
+        show={logoutOpen}
         title="ログアウトしますか？"
         Icon={ArrowRightStartOnRectangleIcon}
         onClose={handleCancelLogout}
@@ -274,7 +274,7 @@ export default function MainLayout() {
       ></Modal>
 
       <Modal
-        open={shareOpen}
+        show={shareOpen}
         title="シェアする"
         Icon={ShareIcon}
         onClose={handleCancelShare}
@@ -284,7 +284,7 @@ export default function MainLayout() {
       </Modal>
 
       <Modal
-        open={a2hsOpen}
+        show={a2hsOpen}
         title="アプリを追加する"
         Icon={DevicePhoneMobileIcon}
         onClose={handleCancelA2hs}

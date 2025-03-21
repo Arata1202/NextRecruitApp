@@ -409,7 +409,7 @@ export default function SignUpFeature() {
       </HomeContainer>
 
       <Alert
-        open={errorShow}
+        show={errorShow}
         onClose={() => setErrorShow(false)}
         title={errorTitle}
         description={errorMessage}
@@ -417,7 +417,7 @@ export default function SignUpFeature() {
       />
 
       <Alert
-        open={confirmShow}
+        show={confirmShow}
         onClose={() => setConfirmShow(false)}
         title={ConfirmTitle}
         description={ConfirmMessage}

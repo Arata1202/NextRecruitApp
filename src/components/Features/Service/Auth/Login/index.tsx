@@ -289,7 +289,7 @@ export default function LoginFeature() {
       </HomeContainer>
 
       <Alert
-        open={errorShow}
+        show={errorShow}
         onClose={() => setErrorShow(false)}
         title={errorTitle}
         description={errorMessage}
