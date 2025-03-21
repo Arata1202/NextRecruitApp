@@ -8,7 +8,7 @@ type Props = {
   Icon: any;
   confirmText?: string;
   cancelText: string;
-  open: boolean;
+  show: boolean;
   onClose: () => void;
   onConfirm?: () => void;
 };
@@ -19,13 +19,13 @@ export default function Modal({
   Icon,
   confirmText,
   cancelText,
-  open,
+  show,
   onClose,
   onConfirm,
 }: Props) {
   return (
-    <Transition.Root show={open} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={() => {}}>
+    <Transition.Root show={show} as={Fragment}>
+      <Dialog as="div" className="relative z-50" onClose={onClose}>
         <Transition.Child
           as={Fragment}
           enter="ease-out duration-300"

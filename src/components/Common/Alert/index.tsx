@@ -7,16 +7,16 @@ type Props = {
   title: string;
   description: string;
   Icon: any;
-  open: boolean;
+  show: boolean;
   onClose: () => void;
 };
 
-export default function Alert({ open, onClose, title, description, Icon }: Props) {
+export default function Alert({ show, onClose, title, description, Icon }: Props) {
   return (
     <div className="pointer-events-none fixed inset-0 flex items-start px-4 py-6 sm:items-start sm:p-6">
       <div className="flex w-full flex-col items-center space-y-4 sm:items-end">
         <Transition
-          show={open}
+          show={show}
           as={Fragment}
           enter="transform ease-out duration-300 transition"
           enterFrom="translate-y-2 opacity-0 sm:translate-y-0 sm:translate-x-2"

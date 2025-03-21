@@ -11,26 +11,26 @@ import Modal from '@/components/Common/Modal';
 import Alert from '@/components/Common/Alert';
 
 export default function ContactFeature() {
-  const [confirmSendEmailOpen, setConfirmSendEmailModalOpen] = useState(false);
-  const [successSendEmailOpen, setSuccessSendEmailAlertOpen] = useState(false);
-  const [formData, setContactFormData] = useState<Form | null>(null);
+  const [confirmSendEmailModalOpen, setConfirmSendEmailModalOpen] = useState(false);
+  const [successSendEmailAlertOpen, setSuccessSendEmailAlertOpen] = useState(false);
+  const [formData, setFormData] = useState<Form | null>(null);
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const {
     register,
-    handleSubmit,
+    handleSubmit: onSubmit,
     formState: { errors },
     reset,
   } = useForm<Form>();
 
-  const onChange = (value: string | null) => {
-    setCaptchaValue(value);
+  const handleSubmit = (data: Form) => {
+    setFormData(data);
+    setConfirmSendEmailModalOpen(true);
   };
 
-  const onSubmit = (data: Form) => {
-    setContactFormData(data);
-    setConfirmSendEmailModalOpen(true);
+  const handleChangeCaptchaValue = (value: string | null) => {
+    setCaptchaValue(value);
   };
 
   const handleRecaptcha = async () => {
@@ -71,20 +71,20 @@ export default function ContactFeature() {
   };
 
   useEffect(() => {
-    if (successSendEmailOpen) {
+    if (successSendEmailAlertOpen) {
       const timer = setTimeout(() => {
         setSuccessSendEmailAlertOpen(false);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [successSendEmailOpen]);
+  }, [successSendEmailAlertOpen]);
 
   return (
     <>
       <p className="mt-2 text-lg/8">
         リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
       </p>
-      <form onSubmit={handleSubmit(onSubmit)} method="POST" className="mx-auto max-w-3xl">
+      <form onSubmit={onSubmit(handleSubmit)} method="POST" className="mx-auto max-w-3xl">
         <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
           <InputContainer
             label="メールアドレス"
@@ -115,7 +115,7 @@ export default function ContactFeature() {
         <ReCAPTCHA
           ref={recaptchaRef}
           sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-          onChange={onChange}
+          onChange={handleChangeCaptchaValue}
           className="mt-3"
         />
         <div className="mt-3">
@@ -130,7 +130,7 @@ export default function ContactFeature() {
       </form>
 
       <Modal
-        open={confirmSendEmailOpen}
+        show={confirmSendEmailModalOpen}
         title="お問い合わせを送信しますか？"
         Icon={EnvelopeIcon}
         onClose={() => setConfirmSendEmailModalOpen(false)}
@@ -140,7 +140,7 @@ export default function ContactFeature() {
       />
 
       <Alert
-        open={successSendEmailOpen}
+        show={successSendEmailAlertOpen}
         title="お問い合わせありがとうございます"
         description="正常に処理が完了しました。"
         Icon={CheckCircleIcon}
