@@ -1,0 +1,25 @@
+.hero {
+  margin-top: 38px;
+}
+
+.mobile {
+  display: none;
+}
+
+.pc {
+  display: block;
+}
+
+@media (max-width: 1023px) {
+  .hero {
+    margin-top: 0 !important;
+  }
+
+  .mobile {
+    display: block;
+  }
+
+  .pc {
+    display: none;
+  }
+}

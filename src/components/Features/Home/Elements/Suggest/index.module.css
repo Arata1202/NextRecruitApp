@@ -1,0 +1,13 @@
+.space {
+  margin-top: 100px;
+}
+
+@media (max-width: 1023px) {
+  .space {
+    margin-top: 50px;
+  }
+
+  .textLeft {
+    text-align: left;
+  }
+}

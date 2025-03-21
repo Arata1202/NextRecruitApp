@@ -20,28 +20,8 @@
 .TitleIcon {
   height: 32px;
 }
-.pc {
-  display: block;
-}
-.mobile {
-  display: none;
-}
-.MobileMargin-0 {
-  margin-top: 38px;
-}
-.MobileMarginBottom-0 {
-  margin-bottom: 38px;
-}
-.TopTitle {
-  margin-top: 100px;
-}
+
 @media (max-width: 1023px) {
-  .pc {
-    display: none;
-  }
-  .mobile {
-    display: block;
-  }
   .MobileHeader {
     margin-top: 64px;
   }
@@ -56,18 +36,6 @@
   }
   .MobilePadding-0 {
     padding: 0 !important;
-  }
-  .MobileMargin-0 {
-    margin-top: 0 !important;
-  }
-  .MobileMarginBottom-0 {
-    margin-bottom: 0 !important;
-  }
-  .TopTitle {
-    margin-top: 50px;
-  }
-  .BetterText {
-    text-align: left;
   }
 }
 @media (max-width: 639px) {

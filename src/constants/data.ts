@@ -14,6 +14,7 @@ import {
   ShareIcon,
   ArrowRightStartOnRectangleIcon,
   EnvelopeIcon as EnvelopeIconOutline,
+  ChartPieIcon,
 } from '@heroicons/react/24/outline';
 
 export const DESCRIPTION =
@@ -63,4 +64,40 @@ export const SERVICE_SETTING_NAVIGATION = [
   { name: 'お問い合わせ', icon: EnvelopeIconOutline },
   { name: 'シェアする', icon: ShareIcon },
   { name: 'ログアウト', icon: ArrowRightStartOnRectangleIcon },
+];
+
+export const HOME_HEROES = [
+  {
+    name: '一括管理カレンダー',
+    description:
+      '企業ごとの選考状況や、今後のToDoリストを自動でカレンダーに反映し、一目で予定を把握することができます。',
+    icon: CalendarDaysIcon,
+  },
+  {
+    name: '簡単自己分析',
+    description:
+      '初めは戸惑う自己分析。リクビジョンを活用すれば、予め用意された質問に回答していくだけで、自己理解を深められます。',
+    icon: ChartPieIcon,
+  },
+  {
+    name: 'ESテンプレート',
+    description:
+      '文字数カウンターを活用して、ガクチカや自己PRなどの定型文を保存しておくことができます。',
+    icon: ClipboardDocumentListIcon,
+  },
+];
+
+export const HOME_RECOMMENDS = [
+  {
+    path: '/images/top/recommend/1.png',
+  },
+  {
+    path: '/images/top/recommend/2.png',
+  },
+  {
+    path: '/images/top/recommend/3.png',
+  },
+  {
+    path: '/images/top/recommend/4.png',
+  },
 ];
