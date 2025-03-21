@@ -1,20 +1,20 @@
 'use client';
 
-import { useState, useEffect, useRef, useCallback } from 'react';
-import { useForm } from 'react-hook-form';
-import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { useState, useEffect, useRef } from 'react';
 import { EnvelopeIcon } from '@heroicons/react/24/solid';
+import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { Form } from '@/types/form';
+import InputContainer from './Elements/InputContainer';
 import Modal from '@/components/Common/Modal';
 import Alert from '@/components/Common/Alert';
-import InputContainer from './Elements/InputContainer';
 
 export default function ContactFeature() {
   const [confirmSendEmailOpen, setConfirmSendEmailModalOpen] = useState(false);
   const [successSendEmailOpen, setSuccessSendEmailAlertOpen] = useState(false);
+  const [formData, setContactFormData] = useState<Form | null>(null);
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-  const [formData, setContactFormData] = useState<FormData | null>(null);
-
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
   const {
@@ -22,81 +22,52 @@ export default function ContactFeature() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>();
-
-  interface FormData {
-    sei: string;
-    title: string;
-    email: string;
-    company: string;
-    tel: string;
-    message: string;
-  }
-
-  const resetCaptcha = useCallback(() => {
-    recaptchaRef.current?.reset();
-  }, []);
+  } = useForm<Form>();
 
   const onChange = (value: string | null) => {
-    console.log('Captcha value:', value);
     setCaptchaValue(value);
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: Form) => {
     setContactFormData(data);
     setConfirmSendEmailModalOpen(true);
   };
 
-  const sendEmail = useCallback(() => {
-    if (!formData) return;
+  const handleRecaptcha = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_RECAPTCHA_URL}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        'g-recaptcha-response': captchaValue,
+      }),
+    });
 
-    fetch(`${process.env.NEXT_PUBLIC_API_SENDEMAIL_URL}`, {
+    const data = await response.json();
+
+    if (data.success) {
+      handleSendEmail();
+    } else {
+      console.error(data.message);
+    }
+  };
+
+  const handleSendEmail = async () => {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_API_SENDEMAIL_URL}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(formData),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        if (data.success) {
-          console.log('Email sent successfully');
-          setSuccessSendEmailAlertOpen(true);
-          reset();
-          resetCaptcha();
-          setConfirmSendEmailModalOpen(false);
-        } else {
-          console.log('Failed to send email');
-          setConfirmSendEmailModalOpen(false);
-        }
-      })
-      .catch((error) => console.error('Error sending email:', error));
-  }, [formData, reset, resetCaptcha]);
+    });
 
-  const handleConfirmSendEmail = useCallback(() => {
-    const verifyCaptcha = async () => {
-      try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_RECAPTCHA_URL}`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            'g-recaptcha-response': captchaValue,
-          }),
-        });
-        const data = await response.json();
-        if (data.success) {
-          sendEmail();
-        } else {
-          console.error('reCAPTCHA validation failed:', data.message);
-        }
-      } catch (error) {
-        console.error('Error during reCAPTCHA validation:', error);
-      }
-    };
+    const data = await response.json();
 
-    verifyCaptcha();
-  }, [captchaValue, sendEmail]);
-
-  const handleCancelSendEmail = () => {
-    setConfirmSendEmailModalOpen(false);
+    if (data.success) {
+      setSuccessSendEmailAlertOpen(true);
+      reset();
+      recaptchaRef.current?.reset();
+      setConfirmSendEmailModalOpen(false);
+    } else {
+      console.error(data.message);
+    }
   };
 
   useEffect(() => {
@@ -162,8 +133,8 @@ export default function ContactFeature() {
         open={confirmSendEmailOpen}
         title="お問い合わせを送信しますか？"
         Icon={EnvelopeIcon}
-        onClose={handleCancelSendEmail}
-        onConfirm={handleConfirmSendEmail}
+        onClose={() => setConfirmSendEmailModalOpen(false)}
+        onConfirm={handleRecaptcha}
         cancelText="キャンセル"
         confirmText="送信"
       />
