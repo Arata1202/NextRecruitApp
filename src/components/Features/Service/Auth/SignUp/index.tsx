@@ -3,7 +3,6 @@
 import Link from 'next/link';
 import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
-import { Switch } from '@headlessui/react';
 import { useState, useRef, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
@@ -13,6 +12,7 @@ import AuthTitleContainer from '@/components/Common/Layouts/Container/AuthTitleC
 import { GoogleIcon, XIcon, GitHubIcon } from '@/components/Common/Elements/SocialIcon';
 import SocialButton from '@/components/Common/Elements/SocialButton';
 import SocialLoginContainer from '@/components/Common/Layouts/Container/SocialLoginContainer';
+import SwitchButton from '@/components/Common/Elements/Switch';
 
 type FormData = {
   email: string;
@@ -247,24 +247,7 @@ export default function SignUpFeature() {
                 )}
               </div>
             </div>
-            <div className="flex items-center">
-              <Switch
-                checked={enabled}
-                onChange={setEnabled}
-                className="group relative inline-flex h-4 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent bg-gray-300 transition-colors duration-200 ease-in-out focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 data-[checked]:bg-blue-500"
-              >
-                <span className="sr-only">Use setting</span>
-                <span
-                  aria-hidden="true"
-                  className="pointer-events-none inline-block size-3 transform rounded-full bg-white shadow ring-0 transition duration-200 ease-in-out group-data-[checked]:translate-x-5"
-                />
-              </Switch>
-              <div className="ml-3 text-sm/6">
-                <label htmlFor="privacy" className="font-medium">
-                  パスワードを表示する
-                </label>
-              </div>
-            </div>
+            <SwitchButton title="パスワードを表示する" checked={enabled} onChange={setEnabled} />
             <fieldset>
               <div className="space-y-5">
                 <div className="relative flex items-start">
