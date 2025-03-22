@@ -14,6 +14,7 @@ import SocialButton from '@/components/Common/Elements/SocialButton';
 import SocialLoginContainer from '@/components/Common/Layouts/Container/SocialLoginContainer';
 import SwitchButton from '@/components/Common/Elements/Switch';
 import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
+import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 
 type FormData = {
   email: string;
@@ -162,148 +163,144 @@ export default function SignUpFeature() {
         </Link>
         できます。
       </AuthTitleContainer>
-      <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-[480px]">
-        <div className="bg-white px-6 py-12 border border-gray-300 sm:rounded-lg sm:px-12">
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            <div>
-              <label htmlFor="email" className="block text-md font-bold">
-                メールアドレス
-              </label>
-              <div className="mt-2">
-                <input
-                  id="email"
-                  type="email"
-                  autoComplete="email"
-                  required
-                  {...register('email', {
-                    required: 'メールアドレスを入力してください。',
-                    pattern: {
-                      value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                      message: '有効なメールアドレスを入力してください。',
-                    },
-                  })}
-                  className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                />
-                {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-              </div>
+      <AuthContentContainer>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
+          <div>
+            <label htmlFor="email" className="block text-md font-bold">
+              メールアドレス
+            </label>
+            <div className="mt-2">
+              <input
+                id="email"
+                type="email"
+                autoComplete="email"
+                required
+                {...register('email', {
+                  required: 'メールアドレスを入力してください。',
+                  pattern: {
+                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                    message: '有効なメールアドレスを入力してください。',
+                  },
+                })}
+                className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+              />
+              {errors.email && <p className="text-red-500">{errors.email.message}</p>}
             </div>
-            <div>
-              <label htmlFor="password" className="block text-md font-bold">
-                パスワード
-              </label>
-              <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
-                8文字以上で入力してください。
-                <br />
-                大文字、小文字、数字、記号を含める必要があります。
-              </div>
-              <div className="mt-2">
-                <input
-                  id="password"
-                  type={enabled ? 'text' : 'password'}
-                  required
-                  {...register('password', {
-                    required: 'パスワードを入力してください。',
-                    minLength: {
-                      value: 8,
-                      message: 'パスワードは8文字以上で入力してください。',
-                    },
-                    validate: (value) => {
-                      if (!/[A-Z]/.test(value)) {
-                        return '大文字を1文字以上含めてください。';
-                      }
-                      if (!/[a-z]/.test(value)) {
-                        return '小文字を1文字以上含めてください。';
-                      }
-                      if (!/\d/.test(value)) {
-                        return '数字を1文字以上含めてください。';
-                      }
-                      if (!/[@$!%*?&]/.test(value)) {
-                        return '記号を1文字以上含めてください。';
-                      }
-                      return true;
-                    },
-                  })}
-                  className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                />
-                {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-              </div>
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-md font-bold">
+              パスワード
+            </label>
+            <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
+              8文字以上で入力してください。
+              <br />
+              大文字、小文字、数字、記号を含める必要があります。
             </div>
-            <div>
-              <label htmlFor="password" className="block text-md font-bold">
-                パスワード（確認）
-              </label>
-              <div className="mt-2">
-                <input
-                  id="passwordConf"
-                  type={enabled ? 'text' : 'password'}
-                  required
-                  {...register('passwordConf', {
-                    required: 'パスワード（確認）を入力してください。',
-                    validate: (value) => value === password || 'パスワードが一致しません。',
-                  })}
-                  className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                />
-                {errors.passwordConf && (
-                  <p className="text-red-500">{errors.passwordConf.message}</p>
-                )}
-              </div>
+            <div className="mt-2">
+              <input
+                id="password"
+                type={enabled ? 'text' : 'password'}
+                required
+                {...register('password', {
+                  required: 'パスワードを入力してください。',
+                  minLength: {
+                    value: 8,
+                    message: 'パスワードは8文字以上で入力してください。',
+                  },
+                  validate: (value) => {
+                    if (!/[A-Z]/.test(value)) {
+                      return '大文字を1文字以上含めてください。';
+                    }
+                    if (!/[a-z]/.test(value)) {
+                      return '小文字を1文字以上含めてください。';
+                    }
+                    if (!/\d/.test(value)) {
+                      return '数字を1文字以上含めてください。';
+                    }
+                    if (!/[@$!%*?&]/.test(value)) {
+                      return '記号を1文字以上含めてください。';
+                    }
+                    return true;
+                  },
+                })}
+                className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+              />
+              {errors.password && <p className="text-red-500">{errors.password.message}</p>}
             </div>
-            <SwitchButton title="パスワードを表示する" checked={enabled} onChange={setEnabled} />
-            <fieldset>
-              <div className="space-y-5">
-                <div className="relative flex items-start">
-                  <div className="flex h-6 items-center">
-                    <input
-                      id="privacy"
-                      type="checkbox"
-                      required
-                      {...register('privacy', {
-                        required: 'プライバシーポリシーへの同意が必要です。',
-                      })}
-                      className="text-gray-300 size-4 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
-                    />
-                  </div>
-                  <div className="ml-3 text-sm/6">
-                    <label htmlFor="privacy" className="font-medium">
-                      <Link
-                        href="/privacy"
-                        target="_blank"
-                        className="text-blue-500 hover:text-blue-600"
-                      >
-                        プライバシーポリシー
-                      </Link>
-                      に同意します
-                    </label>
-                  </div>
+          </div>
+          <div>
+            <label htmlFor="password" className="block text-md font-bold">
+              パスワード（確認）
+            </label>
+            <div className="mt-2">
+              <input
+                id="passwordConf"
+                type={enabled ? 'text' : 'password'}
+                required
+                {...register('passwordConf', {
+                  required: 'パスワード（確認）を入力してください。',
+                  validate: (value) => value === password || 'パスワードが一致しません。',
+                })}
+                className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+              />
+              {errors.passwordConf && <p className="text-red-500">{errors.passwordConf.message}</p>}
+            </div>
+          </div>
+          <SwitchButton title="パスワードを表示する" checked={enabled} onChange={setEnabled} />
+          <fieldset>
+            <div className="space-y-5">
+              <div className="relative flex items-start">
+                <div className="flex h-6 items-center">
+                  <input
+                    id="privacy"
+                    type="checkbox"
+                    required
+                    {...register('privacy', {
+                      required: 'プライバシーポリシーへの同意が必要です。',
+                    })}
+                    className="text-gray-300 size-4 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
+                  />
                 </div>
-                {errors.privacy && <p className="error text-red-500">{errors.privacy.message}</p>}
+                <div className="ml-3 text-sm/6">
+                  <label htmlFor="privacy" className="font-medium">
+                    <Link
+                      href="/privacy"
+                      target="_blank"
+                      className="text-blue-500 hover:text-blue-600"
+                    >
+                      プライバシーポリシー
+                    </Link>
+                    に同意します
+                  </label>
+                </div>
               </div>
-            </fieldset>
-            <ReCAPTCHA
-              ref={recaptchaRef}
-              sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-              onChange={onChange}
-              className="mt-3"
-            />
-            {errors.recaptcha && <p className="error text-red-500">{errors.recaptcha.message}</p>}
-            <AuthSubmitButton title="アカウントを登録する" />
-          </form>
-          <SocialLoginContainer>
-            <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={handleGoogleLogin} />
-            <SocialButton title="GitHubでログイン" Icon={GitHubIcon} onClick={handleGithubLogin} />
-            <SocialButton
-              title="X（旧Twitter）でログイン"
-              Icon={XIcon}
-              onClick={handleTwitterLogin}
-            />
-          </SocialLoginContainer>
-        </div>
-      </div>
+              {errors.privacy && <p className="error text-red-500">{errors.privacy.message}</p>}
+            </div>
+          </fieldset>
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+            onChange={onChange}
+            className="mt-3"
+          />
+          {errors.recaptcha && <p className="error text-red-500">{errors.recaptcha.message}</p>}
+          <AuthSubmitButton title="アカウントを登録する" />
+        </form>
+        <SocialLoginContainer>
+          <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={handleGoogleLogin} />
+          <SocialButton title="GitHubでログイン" Icon={GitHubIcon} onClick={handleGithubLogin} />
+          <SocialButton
+            title="X（旧Twitter）でログイン"
+            Icon={XIcon}
+            onClick={handleTwitterLogin}
+          />
+        </SocialLoginContainer>
+      </AuthContentContainer>
       <AdUnit
         slot="7998948559"
         style={{
           marginTop: '1.25rem',
-          marginBottom: '2.75rem',
+          paddingBottom: '2.75rem',
           paddingLeft: '1.5rem',
           paddingRight: '1.5rem',
         }}
