@@ -13,6 +13,7 @@ import { GoogleIcon, XIcon, GitHubIcon } from '@/components/Common/Elements/Soci
 import SocialButton from '@/components/Common/Elements/SocialButton';
 import SocialLoginContainer from '@/components/Common/Layouts/Container/SocialLoginContainer';
 import SwitchButton from '@/components/Common/Elements/Switch';
+import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
 
 type FormData = {
   email: string;
@@ -285,14 +286,7 @@ export default function SignUpFeature() {
               className="mt-3"
             />
             {errors.recaptcha && <p className="error text-red-500">{errors.recaptcha.message}</p>}
-            <div>
-              <button
-                type="submit"
-                className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
-              >
-                アカウントを登録する
-              </button>
-            </div>
+            <AuthSubmitButton title="アカウントを登録する" />
           </form>
           <SocialLoginContainer>
             <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={handleGoogleLogin} />
