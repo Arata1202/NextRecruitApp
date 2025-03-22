@@ -4,15 +4,12 @@ import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { Form } from '@/types/form';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import Alert from '@/components/Common/Alert';
 import AuthTitleContainer from '@/components/Common/Layouts/Container/AuthTitleContainer';
 import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
-
-type FormData = {
-  email: string;
-};
 
 export default function SendEmailFeature() {
   const [confirmShow, setConfirmShow] = useState(false);
@@ -24,7 +21,7 @@ export default function SendEmailFeature() {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<Form>();
 
   useEffect(() => {
     if (confirmShow) {
@@ -35,7 +32,7 @@ export default function SendEmailFeature() {
     }
   }, [confirmShow]);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: Form) => {
     try {
       const { error: sendEmailError } = await supabase.auth.resetPasswordForEmail(data.email, {
         redirectTo: `${window.location.origin}/service/auth/passwordreset`,

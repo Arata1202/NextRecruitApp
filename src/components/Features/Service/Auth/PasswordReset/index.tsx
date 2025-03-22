@@ -5,17 +5,13 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { Form } from '@/types/form';
 import Alert from '@/components/Common/Alert';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import AuthTitleContainer from '@/components/Common/Layouts/Container/AuthTitleContainer';
 import SwitchButton from '@/components/Common/Elements/Switch';
 import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
-
-type FormData = {
-  password: string;
-  passwordConf: string;
-};
 
 export default function PasswordResetFeature() {
   const router = useRouter();
@@ -25,7 +21,7 @@ export default function PasswordResetFeature() {
     formState: { errors },
     watch,
     reset,
-  } = useForm<FormData>();
+  } = useForm<Form>();
   const [enabled, setEnabled] = useState(false);
   const password = watch('password');
   const [confirmShow, setConfirmShow] = useState(false);
@@ -52,7 +48,7 @@ export default function PasswordResetFeature() {
     }
   }, [errorShow]);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: Form) => {
     try {
       const { error: passwordResetError } = await supabase.auth.updateUser({
         password: data.password,

@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useState, useRef, useEffect } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { Form } from '@/types/form';
 import Alert from '@/components/Common/Alert';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import AuthTitleContainer from '@/components/Common/Layouts/Container/AuthTitleContainer';
@@ -15,14 +16,6 @@ import SocialLoginContainer from '@/components/Common/Layouts/Container/SocialLo
 import SwitchButton from '@/components/Common/Elements/Switch';
 import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
-
-type FormData = {
-  email: string;
-  password: string;
-  passwordConf: string;
-  privacy: boolean;
-  recaptcha: string;
-};
 
 export default function SignUpFeature() {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -34,7 +27,7 @@ export default function SignUpFeature() {
     setError,
     clearErrors,
     reset,
-  } = useForm<FormData>();
+  } = useForm<Form>();
   const [enabled, setEnabled] = useState(false);
   const password = watch('password');
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
@@ -69,7 +62,7 @@ export default function SignUpFeature() {
     }
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: Form) => {
     if (!captchaValue) {
       setError('recaptcha', { type: 'manual', message: 'reCAPTCHAをチェックしてください。' });
       return;

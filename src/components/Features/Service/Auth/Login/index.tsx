@@ -5,6 +5,7 @@ import { supabase } from '@/libs/supabase';
 import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { Form } from '@/types/form';
 import Alert from '@/components/Common/Alert';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
@@ -15,11 +16,6 @@ import SocialLoginContainer from '@/components/Common/Layouts/Container/SocialLo
 import SwitchButton from '@/components/Common/Elements/Switch';
 import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
-
-type FormData = {
-  email: string;
-  password: string;
-};
 
 export default function LoginFeature() {
   const router = useRouter();
@@ -33,7 +29,7 @@ export default function LoginFeature() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<FormData>();
+  } = useForm<Form>();
 
   useEffect(() => {
     if (errorShow) {
@@ -44,7 +40,7 @@ export default function LoginFeature() {
     }
   }, [errorShow]);
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: Form) => {
     const { error: signInError } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
@@ -109,63 +105,59 @@ export default function LoginFeature() {
       </AuthTitleContainer>
       <AuthContentContainer>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
-            <label htmlFor="email" className="block text-md font-bold">
-              メールアドレス
-            </label>
-            <div className="mt-2">
-              <input
-                id="email"
-                type="email"
-                required
-                autoComplete="email"
-                {...register('email', {
-                  required: 'メールアドレスを入力してください。',
-                  pattern: {
-                    value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                    message: '有効なメールアドレスを入力してください。',
-                  },
-                })}
-                className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-              />
-              {errors.email && <p className="text-red-500">{errors.email.message}</p>}
-            </div>
+          <label htmlFor="email" className="block text-md font-bold">
+            メールアドレス
+          </label>
+          <div className="mt-2">
+            <input
+              id="email"
+              type="email"
+              required
+              autoComplete="email"
+              {...register('email', {
+                required: 'メールアドレスを入力してください。',
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: '有効なメールアドレスを入力してください。',
+                },
+              })}
+              className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+            />
+            {errors.email && <p className="text-red-500">{errors.email.message}</p>}
           </div>
-          <div>
-            <label htmlFor="password" className="block text-md font-bold">
-              パスワード
-            </label>
-            <div className="mt-2">
-              <input
-                id="password"
-                type={enabled ? 'text' : 'password'}
-                required
-                {...register('password', {
-                  required: 'パスワードを入力してください。',
-                  minLength: {
-                    value: 8,
-                    message: 'パスワードは8文字以上で入力してください。',
-                  },
-                  validate: (value) => {
-                    if (!/[A-Z]/.test(value)) {
-                      return '大文字を1文字以上含めてください。';
-                    }
-                    if (!/[a-z]/.test(value)) {
-                      return '小文字を1文字以上含めてください。';
-                    }
-                    if (!/\d/.test(value)) {
-                      return '数字を1文字以上含めてください。';
-                    }
-                    if (!/[@$!%*?&]/.test(value)) {
-                      return '記号を1文字以上含めてください。';
-                    }
-                    return true;
-                  },
-                })}
-                className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-              />
-              {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-            </div>
+          <label htmlFor="password" className="block text-md font-bold">
+            パスワード
+          </label>
+          <div className="mt-2">
+            <input
+              id="password"
+              type={enabled ? 'text' : 'password'}
+              required
+              {...register('password', {
+                required: 'パスワードを入力してください。',
+                minLength: {
+                  value: 8,
+                  message: 'パスワードは8文字以上で入力してください。',
+                },
+                validate: (value) => {
+                  if (!/[A-Z]/.test(value)) {
+                    return '大文字を1文字以上含めてください。';
+                  }
+                  if (!/[a-z]/.test(value)) {
+                    return '小文字を1文字以上含めてください。';
+                  }
+                  if (!/\d/.test(value)) {
+                    return '数字を1文字以上含めてください。';
+                  }
+                  if (!/[@$!%*?&]/.test(value)) {
+                    return '記号を1文字以上含めてください。';
+                  }
+                  return true;
+                },
+              })}
+              className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+            />
+            {errors.password && <p className="text-red-500">{errors.password.message}</p>}
           </div>
           <SwitchButton title="パスワードを表示する" checked={enabled} onChange={setEnabled} />
           <AuthSubmitButton title="ログイン" />
