@@ -1,10 +1,11 @@
 'use client';
 
-import Link from 'next/link';
-import { supabase } from '@/libs/supabase';
-import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
+import { supabase } from '@/libs/supabase';
+import { useGoogleLogin, useGithubLogin, useTwitterLogin } from '@/hooks/useSocialLogin';
 import { Form } from '@/types/form';
 import Alert from '@/components/Common/Alert';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
@@ -17,14 +18,11 @@ import SwitchButton from '@/components/Common/Elements/Switch';
 import SubmitButton from '@/components/Common/Elements/SubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 import InputContainer from '@/components/Common/Elements/InputContainer';
-import { useGoogleLogin, useGithubLogin, useTwitterLogin } from '@/hooks/useSocialLogin';
 
 export default function LoginFeature() {
   const router = useRouter();
   const [enabled, setEnabled] = useState(false);
-  const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorPasswordLoginAlertOpen, setErrorPasswordLoginAlertOpen] = useState(false);
 
   const {
     register,
@@ -34,27 +32,26 @@ export default function LoginFeature() {
   } = useForm<Form>();
 
   useEffect(() => {
-    if (errorShow) {
+    if (errorPasswordLoginAlertOpen) {
       const timer = setTimeout(() => {
-        setErrorShow(false);
+        setErrorPasswordLoginAlertOpen(false);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [errorShow]);
+  }, [errorPasswordLoginAlertOpen]);
 
   const onSubmit = async (data: Form) => {
-    const { error: signInError } = await supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,
     });
 
-    if (signInError) {
-      setErrorTitle('ログインに失敗しました。');
-      setErrorMessage('もう一度やり直してください。');
-      setErrorShow(true);
+    if (error) {
+      setErrorPasswordLoginAlertOpen(true);
       reset();
       return;
     }
+
     await router.push('/service');
   };
 
@@ -136,10 +133,10 @@ export default function LoginFeature() {
       />
 
       <Alert
-        show={errorShow}
-        onClose={() => setErrorShow(false)}
-        title={errorTitle}
-        description={errorMessage}
+        show={errorPasswordLoginAlertOpen}
+        onClose={() => setErrorPasswordLoginAlertOpen(false)}
+        title="ログインに失敗しました。"
+        description="もう一度やり直してください。"
         Icon={ExclamationCircleIcon}
       />
     </>
