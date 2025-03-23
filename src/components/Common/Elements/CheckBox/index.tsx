@@ -14,7 +14,6 @@ export default function CheckBox({ children, name, registerResult, errors }: Pro
             <input
               id={name}
               type="checkbox"
-              required
               {...registerResult}
               className="text-gray-300 size-4 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
             />

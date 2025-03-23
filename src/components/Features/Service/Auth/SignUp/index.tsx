@@ -14,7 +14,7 @@ import { GoogleIcon, XIcon, GitHubIcon } from '@/components/Common/Elements/Soci
 import SocialButton from '@/components/Common/Elements/SocialButton';
 import SocialLoginContainer from '@/components/Common/Layouts/Container/SocialLoginContainer';
 import SwitchButton from '@/components/Common/Elements/Switch';
-import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
+import SubmitButton from '@/components/Common/Elements/SubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 import InputContainer from '@/components/Common/Elements/InputContainer';
 import CheckBox from '@/components/Common/Elements/CheckBox';
@@ -229,7 +229,7 @@ export default function SignUpFeature() {
             onChange={handleChangeCaptchaValue}
             errors={errors.recaptcha}
           />
-          <AuthSubmitButton title="アカウントを登録する" />
+          <SubmitButton title="アカウントを登録する" />
         </form>
         <SocialLoginContainer>
           <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={handleGoogleLogin} />

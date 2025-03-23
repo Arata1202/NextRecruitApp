@@ -14,7 +14,7 @@ import { GoogleIcon, XIcon, GitHubIcon } from '@/components/Common/Elements/Soci
 import SocialButton from '@/components/Common/Elements/SocialButton';
 import SocialLoginContainer from '@/components/Common/Layouts/Container/SocialLoginContainer';
 import SwitchButton from '@/components/Common/Elements/Switch';
-import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
+import SubmitButton from '@/components/Common/Elements/SubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 import InputContainer from '@/components/Common/Elements/InputContainer';
 
@@ -147,7 +147,7 @@ export default function LoginFeature() {
             errors={errors.password}
           />
           <SwitchButton title="パスワードを表示する" checked={enabled} onChange={setEnabled} />
-          <AuthSubmitButton title="ログイン" />
+          <SubmitButton title="ログイン" />
         </form>
         <SocialLoginContainer>
           <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={handleGoogleLogin} />

@@ -8,7 +8,7 @@ import { Form } from '@/types/form';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import Alert from '@/components/Common/Alert';
 import AuthTitleContainer from '@/components/Common/Layouts/Container/AuthTitleContainer';
-import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
+import SubmitButton from '@/components/Common/Elements/SubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 import InputContainer from '@/components/Common/Elements/InputContainer';
 
@@ -71,7 +71,7 @@ export default function SendEmailFeature() {
             })}
             errors={errors.email}
           />
-          <AuthSubmitButton title="メールを送信" />
+          <SubmitButton title="メールを送信" />
         </form>
       </AuthContentContainer>
       <AdUnit

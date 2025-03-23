@@ -10,7 +10,7 @@ import Alert from '@/components/Common/Alert';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import AuthTitleContainer from '@/components/Common/Layouts/Container/AuthTitleContainer';
 import SwitchButton from '@/components/Common/Elements/Switch';
-import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
+import SubmitButton from '@/components/Common/Elements/SubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 import InputContainer from '@/components/Common/Elements/InputContainer';
 
@@ -120,7 +120,7 @@ export default function PasswordResetFeature() {
             errors={errors.passwordConf}
           />
           <SwitchButton title="パスワードを表示する" checked={enabled} onChange={setEnabled} />
-          <AuthSubmitButton title="パスワードをリセットする" />
+          <SubmitButton title="パスワードをリセットする" />
         </form>
       </AuthContentContainer>
       <AdUnit

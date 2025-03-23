@@ -10,6 +10,7 @@ import InputContainer from '../../Common/Elements/InputContainer';
 import Modal from '@/components/Common/Modal';
 import Alert from '@/components/Common/Alert';
 import Recaptcha from '@/components/Common/Elements/Recaptcha';
+import SubmitButton from '@/components/Common/Elements/SubmitButton';
 
 export default function ContactFeature() {
   const [confirmSendEmailModalOpen, setConfirmSendEmailModalOpen] = useState(false);
@@ -23,10 +24,16 @@ export default function ContactFeature() {
     handleSubmit: onSubmit,
     formState: { errors },
     reset,
+    setError,
     clearErrors,
   } = useForm<Form>();
 
   const handleSubmit = (data: Form) => {
+    if (!captchaValue) {
+      setError('recaptcha', { type: 'manual', message: 'reCAPTCHAをチェックしてください。' });
+      return;
+    }
+
     setFormData(data);
     setConfirmSendEmailModalOpen(true);
   };
@@ -120,15 +127,7 @@ export default function ContactFeature() {
           onChange={handleChangeCaptchaValue}
           errors={errors.recaptcha}
         />
-        <div className="mt-3">
-          <button
-            type="submit"
-            disabled={!captchaValue}
-            className={`cursor-pointer block w-full rounded-md px-3.5 py-2.5 text-white text-center text-sm font-semibold shadow-s bg-blue-500 hover:bg-blue-600`}
-          >
-            送信
-          </button>
-        </div>
+        <SubmitButton title="送信" style={{ marginTop: '1.25rem' }} />
       </form>
 
       <Modal
