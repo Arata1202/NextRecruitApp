@@ -17,6 +17,7 @@ import SwitchButton from '@/components/Common/Elements/Switch';
 import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 import InputContainer from '@/components/Common/Elements/InputContainer';
+import CheckBox from '@/components/Common/Elements/CheckBox';
 
 export default function SignUpFeature() {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -210,36 +211,18 @@ export default function SignUpFeature() {
             errors={errors.passwordConf}
           />
           <SwitchButton title="パスワードを表示する" checked={enabled} onChange={setEnabled} />
-          <fieldset>
-            <div className="space-y-5">
-              <div className="relative flex items-start">
-                <div className="flex h-6 items-center">
-                  <input
-                    id="privacy"
-                    type="checkbox"
-                    required
-                    {...register('privacy', {
-                      required: 'プライバシーポリシーへの同意が必要です。',
-                    })}
-                    className="text-gray-300 size-4 rounded border-gray-300 focus:ring-blue-500 cursor-pointer"
-                  />
-                </div>
-                <div className="ml-3 text-sm/6">
-                  <label htmlFor="privacy" className="font-medium">
-                    <Link
-                      href="/privacy"
-                      target="_blank"
-                      className="text-blue-500 hover:text-blue-600"
-                    >
-                      プライバシーポリシー
-                    </Link>
-                    に同意します
-                  </label>
-                </div>
-              </div>
-              {errors.privacy && <p className="error text-red-500">{errors.privacy.message}</p>}
-            </div>
-          </fieldset>
+          <CheckBox
+            name="privacy"
+            registerResult={register('privacy', {
+              required: 'プライバシーポリシーへの同意が必要です。',
+            })}
+            errors={errors.privacy}
+          >
+            <Link href="/privacy" target="_blank" className="text-blue-500 hover:text-blue-600">
+              プライバシーポリシー
+            </Link>
+            に同意します
+          </CheckBox>
           <ReCAPTCHA
             ref={recaptchaRef}
             sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
