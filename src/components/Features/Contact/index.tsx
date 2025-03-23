@@ -6,7 +6,7 @@ import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { Form } from '@/types/form';
-import InputContainer from './Elements/InputContainer';
+import InputContainer from '../../Common/Elements/InputContainer';
 import Modal from '@/components/Common/Modal';
 import Alert from '@/components/Common/Alert';
 

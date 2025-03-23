@@ -12,6 +12,7 @@ import AuthTitleContainer from '@/components/Common/Layouts/Container/AuthTitleC
 import SwitchButton from '@/components/Common/Elements/Switch';
 import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
+import InputContainer from '@/components/Common/Elements/InputContainer';
 
 export default function PasswordResetFeature() {
   const router = useRouter();
@@ -80,65 +81,44 @@ export default function PasswordResetFeature() {
       </AuthTitleContainer>
       <AuthContentContainer>
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-          <div>
-            <label htmlFor="password" className="block text-md font-bold">
-              パスワード
-            </label>
-            <div className="text-gray-500 mt-2" style={{ fontSize: '12px' }}>
-              8文字以上で入力してください。
-              <br />
-              大文字、小文字、数字、記号を含める必要があります。
-            </div>
-            <div className="mt-2">
-              <input
-                id="password"
-                type={enabled ? 'text' : 'password'}
-                required
-                {...register('password', {
-                  required: 'パスワードを入力してください。',
-                  minLength: {
-                    value: 8,
-                    message: 'パスワードは8文字以上で入力してください。',
-                  },
-                  validate: (value) => {
-                    if (!/[A-Z]/.test(value)) {
-                      return '大文字を1文字以上含めてください。';
-                    }
-                    if (!/[a-z]/.test(value)) {
-                      return '小文字を1文字以上含めてください。';
-                    }
-                    if (!/\d/.test(value)) {
-                      return '数字を1文字以上含めてください。';
-                    }
-                    if (!/[@$!%*?&]/.test(value)) {
-                      return '記号を1文字以上含めてください。';
-                    }
-                    return true;
-                  },
-                })}
-                className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-              />
-              {errors.password && <p className="text-red-500">{errors.password.message}</p>}
-            </div>
-          </div>
-          <div>
-            <label htmlFor="password" className="block text-md font-bold">
-              パスワード（確認）
-            </label>
-            <div className="mt-2">
-              <input
-                id="passwordConf"
-                type={enabled ? 'text' : 'password'}
-                required
-                {...register('passwordConf', {
-                  required: 'パスワード（確認）を入力してください。',
-                  validate: (value) => value === password || 'パスワードが一致しません。',
-                })}
-                className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-              />
-              {errors.passwordConf && <p className="text-red-500">{errors.passwordConf.message}</p>}
-            </div>
-          </div>
+          <InputContainer
+            label="パスワード"
+            name="password"
+            type={enabled ? 'text' : 'password'}
+            registerResult={register('password', {
+              required: '※ パスワードを入力してください',
+              minLength: {
+                value: 8,
+                message: '※ パスワードは8文字以上で入力してください',
+              },
+              validate: (value) => {
+                if (!/[A-Z]/.test(value)) {
+                  return '※ 大文字を1文字以上含めてください';
+                }
+                if (!/[a-z]/.test(value)) {
+                  return '※ 小文字を1文字以上含めてください';
+                }
+                if (!/\d/.test(value)) {
+                  return '※ 数字を1文字以上含めてください';
+                }
+                if (!/[@$!%*?&]/.test(value)) {
+                  return '※ 記号を1文字以上含めてください';
+                }
+                return true;
+              },
+            })}
+            errors={errors.password}
+          />
+          <InputContainer
+            label="パスワード（確認）"
+            name="passwordConf"
+            type={enabled ? 'text' : 'password'}
+            registerResult={register('passwordConf', {
+              required: 'パスワード（確認）を入力してください。',
+              validate: (value) => value === password || 'パスワードが一致しません。',
+            })}
+            errors={errors.passwordConf}
+          />
           <SwitchButton title="パスワードを表示する" checked={enabled} onChange={setEnabled} />
           <AuthSubmitButton title="パスワードをリセットする" />
         </form>

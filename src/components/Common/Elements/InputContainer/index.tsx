@@ -4,6 +4,7 @@ type Props = {
   registerResult: any;
   errors: any;
   textarea?: boolean;
+  type?: string;
 };
 
 export default function InputContainer({
@@ -12,6 +13,7 @@ export default function InputContainer({
   registerResult,
   errors,
   textarea = false,
+  type,
 }: Props) {
   return (
     <div className="sm:col-span-2">
@@ -20,7 +22,7 @@ export default function InputContainer({
         {!textarea && (
           <input
             {...registerResult}
-            type="text"
+            type={type === 'password' ? 'password' : 'text'}
             id={name}
             name={name}
             autoComplete={name}
