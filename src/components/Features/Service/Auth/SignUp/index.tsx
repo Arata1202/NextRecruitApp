@@ -19,6 +19,7 @@ import AuthContentContainer from '@/components/Common/Layouts/Container/AuthCont
 import InputContainer from '@/components/Common/Elements/InputContainer';
 import CheckBox from '@/components/Common/Elements/CheckBox';
 import Recaptcha from '@/components/Common/Elements/Recaptcha';
+import { useGoogleLogin, useGithubLogin, useTwitterLogin } from '@/hooks/useSocialLogin';
 
 export default function SignUpFeature() {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -112,42 +113,6 @@ export default function SignUpFeature() {
     recaptchaRef.current?.reset();
   };
 
-  const handleGoogleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/service`,
-      },
-    });
-  };
-
-  const handleGithubLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'github',
-      options: {
-        redirectTo: `${window.location.origin}/service`,
-      },
-    });
-  };
-
-  // const handleAppleLogin = async () => {
-  //   await supabase.auth.signInWithOAuth({
-  //     provider: 'apple',
-  //     options: {
-  //       redirectTo: `${window.location.origin}/service`,
-  //     },
-  //   });
-  // };
-
-  const handleTwitterLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'twitter',
-      options: {
-        redirectTo: `${window.location.origin}/service`,
-      },
-    });
-  };
-
   return (
     <>
       <AuthTitleContainer title="アカウント登録">
@@ -232,13 +197,9 @@ export default function SignUpFeature() {
           <SubmitButton title="アカウントを登録する" />
         </form>
         <SocialLoginContainer>
-          <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={handleGoogleLogin} />
-          <SocialButton title="GitHubでログイン" Icon={GitHubIcon} onClick={handleGithubLogin} />
-          <SocialButton
-            title="X（旧Twitter）でログイン"
-            Icon={XIcon}
-            onClick={handleTwitterLogin}
-          />
+          <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={useGoogleLogin} />
+          <SocialButton title="GitHubでログイン" Icon={GitHubIcon} onClick={useGithubLogin} />
+          <SocialButton title="X（旧Twitter）でログイン" Icon={XIcon} onClick={useTwitterLogin} />
         </SocialLoginContainer>
       </AuthContentContainer>
       <AdUnit

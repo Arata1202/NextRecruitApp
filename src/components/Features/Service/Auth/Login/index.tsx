@@ -17,6 +17,7 @@ import SwitchButton from '@/components/Common/Elements/Switch';
 import SubmitButton from '@/components/Common/Elements/SubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 import InputContainer from '@/components/Common/Elements/InputContainer';
+import { useGoogleLogin, useGithubLogin, useTwitterLogin } from '@/hooks/useSocialLogin';
 
 export default function LoginFeature() {
   const router = useRouter();
@@ -55,42 +56,6 @@ export default function LoginFeature() {
       return;
     }
     await router.push('/service');
-  };
-
-  const handleGoogleLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: `${window.location.origin}/service`,
-      },
-    });
-  };
-
-  const handleGithubLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'github',
-      options: {
-        redirectTo: `${window.location.origin}/service`,
-      },
-    });
-  };
-
-  // const handleAppleLogin = async () => {
-  //   await supabase.auth.signInWithOAuth({
-  //     provider: 'apple',
-  //     options: {
-  //       redirectTo: `${window.location.origin}/service`,
-  //     },
-  //   });
-  // };
-
-  const handleTwitterLogin = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'twitter',
-      options: {
-        redirectTo: `${window.location.origin}/service`,
-      },
-    });
   };
 
   return (
@@ -150,13 +115,9 @@ export default function LoginFeature() {
           <SubmitButton title="ログイン" />
         </form>
         <SocialLoginContainer>
-          <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={handleGoogleLogin} />
-          <SocialButton title="GitHubでログイン" Icon={GitHubIcon} onClick={handleGithubLogin} />
-          <SocialButton
-            title="X（旧Twitter）でログイン"
-            Icon={XIcon}
-            onClick={handleTwitterLogin}
-          />
+          <SocialButton title="Googleでログイン" Icon={GoogleIcon} onClick={useGoogleLogin} />
+          <SocialButton title="GitHubでログイン" Icon={GitHubIcon} onClick={useGithubLogin} />
+          <SocialButton title="X（旧Twitter）でログイン" Icon={XIcon} onClick={useTwitterLogin} />
         </SocialLoginContainer>
       </AuthContentContainer>
       <p className="mt-6 text-center text-sm/6">
