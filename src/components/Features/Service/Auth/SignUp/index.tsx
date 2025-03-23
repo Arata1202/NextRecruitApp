@@ -18,6 +18,7 @@ import AuthSubmitButton from '@/components/Common/Elements/AuthSubmitButton';
 import AuthContentContainer from '@/components/Common/Layouts/Container/AuthContentContainer';
 import InputContainer from '@/components/Common/Elements/InputContainer';
 import CheckBox from '@/components/Common/Elements/CheckBox';
+import Recaptcha from '@/components/Common/Elements/Recaptcha';
 
 export default function SignUpFeature() {
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -57,7 +58,7 @@ export default function SignUpFeature() {
     }
   }, [errorShow]);
 
-  const onChange = (value: string | null) => {
+  const handleChangeCaptchaValue = (value: string | null) => {
     setCaptchaValue(value);
     if (value) {
       clearErrors('recaptcha');
@@ -223,13 +224,11 @@ export default function SignUpFeature() {
             </Link>
             に同意します
           </CheckBox>
-          <ReCAPTCHA
-            ref={recaptchaRef}
-            sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
-            onChange={onChange}
-            className="mt-3"
+          <Recaptcha
+            recaptchaRef={recaptchaRef}
+            onChange={handleChangeCaptchaValue}
+            errors={errors.recaptcha}
           />
-          {errors.recaptcha && <p className="error text-red-500">{errors.recaptcha.message}</p>}
           <AuthSubmitButton title="アカウントを登録する" />
         </form>
         <SocialLoginContainer>

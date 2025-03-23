@@ -9,6 +9,7 @@ import { Form } from '@/types/form';
 import InputContainer from '../../Common/Elements/InputContainer';
 import Modal from '@/components/Common/Modal';
 import Alert from '@/components/Common/Alert';
+import Recaptcha from '@/components/Common/Elements/Recaptcha';
 
 export default function ContactFeature() {
   const [confirmSendEmailModalOpen, setConfirmSendEmailModalOpen] = useState(false);
@@ -22,6 +23,7 @@ export default function ContactFeature() {
     handleSubmit: onSubmit,
     formState: { errors },
     reset,
+    clearErrors,
   } = useForm<Form>();
 
   const handleSubmit = (data: Form) => {
@@ -31,6 +33,9 @@ export default function ContactFeature() {
 
   const handleChangeCaptchaValue = (value: string | null) => {
     setCaptchaValue(value);
+    if (value) {
+      clearErrors('recaptcha');
+    }
   };
 
   const handleRecaptcha = async () => {
@@ -85,38 +90,35 @@ export default function ContactFeature() {
         リクビジョンに関するご質問やご要望などがございましたら、お気軽にお問い合わせください。
       </p>
       <form onSubmit={onSubmit(handleSubmit)} method="POST" className="mx-auto max-w-3xl">
-        <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-          <InputContainer
-            label="メールアドレス"
-            name="email"
-            registerResult={register('email', {
-              required: '※ メールアドレスを入力してください',
-              pattern: {
-                value: /^\S+@\S+$/i,
-                message: '※ 有効なメールアドレスを入力してください',
-              },
-            })}
-            errors={errors.email}
-          />
-          <InputContainer
-            label="件名"
-            name="title"
-            registerResult={register('title', { required: '※ 件名を入力してください' })}
-            errors={errors.title}
-          />
-          <InputContainer
-            textarea={true}
-            label="内容"
-            name="message"
-            registerResult={register('message', { required: '※ 内容を入力してください' })}
-            errors={errors.message}
-          />
-        </div>
-        <ReCAPTCHA
-          ref={recaptchaRef}
-          sitekey={`${process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY}`}
+        <InputContainer
+          label="メールアドレス"
+          name="email"
+          registerResult={register('email', {
+            required: '※ メールアドレスを入力してください',
+            pattern: {
+              value: /^\S+@\S+$/i,
+              message: '※ 有効なメールアドレスを入力してください',
+            },
+          })}
+          errors={errors.email}
+        />
+        <InputContainer
+          label="件名"
+          name="title"
+          registerResult={register('title', { required: '※ 件名を入力してください' })}
+          errors={errors.title}
+        />
+        <InputContainer
+          textarea={true}
+          label="内容"
+          name="message"
+          registerResult={register('message', { required: '※ 内容を入力してください' })}
+          errors={errors.message}
+        />
+        <Recaptcha
+          recaptchaRef={recaptchaRef}
           onChange={handleChangeCaptchaValue}
-          className="mt-3"
+          errors={errors.recaptcha}
         />
         <div className="mt-3">
           <button

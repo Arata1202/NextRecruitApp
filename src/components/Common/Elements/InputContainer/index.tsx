@@ -16,7 +16,7 @@ export default function InputContainer({
   type,
 }: Props) {
   return (
-    <div className="sm:col-span-2">
+    <div className="mt-2.5">
       <label className={`block text-sm font-semibold leading-6`}>{label}</label>
       <div className="mt-2.5">
         {!textarea && (
