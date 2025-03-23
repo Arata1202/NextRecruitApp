@@ -20,16 +20,16 @@ import AuthContentContainer from '@/components/Common/Layouts/Container/AuthCont
 import InputContainer from '@/components/Common/Elements/InputContainer';
 
 export default function LoginFeature() {
-  const router = useRouter();
-  const [enabled, setEnabled] = useState(false);
-  const [errorPasswordLoginAlertOpen, setErrorPasswordLoginAlertOpen] = useState(false);
-
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
   } = useForm<Form>();
+
+  const router = useRouter();
+  const [enabled, setEnabled] = useState(false);
+  const [errorPasswordLoginAlertOpen, setErrorPasswordLoginAlertOpen] = useState(false);
 
   useEffect(() => {
     if (errorPasswordLoginAlertOpen) {

@@ -1,10 +1,10 @@
 'use client';
 
-import { supabase } from '@/libs/supabase';
-import { useForm } from 'react-hook-form';
-import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useForm } from 'react-hook-form';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import { supabase } from '@/libs/supabase';
 import { Form } from '@/types/form';
 import Alert from '@/components/Common/Alert';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
@@ -15,7 +15,6 @@ import AuthContentContainer from '@/components/Common/Layouts/Container/AuthCont
 import InputContainer from '@/components/Common/Elements/InputContainer';
 
 export default function PasswordResetFeature() {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -23,53 +22,39 @@ export default function PasswordResetFeature() {
     watch,
     reset,
   } = useForm<Form>();
-  const [enabled, setEnabled] = useState(false);
+
+  const router = useRouter();
   const password = watch('password');
-  const [confirmShow, setConfirmShow] = useState(false);
-  const [ConfirmTitle, setConfirmTitle] = useState('');
-  const [ConfirmMessage, setConfirmMessage] = useState('');
-  const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
+  const [enabled, setEnabled] = useState(false);
+  const [errorPasswordResetAlertOpen, setErrorPasswordResetAlertOpen] = useState(false);
+  const [successPasswordResetAlertOpen, setSuccessPasswordResetAlertOpen] = useState(false);
 
   useEffect(() => {
-    if (confirmShow) {
+    if (errorPasswordResetAlertOpen || successPasswordResetAlertOpen) {
       const timer = setTimeout(() => {
-        setConfirmShow(false);
+        setErrorPasswordResetAlertOpen(false);
+        setSuccessPasswordResetAlertOpen(false);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [confirmShow]);
-  useEffect(() => {
-    if (errorShow) {
-      const timer = setTimeout(() => {
-        setErrorShow(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [errorShow]);
+  }, [errorPasswordResetAlertOpen, successPasswordResetAlertOpen]);
 
   const onSubmit = async (data: Form) => {
-    try {
-      const { error: passwordResetError } = await supabase.auth.updateUser({
-        password: data.password,
-      });
-      if (passwordResetError) {
-        throw passwordResetError;
-      }
-      setConfirmTitle('パスワードリセットが完了しました。');
-      setConfirmMessage('5秒後に自動でログインします。');
-      setConfirmShow(true);
+    const { error } = await supabase.auth.updateUser({
+      password: data.password,
+    });
+
+    if (error) {
+      setErrorPasswordResetAlertOpen(true);
       reset();
-      setTimeout(() => {
-        router.push('/service');
-      }, 5000);
-    } catch {
-      setErrorTitle('パスワードリセットに失敗しました。');
-      setErrorMessage('新しいパスワードは以前のパスワードと異なるものを設定してください。');
-      setErrorShow(true);
-      reset();
+      return;
     }
+
+    setSuccessPasswordResetAlertOpen(true);
+    reset();
+    setTimeout(() => {
+      router.push('/service');
+    }, 5000);
   };
 
   return (
@@ -134,19 +119,19 @@ export default function PasswordResetFeature() {
       />
 
       <Alert
-        show={confirmShow}
-        onClose={() => setConfirmShow(false)}
-        title={ConfirmTitle}
-        description={ConfirmMessage}
-        Icon={CheckCircleIcon}
+        show={errorPasswordResetAlertOpen}
+        onClose={() => setErrorPasswordResetAlertOpen(false)}
+        title="パスワードリセットに失敗しました。"
+        description="新しいパスワードは以前のパスワードと異なるものを設定してください。"
+        Icon={ExclamationCircleIcon}
       />
 
       <Alert
-        show={errorShow}
-        onClose={() => setErrorShow(false)}
-        title={errorTitle}
-        description={errorMessage}
-        Icon={ExclamationCircleIcon}
+        show={successPasswordResetAlertOpen}
+        onClose={() => setSuccessPasswordResetAlertOpen(false)}
+        title="パスワードリセットが完了しました。"
+        description="5秒後に自動でログインします。"
+        Icon={CheckCircleIcon}
       />
     </>
   );
