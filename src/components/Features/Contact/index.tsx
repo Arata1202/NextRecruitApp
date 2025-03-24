@@ -5,7 +5,7 @@ import { EnvelopeIcon } from '@heroicons/react/24/solid';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
 import { useForm } from 'react-hook-form';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { Form } from '@/types/form';
+import { Contact } from '@/types/form';
 import InputContainer from '../../Common/Elements/InputContainer';
 import Modal from '@/components/Common/Modal';
 import Alert from '@/components/Common/Alert';
@@ -15,7 +15,7 @@ import SubmitButton from '@/components/Common/Elements/SubmitButton';
 export default function ContactFeature() {
   const [confirmSendEmailModalOpen, setConfirmSendEmailModalOpen] = useState(false);
   const [successSendEmailAlertOpen, setSuccessSendEmailAlertOpen] = useState(false);
-  const [formData, setFormData] = useState<Form | null>(null);
+  const [formData, setFormData] = useState<Contact | null>(null);
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
   const recaptchaRef = useRef<ReCAPTCHA>(null);
 
@@ -26,9 +26,9 @@ export default function ContactFeature() {
     reset,
     setError,
     clearErrors,
-  } = useForm<Form>();
+  } = useForm<Contact>();
 
-  const handleSubmit = (data: Form) => {
+  const handleSubmit = (data: Contact) => {
     if (!captchaValue) {
       setError('recaptcha', { type: 'manual', message: 'reCAPTCHAをチェックしてください。' });
       return;

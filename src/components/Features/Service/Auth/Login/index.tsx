@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { supabase } from '@/libs/supabase';
 import { useGoogleLogin, useGithubLogin, useTwitterLogin } from '@/hooks/useSocialLogin';
-import { Form } from '@/types/form';
+import { Login } from '@/types/form';
 import Alert from '@/components/Common/Alert';
 import { ExclamationCircleIcon } from '@heroicons/react/24/outline';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
@@ -25,7 +25,7 @@ export default function LoginFeature() {
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Form>();
+  } = useForm<Login>();
 
   const router = useRouter();
   const [enabled, setEnabled] = useState(false);
@@ -40,7 +40,7 @@ export default function LoginFeature() {
     }
   }, [errorPasswordLoginAlertOpen]);
 
-  const onSubmit = async (data: Form) => {
+  const onSubmit = async (data: Login) => {
     const { error } = await supabase.auth.signInWithPassword({
       email: data.email,
       password: data.password,

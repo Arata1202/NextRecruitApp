@@ -7,7 +7,7 @@ import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outl
 import ReCAPTCHA from 'react-google-recaptcha';
 import { supabase } from '@/libs/supabase';
 import { useGoogleLogin, useGithubLogin, useTwitterLogin } from '@/hooks/useSocialLogin';
-import { Form } from '@/types/form';
+import { SignUp } from '@/types/form';
 import Alert from '@/components/Common/Alert';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import AuthTitleContainer from '@/components/Common/Layouts/Container/AuthTitleContainer';
@@ -30,7 +30,7 @@ export default function SignUpFeature() {
     setError,
     clearErrors,
     reset,
-  } = useForm<Form>();
+  } = useForm<SignUp>();
 
   const password = watch('password');
   const recaptchaRef = useRef<ReCAPTCHA>(null);
@@ -67,7 +67,7 @@ export default function SignUpFeature() {
     }
   };
 
-  const onSubmit = async (data: Form) => {
+  const onSubmit = async (data: SignUp) => {
     if (!captchaValue) {
       setError('recaptcha', { type: 'manual', message: 'reCAPTCHAをチェックしてください。' });
       return;
