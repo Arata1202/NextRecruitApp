@@ -1,11 +1,12 @@
 'use client';
 
-import Link from 'next/link';
-import { supabase } from '@/libs/supabase';
-import { useForm } from 'react-hook-form';
 import { useState, useRef, useEffect } from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
+import Link from 'next/link';
+import { useForm } from 'react-hook-form';
 import { CheckCircleIcon, ExclamationCircleIcon } from '@heroicons/react/24/outline';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { supabase } from '@/libs/supabase';
+import { useGoogleLogin, useGithubLogin, useTwitterLogin } from '@/hooks/useSocialLogin';
 import { Form } from '@/types/form';
 import Alert from '@/components/Common/Alert';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
@@ -19,10 +20,8 @@ import AuthContentContainer from '@/components/Common/Layouts/Container/AuthCont
 import InputContainer from '@/components/Common/Elements/InputContainer';
 import CheckBox from '@/components/Common/Elements/CheckBox';
 import Recaptcha from '@/components/Common/Elements/Recaptcha';
-import { useGoogleLogin, useGithubLogin, useTwitterLogin } from '@/hooks/useSocialLogin';
 
 export default function SignUpFeature() {
-  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const {
     register,
     handleSubmit,
@@ -32,32 +31,34 @@ export default function SignUpFeature() {
     clearErrors,
     reset,
   } = useForm<Form>();
-  const [enabled, setEnabled] = useState(false);
+
   const password = watch('password');
+  const recaptchaRef = useRef<ReCAPTCHA>(null);
   const [captchaValue, setCaptchaValue] = useState<string | null>(null);
-  const [errorShow, setErrorShow] = useState(false);
-  const [errorTitle, setErrorTitle] = useState('');
-  const [errorMessage, setErrorMessage] = useState('');
-  const [confirmShow, setConfirmShow] = useState(false);
-  const [ConfirmTitle, setConfirmTitle] = useState('');
-  const [ConfirmMessage, setConfirmMessage] = useState('');
+  const [enabled, setEnabled] = useState(false);
+  const [successSendEmailAlertOpen, setSuccessSendEmailAlertOpen] = useState(false);
+  const [errorAlreadyRegisteredAlertOpen, setErrorAlreadyRegisteredAlertOpen] = useState(false);
+  const [errorVerificationRecaptchaAlertOpen, setErrorVerificationRecaptchaAlertOpen] =
+    useState(false);
 
   useEffect(() => {
-    if (confirmShow) {
+    if (
+      errorVerificationRecaptchaAlertOpen ||
+      errorAlreadyRegisteredAlertOpen ||
+      successSendEmailAlertOpen
+    ) {
       const timer = setTimeout(() => {
-        setConfirmShow(false);
+        setErrorVerificationRecaptchaAlertOpen(false);
+        setErrorAlreadyRegisteredAlertOpen(false);
+        setSuccessSendEmailAlertOpen(false);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [confirmShow]);
-  useEffect(() => {
-    if (errorShow) {
-      const timer = setTimeout(() => {
-        setErrorShow(false);
-      }, 5000);
-      return () => clearTimeout(timer);
-    }
-  }, [errorShow]);
+  }, [
+    errorVerificationRecaptchaAlertOpen,
+    errorAlreadyRegisteredAlertOpen,
+    successSendEmailAlertOpen,
+  ]);
 
   const handleChangeCaptchaValue = (value: string | null) => {
     setCaptchaValue(value);
@@ -82,9 +83,7 @@ export default function SignUpFeature() {
 
     const recaptchaResult = await recaptchaResponse.json();
     if (!recaptchaResult.success) {
-      setErrorTitle('reCAPTCHAの検証に失敗しました。');
-      setErrorMessage('お手数ですが、最初からやり直してください。');
-      setErrorShow(true);
+      setErrorVerificationRecaptchaAlertOpen(true);
       reset();
       recaptchaRef.current?.reset();
       return;
@@ -97,18 +96,15 @@ export default function SignUpFeature() {
         emailRedirectTo: `${window.location.origin}/service`,
       },
     });
+
     const identities = signUpData?.user?.identities;
     if (identities?.length === 0) {
-      setErrorTitle('このメールアドレスは既に登録されています。');
-      setErrorMessage('別のメールアドレスを使用するか、ログインしてください。');
-      setErrorShow(true);
+      setErrorAlreadyRegisteredAlertOpen(true);
       reset();
       recaptchaRef.current?.reset();
       return;
     }
-    setConfirmTitle('確認メールを送信しました。');
-    setConfirmMessage('メール内のリンクから登録を完了させてください。');
-    setConfirmShow(true);
+    setSuccessSendEmailAlertOpen(true);
     reset();
     recaptchaRef.current?.reset();
   };
@@ -213,18 +209,26 @@ export default function SignUpFeature() {
       />
 
       <Alert
-        show={errorShow}
-        onClose={() => setErrorShow(false)}
-        title={errorTitle}
-        description={errorMessage}
+        show={errorVerificationRecaptchaAlertOpen}
+        onClose={() => setErrorVerificationRecaptchaAlertOpen(false)}
+        title="reCAPTCHAの検証に失敗しました。"
+        description="お手数ですが、最初からやり直してください。"
         Icon={ExclamationCircleIcon}
       />
 
       <Alert
-        show={confirmShow}
-        onClose={() => setConfirmShow(false)}
-        title={ConfirmTitle}
-        description={ConfirmMessage}
+        show={errorAlreadyRegisteredAlertOpen}
+        onClose={() => setErrorAlreadyRegisteredAlertOpen(false)}
+        title="このメールアドレスは既に登録されています。"
+        description="別のメールアドレスを使用するか、ログインしてください。"
+        Icon={ExclamationCircleIcon}
+      />
+
+      <Alert
+        show={successSendEmailAlertOpen}
+        onClose={() => setSuccessSendEmailAlertOpen(false)}
+        title="確認メールを送信しました。"
+        description="メール内のリンクから登録を完了させてください。"
         Icon={CheckCircleIcon}
       />
     </>
