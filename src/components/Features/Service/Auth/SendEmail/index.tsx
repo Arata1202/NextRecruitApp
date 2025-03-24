@@ -1,9 +1,9 @@
 'use client';
 
-import { supabase } from '@/libs/supabase';
-import { useForm } from 'react-hook-form';
 import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { CheckCircleIcon } from '@heroicons/react/24/outline';
+import { supabase } from '@/libs/supabase';
 import { Form } from '@/types/form';
 import AdUnit from '@/components/ThirdParties/GoogleAdSense/Elements/AdUnit';
 import Alert from '@/components/Common/Alert';
@@ -13,9 +13,7 @@ import AuthContentContainer from '@/components/Common/Layouts/Container/AuthCont
 import InputContainer from '@/components/Common/Elements/InputContainer';
 
 export default function SendEmailFeature() {
-  const [confirmShow, setConfirmShow] = useState(false);
-  const [ConfirmTitle, setConfirmTitle] = useState('');
-  const [ConfirmMessage, setConfirmMessage] = useState('');
+  const [successSendEmailAlertOpen, setSuccessSendEmailAlertOpen] = useState(false);
 
   const {
     register,
@@ -25,29 +23,21 @@ export default function SendEmailFeature() {
   } = useForm<Form>();
 
   useEffect(() => {
-    if (confirmShow) {
+    if (successSendEmailAlertOpen) {
       const timer = setTimeout(() => {
-        setConfirmShow(false);
+        setSuccessSendEmailAlertOpen(false);
       }, 5000);
       return () => clearTimeout(timer);
     }
-  }, [confirmShow]);
+  }, [successSendEmailAlertOpen]);
 
   const onSubmit = async (data: Form) => {
-    try {
-      const { error: sendEmailError } = await supabase.auth.resetPasswordForEmail(data.email, {
-        redirectTo: `${window.location.origin}/service/auth/passwordreset`,
-      });
-      if (sendEmailError) {
-        throw sendEmailError;
-      }
-      setConfirmTitle('確認メールを送信しました。');
-      setConfirmMessage('メール内のリンクからパスワードリセットを完了させてください。');
-      setConfirmShow(true);
-      reset();
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    await supabase.auth.resetPasswordForEmail(data.email, {
+      redirectTo: `${window.location.origin}/service/auth/passwordreset`,
+    });
+
+    setSuccessSendEmailAlertOpen(true);
+    reset();
   };
 
   return (
@@ -85,10 +75,10 @@ export default function SendEmailFeature() {
       />
 
       <Alert
-        show={confirmShow}
-        onClose={() => setConfirmShow(false)}
-        title={ConfirmTitle}
-        description={ConfirmMessage}
+        show={successSendEmailAlertOpen}
+        onClose={() => setSuccessSendEmailAlertOpen(false)}
+        title="確認メールを送信しました。"
+        description="メール内のリンクからパスワードリセットを完了させてください。"
         Icon={CheckCircleIcon}
       />
     </>
