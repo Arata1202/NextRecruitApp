@@ -9,8 +9,8 @@ export default function HomeFeature() {
     <>
       <div style={{ padding: '24px 0' }} className="overflow-hidden bg-white">
         <Hero />
-        <Suggest />
         <Recommend />
+        <Suggest />
         <Support />
         <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
       </div>
