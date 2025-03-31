@@ -109,6 +109,99 @@ docker compose down
 
 ```
 ❯ tree -a -I "node_modules|.next|.git|out|.vercel|_|.DS_Store|.env|next-env.d.ts|tmp" -L 3
+.
+├── .air.toml
+├── .docker
+│   ├── go
+│   │   └── Dockerfile
+│   └── js
+│       └── Dockerfile
+├── .docs
+│   └── readme
+│       └── images
+├── .env.example
+├── .github
+│   └── workflows
+│       └── vercel_deploy.yml
+├── .gitignore
+├── .husky
+│   └── pre-commit
+├── .nvmrc
+├── .prettierignore
+├── .prettierrc
+├── .vercelignore
+├── .vscode
+│   ├── extensions.json
+│   └── settings.json
+├── LICENSE
+├── README.md
+├── api
+│   ├── recaptcha.go
+│   └── sendemail.go
+├── cmd
+│   └── main.go
+├── docker-compose.yml
+├── eslint.config.mjs
+├── go.mod
+├── next.config.ts
+├── package-lock.json
+├── package.json
+├── pnpm-lock.yaml
+├── postcss.config.mjs
+├── public
+│   ├── OneSignalSDKWorker.js
+│   ├── favicon.ico
+│   ├── googlec56af014abd74f5c.html
+│   ├── images
+│   │   ├── head
+│   │   ├── icons
+│   │   ├── og
+│   │   └── top
+│   └── robots.txt
+├── src
+│   ├── app
+│   │   ├── contact
+│   │   ├── copyright
+│   │   ├── disclaimer
+│   │   ├── fonts
+│   │   ├── layout.tsx
+│   │   ├── link
+│   │   ├── manifest.json
+│   │   ├── not-found.module.css
+│   │   ├── not-found.tsx
+│   │   ├── page.tsx
+│   │   ├── privacy
+│   │   ├── service
+│   │   └── sitemap.ts
+│   ├── components
+│   │   ├── Common
+│   │   ├── Features
+│   │   ├── Pages
+│   │   └── ThirdParties
+│   ├── constants
+│   │   ├── data.ts
+│   │   └── page.ts
+│   ├── contents
+│   │   ├── copyright.ts
+│   │   ├── disclaimer.ts
+│   │   ├── link.ts
+│   │   └── privacy.ts
+│   ├── hooks
+│   │   ├── useA2hs.ts
+│   │   ├── useMutationObserver.ts
+│   │   └── useSocialLogin.ts
+│   ├── libs
+│   │   └── supabase.js
+│   ├── styles
+│   │   └── globals.css
+│   └── types
+│       ├── a2hs.ts
+│       └── form.ts
+├── tailwind.config.ts
+├── tsconfig.json
+└── vercel.json
+
+39 directories, 52 files
 ```
 
 <p align="right">(<a href="#top">トップへ</a>)</p>
