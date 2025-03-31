@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { TITLE } from '@/constants/data';
 
 type Props = {
   children: React.ReactNode;
@@ -6,7 +7,7 @@ type Props = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const defaultUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const defaultTitle = process.env.NEXT_PUBLIC_BASE_TITLE;
+  const defaultTitle = TITLE;
 
   const title = `免責事項｜${defaultTitle}`;
   const description = `免責事項を記載しています。`;

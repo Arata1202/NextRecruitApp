@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from 'next';
 import localFont from 'next/font/local';
 import '../styles/globals.css';
-import { DESCRIPTION } from '@/constants/data';
+import { TITLE, DESCRIPTION } from '@/constants/data';
 import ScrollTopButton from '@/components/Common/Layouts/ScrollToTop';
 import GoogleAdSense from '@/components/ThirdParties/GoogleAdSense';
 import GoogleAnalytics from '@/components/ThirdParties/GoogleAnalytics';
@@ -31,7 +31,7 @@ type Props = {
 
 export async function generateMetadata(): Promise<Metadata> {
   const defaultUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const defaultTitle = process.env.NEXT_PUBLIC_BASE_TITLE;
+  const defaultTitle = TITLE;
 
   const title = `${defaultTitle}`;
   const description = DESCRIPTION;

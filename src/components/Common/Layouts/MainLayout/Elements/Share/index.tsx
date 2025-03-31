@@ -10,10 +10,11 @@ import {
   PocketShareButton,
   PocketIcon,
 } from 'react-share';
+import { TITLE } from '@/constants/data';
 
 export default function Share() {
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
-  const baseTitle = process.env.NEXT_PUBLIC_BASE_TITLE;
+  const baseTitle = TITLE;
   const title = baseTitle;
   const url = baseUrl!;
 
