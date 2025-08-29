@@ -137,7 +137,7 @@ export default function CalendarFeature() {
   const handleEventClick = (clickInfo: any) => {
     const { id, type } = clickInfo.event.extendedProps;
     if (type === 'selection' && id) {
-      router.push(`/service/selection/${id}/flow`);
+      router.push(`/service/selection/flow?id=${id}`);
     } else if (type === 'todo') {
       router.push('/service/todo');
     }

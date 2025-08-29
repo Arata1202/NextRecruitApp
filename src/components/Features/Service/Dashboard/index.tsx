@@ -163,7 +163,7 @@ export default function DashBoardFeature() {
   }, []);
 
   const handleIconClick = (id: string) => {
-    router.push(`/service/selection/${id}/flow`);
+    router.push(`/service/selection/flow?id=${id}`);
   };
 
   const renderTodayEvents = () => {
