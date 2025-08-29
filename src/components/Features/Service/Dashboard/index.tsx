@@ -36,12 +36,7 @@ export default function DashBoardFeature() {
   const router = useRouter();
 
   useEffect(() => {
-    const convertToJST = (date: Date) => {
-      const offset = 9 * 60;
-      const utc = date.getTime() + date.getTimezoneOffset() * 60000;
-      return new Date(utc + offset * 60000);
-    };
-    const now = convertToJST(new Date());
+    const now = new Date();
     const tomorrow = addDays(now, 1);
     const dayAfterTomorrow = addDays(now, 2);
     setCurrentDate(format(now, 'M月d日（EEE）', { locale: ja }));
@@ -87,6 +82,7 @@ export default function DashBoardFeature() {
       const events = data as unknown as EventData[];
       const today = new Date();
       const tomorrow = addDays(today, 1);
+      const dayAfterTomorrow = addDays(today, 2);
 
       const filteredTodayEvents = events
         .filter((event) => {
@@ -166,201 +162,189 @@ export default function DashBoardFeature() {
     router.push(`/service/selection/flow?id=${id}`);
   };
 
-  const renderTodayEvents = () => {
+  const renderEventsForAllDays = () => {
     const validTodayEvents = todayEvents.filter(
       (event) => event.selection && event.selection.title,
     );
-
-    if (validTodayEvents.length > 0) {
-      return validTodayEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
-          <div>
-            <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
-              <h3 className="text-base/7 font-semibold">
-                {event.selection?.title || '未設定'} -{' '}
-                {event.title_id === 1
-                  ? event.customtitle || '未設定'
-                  : event.selectionflowtitle?.title || '未設定'}
-              </h3>
-              {/* <div className="flex ml-auto">
-                <button
-                  type="button"
-                  className="hover:text-blue-500"
-                  onClick={() => handleIconClick(event.selection.id)}
-                >
-                  <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
-                </button>
-              </div> */}
-              <button
-                type="button"
-                onClick={() => handleIconClick(event.selection.id)}
-                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
-              >
-                詳細
-              </button>
-            </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">{event.description}</p>
-              <div className="text-sm mt-2">
-                {event.started_at && (
-                  <p>
-                    開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
-                  </p>
-                )}
-                <p>
-                  {event.started_at ? '終了： ' : '締切： '}
-                  {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ));
-    }
-    return (
-      <div className="">
-        <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
-          <div>
-            <div className="px-4 py-3 sm:px-6 flex">
-              <h3 className="text-base/7 font-semibold">本日の予定はありません。</h3>
-            </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">
-                企業管理やTodoリストから予定を追加してみましょう！
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderTomorrowEvents = () => {
     const validTomorrowEvents = tomorrowEvents.filter(
       (event) => event.selection && event.selection.title,
     );
-
-    if (validTomorrowEvents.length > 0) {
-      return validTomorrowEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
-          <div>
-            <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
-              <h3 className="text-base/7 font-semibold">
-                {event.selection?.title || '未設定'} -{' '}
-                {event.title_id === 1
-                  ? event.customtitle || '未設定'
-                  : event.selectionflowtitle?.title || '未設定'}
-              </h3>
-              {/* <div className="flex ml-auto">
-                <button
-                  type="button"
-                  className="hover:text-blue-500"
-                  onClick={() => handleIconClick(event.selection.id)}
-                >
-                  <DocumentTextIcon className="h-4 w-4" aria-hidden="true" />
-                </button>
-              </div> */}
-              <button
-                type="button"
-                onClick={() => handleIconClick(event.selection.id)}
-                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
-              >
-                詳細
-              </button>
-            </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">{event.description}</p>
-              <div className="text-sm mt-2">
-                {event.started_at && (
-                  <p>
-                    開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
-                  </p>
-                )}
-                <p>
-                  {event.started_at ? '終了： ' : '締切： '}
-                  {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      ));
-    }
-    return (
-      <div className="">
-        <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
-          <div>
-            <div className="px-4 py-3 sm:px-6 flex">
-              <h3 className="text-base/7 font-semibold">明日の予定はありません。</h3>
-            </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">
-                企業管理やTodoリストから予定を追加してみましょう！
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  };
-
-  const renderDayAfterTomorrowEvents = () => {
     const validDayAfterTomorrowEvents = dayAfterTomorrowEvents.filter(
       (event) => event.selection && event.selection.title,
     );
 
-    if (validDayAfterTomorrowEvents.length > 0) {
-      return validDayAfterTomorrowEvents.map((event, index) => (
-        <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
-          <div>
-            <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
-              <h3 className="text-base/7 font-semibold">
-                {event.selection?.title || '未設定'} -{' '}
-                {event.title_id === 1
-                  ? event.customtitle || '未設定'
-                  : event.selectionflowtitle?.title || '未設定'}
-              </h3>
-              <button
-                type="button"
-                onClick={() => handleIconClick(event.selection.id)}
-                className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
-              >
-                詳細
-              </button>
-            </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">{event.description}</p>
-              <div className="text-sm mt-2">
-                {event.started_at && (
-                  <p>
-                    開始： {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
-                  </p>
-                )}
-                <p>
-                  {event.started_at ? '終了： ' : '締切： '}
-                  {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
+    const hasAnyEvents =
+      validTodayEvents.length > 0 ||
+      validTomorrowEvents.length > 0 ||
+      validDayAfterTomorrowEvents.length > 0;
+
+    // 3日間すべてでイベントがない場合
+    if (!hasAnyEvents) {
+      return (
+        <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5 mt-5">
+          <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
+            <div>
+              <div className="px-4 py-3 sm:px-6 flex">
+                <h3 className="text-base/7 font-semibold">データがありません。</h3>
+              </div>
+              <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                <p className="whitespace-pre-wrap">
+                  企業管理の選考状況から、予定を追加してみましょう！
                 </p>
               </div>
             </div>
           </div>
         </div>
-      ));
+      );
     }
+
+    // イベントがある日のみ表示
     return (
-      <div className="">
-        <div className="overflow-hidden bg-white shadow rounded-lg mt-5">
-          <div>
-            <div className="px-4 py-3 sm:px-6 flex">
-              <h3 className="text-base/7 font-semibold">明後日の予定はありません。</h3>
+      <>
+        {validTodayEvents.length > 0 && (
+          <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5 mt-5">
+            <div className="md:flex md:items-center md:justify-between">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                  本日 {currentDate}
+                </h2>
+              </div>
             </div>
-            <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">
-                企業管理やTodoリストから予定を追加してみましょう！
-              </p>
-            </div>
+            {validTodayEvents.map((event, index) => (
+              <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
+                <div>
+                  <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
+                    <h3 className="text-base/7 font-semibold">
+                      {event.selection?.title || '未設定'} -{' '}
+                      {event.title_id === 1
+                        ? event.customtitle || '未設定'
+                        : event.selectionflowtitle?.title || '未設定'}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => handleIconClick(event.selection.id)}
+                      className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
+                    >
+                      詳細
+                    </button>
+                  </div>
+                  <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                    <p className="whitespace-pre-wrap">{event.description}</p>
+                    <div className="text-sm mt-2">
+                      {event.started_at && (
+                        <p>
+                          開始：{' '}
+                          {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                        </p>
+                      )}
+                      <p>
+                        {event.started_at ? '終了： ' : '締切： '}
+                        {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
           </div>
-        </div>
-      </div>
+        )}
+
+        {validTomorrowEvents.length > 0 && (
+          <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5 mt-5">
+            <div className="md:flex md:items-center md:justify-between">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                  明日 {tomorrowDate}
+                </h2>
+              </div>
+            </div>
+            {validTomorrowEvents.map((event, index) => (
+              <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
+                <div>
+                  <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
+                    <h3 className="text-base/7 font-semibold">
+                      {event.selection?.title || '未設定'} -{' '}
+                      {event.title_id === 1
+                        ? event.customtitle || '未設定'
+                        : event.selectionflowtitle?.title || '未設定'}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => handleIconClick(event.selection.id)}
+                      className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
+                    >
+                      詳細
+                    </button>
+                  </div>
+                  <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                    <p className="whitespace-pre-wrap">{event.description}</p>
+                    <div className="text-sm mt-2">
+                      {event.started_at && (
+                        <p>
+                          開始：{' '}
+                          {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                        </p>
+                      )}
+                      <p>
+                        {event.started_at ? '終了： ' : '締切： '}
+                        {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {validDayAfterTomorrowEvents.length > 0 && (
+          <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5 mt-5">
+            <div className="md:flex md:items-center md:justify-between">
+              <div className="min-w-0 flex-1">
+                <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                  明後日 {dayAfterTomorrowDate}
+                </h2>
+              </div>
+            </div>
+            {validDayAfterTomorrowEvents.map((event, index) => (
+              <div key={index} className="overflow-hidden bg-white shadow rounded-lg mt-5">
+                <div>
+                  <div className="px-4 py-3 sm:px-6 flex justify-between items-start">
+                    <h3 className="text-base/7 font-semibold">
+                      {event.selection?.title || '未設定'} -{' '}
+                      {event.title_id === 1
+                        ? event.customtitle || '未設定'
+                        : event.selectionflowtitle?.title || '未設定'}
+                    </h3>
+                    <button
+                      type="button"
+                      onClick={() => handleIconClick(event.selection.id)}
+                      className="ml-3 inline-flex items-center rounded-md bg-blue-500 hover:bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm flex-shrink-0"
+                    >
+                      詳細
+                    </button>
+                  </div>
+                  <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
+                    <p className="whitespace-pre-wrap">{event.description}</p>
+                    <div className="text-sm mt-2">
+                      {event.started_at && (
+                        <p>
+                          開始：{' '}
+                          {format(subHours(new Date(event.started_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                        </p>
+                      )}
+                      <p>
+                        {event.started_at ? '終了： ' : '締切： '}
+                        {format(subHours(new Date(event.ended_at), 9), 'yyyy年MM月dd日 HH:mm')}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </>
     );
   };
 
@@ -388,45 +372,8 @@ export default function DashBoardFeature() {
             {/* <div className="FirstAd mb-5 mt-5 px-4 sm:px-6 lg:px-8">
               <Display slot="3381880848" />
             </div> */}
-            {/* 本日のイベント */}
-            {loading ? (
-              <></>
-            ) : (
-              <>
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5 mt-5">
-                  <div className="md:flex md:items-center md:justify-between">
-                    <div className="min-w-0 flex-1">
-                      <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
-                        本日 {currentDate}
-                      </h2>
-                    </div>
-                  </div>
-                  {renderTodayEvents()}
-                </div>
-                {/* 明日のイベント */}
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5">
-                  <div className="md:flex md:items-center md:justify-between">
-                    <div className="min-w-0 flex-1">
-                      <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
-                        明日 {tomorrowDate}
-                      </h2>
-                    </div>
-                  </div>
-                  {renderTomorrowEvents()}
-                </div>
-                {/* 明後日のイベント */}
-                <div className="px-4 sm:px-6 lg:px-8 bg-gray-100 pb-5">
-                  <div className="md:flex md:items-center md:justify-between">
-                    <div className="min-w-0 flex-1">
-                      <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
-                        明後日 {dayAfterTomorrowDate}
-                      </h2>
-                    </div>
-                  </div>
-                  {renderDayAfterTomorrowEvents()}
-                </div>
-              </>
-            )}
+            {/* イベント表示 */}
+            {loading ? <></> : <>{renderEventsForAllDays()}</>}
 
             {loading ? (
               <></>
