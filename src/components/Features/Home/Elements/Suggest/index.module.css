@@ -2,6 +2,10 @@
   margin-top: 100px;
 }
 
+.marginBottom {
+  margin-bottom: 38px;
+}
+
 @media (max-width: 1023px) {
   .space {
     margin-top: 50px;
@@ -9,5 +13,9 @@
 
   .textLeft {
     text-align: left;
+  }
+
+  .marginBottom {
+    margin-bottom: 0 !important;
   }
 }

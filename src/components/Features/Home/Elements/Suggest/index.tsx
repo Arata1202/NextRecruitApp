@@ -3,7 +3,9 @@ import { HOME_RECOMMENDS } from '@/constants/data';
 
 export default function Suggest() {
   return (
-    <div className={`${styles.space} overflow-hidden mx-auto max-w-7xl px-6 lg:px-8`}>
+    <div
+      className={`${styles.space} ${styles.marginBottom} overflow-hidden mx-auto max-w-7xl px-6 lg:px-8`}
+    >
       <div className="mx-auto max-w-2xl gap-x-8 gap-y-16 sm:gap-y-20 lg:mx-0 lg:max-w-none">
         <p
           className={`${styles.textLeft} text-pretty text-4xl font-semibold tracking-tight sm:text-5xl text-center`}
