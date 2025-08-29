@@ -225,7 +225,9 @@ export default function DashBoardFeature() {
               <h3 className="text-base/7 font-semibold">本日の予定はありません。</h3>
             </div>
             <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
+              <p className="whitespace-pre-wrap">
+                企業管理やTodoリストから予定を追加してみましょう！
+              </p>
             </div>
           </div>
         </div>
@@ -292,7 +294,9 @@ export default function DashBoardFeature() {
               <h3 className="text-base/7 font-semibold">明日の予定はありません。</h3>
             </div>
             <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
+              <p className="whitespace-pre-wrap">
+                企業管理やTodoリストから予定を追加してみましょう！
+              </p>
             </div>
           </div>
         </div>
@@ -350,7 +354,9 @@ export default function DashBoardFeature() {
               <h3 className="text-base/7 font-semibold">明後日の予定はありません。</h3>
             </div>
             <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
-              <p className="whitespace-pre-wrap">のんびりとした1日をお過ごしください！</p>
+              <p className="whitespace-pre-wrap">
+                企業管理やTodoリストから予定を追加してみましょう！
+              </p>
             </div>
           </div>
         </div>

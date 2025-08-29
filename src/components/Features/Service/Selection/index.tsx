@@ -379,7 +379,7 @@ export default function SelectionFeature() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、企業管理を追加してみましょう！
+                          右上の追加ボタンから、企業を追加してみましょう！
                         </p>
                       </div>
                     </div>

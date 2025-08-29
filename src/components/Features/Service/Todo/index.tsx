@@ -550,7 +550,7 @@ export default function TodoFeature() {
               ) : (
                 <div className="md:flex md:items-center md:justify-between">
                   <div className="min-w-0 flex-1">
-                    <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight">
+                    <h2 className="text-lg font-bold sm:truncate sm:text-2xl sm:tracking-tight text-red-500">
                       期限切れ
                     </h2>
                   </div>
