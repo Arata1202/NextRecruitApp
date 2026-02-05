@@ -660,39 +660,6 @@ export default function FlowFeature() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="mb-4">
-                        <select
-                          {...register('titleId', { required: 'タイトルを選択してください' })}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            if (value === '1') {
-                              setIsCustom(true);
-                            } else {
-                              setIsCustom(false);
-                            }
-                          }}
-                          style={{ height: '42px' }}
-                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
-                        >
-                          <option value="">タイトルを選択</option>
-                          {analysisTitles
-                            .filter((title) => {
-                              if (title.id === 1) {
-                                return true;
-                              }
-                              return !analyses.some((analysis) => analysis.title === title.title);
-                            })
-                            .map((title) => (
-                              <option key={title.id} value={title.id}>
-                                {title.title}
-                              </option>
-                            ))}
-                        </select>
-                        {errors.titleId && (
-                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
-                        )}
-                      </div>
-
                       <div className="mb-4 flex">
                         <label>
                           <input
@@ -713,20 +680,67 @@ export default function FlowFeature() {
                         </label>
                       </div>
 
-                      {isCustom && (
-                        <div className="mb-4">
+                      <div className="mb-4">
+                        {isCustom ? (
+                          <>
+                            <input
+                              {...register('customtitle', {
+                                required: 'タイトルを入力してください',
+                              })}
+                              placeholder="タイトル"
+                              className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            />
+                            {errors.customtitle && (
+                              <p className="text-red-500 mt-1 text-left">
+                                {errors.customtitle.message}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <select
+                              {...register('titleId', { required: 'タイトルを選択してください' })}
+                              style={{ height: '42px' }}
+                              className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            >
+                              <option value="">タイトルを選択</option>
+                              {analysisTitles
+                                .filter(
+                                  (title) =>
+                                    title.id !== 1 &&
+                                    !analyses.some((analysis) => analysis.title === title.title),
+                                )
+                                .map((title) => (
+                                  <option key={title.id} value={title.id}>
+                                    {title.title}
+                                  </option>
+                                ))}
+                            </select>
+                            {errors.titleId && (
+                              <p className="text-red-500 mt-1 text-left">
+                                {errors.titleId.message}
+                              </p>
+                            )}
+                          </>
+                        )}
+                      </div>
+
+                      <div className="mb-4 flex">
+                        <label>
                           <input
-                            {...register('customtitle', { required: 'タイトルを入力してください' })}
-                            placeholder="タイトル"
-                            className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            type="checkbox"
+                            checked={isAllDay}
+                            onChange={(e) => {
+                              setIsAllDay(e.target.checked);
+                              reset({
+                                started_at: '',
+                              });
+                            }}
+                            className="mr-2 cursor-pointer"
                           />
-                          {errors.customtitle && (
-                            <p className="text-red-500 mt-1 text-left">
-                              {errors.customtitle.message}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                          終日
+                        </label>
+                      </div>
 
                       {!isAllDay && (
                         <div className="mb-4 mt-2">
@@ -776,23 +790,6 @@ export default function FlowFeature() {
                         {errors.ended_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
                         )}
-                      </div>
-
-                      <div className="mb-4 flex">
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={isAllDay}
-                            onChange={(e) => {
-                              setIsAllDay(e.target.checked);
-                              reset({
-                                started_at: '',
-                              });
-                            }}
-                            className="mr-2 cursor-pointer"
-                          />
-                          終日
-                        </label>
                       </div>
 
                       <div className="mb-4">
@@ -873,45 +870,6 @@ export default function FlowFeature() {
                       </div>
                     </div>
                     <div className="mt-4">
-                      <div className="mb-4">
-                        <select
-                          {...register('titleId', { required: 'タイトルを選択してください' })}
-                          style={{ height: '42px' }}
-                          value={editData.titleId}
-                          onChange={(e) => {
-                            const value = e.target.value;
-                            setEditData({ ...editData, titleId: value });
-                            if (value === '1') {
-                              setEditIsCustom(true);
-                            } else {
-                              setEditIsCustom(false);
-                            }
-                          }}
-                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
-                        >
-                          <option value="">タイトルを選択</option>
-                          {analysisTitles
-                            .filter((title) => {
-                              if (title.id === 1) {
-                                return true;
-                              }
-                              const isCurrentTitle = title.id.toString() === editData.titleId;
-                              const isUsedTitle = analyses.some(
-                                (analysis) => analysis.title === title.title,
-                              );
-                              return isCurrentTitle || !isUsedTitle;
-                            })
-                            .map((title) => (
-                              <option key={title.id} value={title.id}>
-                                {title.title}
-                              </option>
-                            ))}
-                        </select>
-                        {errors.titleId && (
-                          <p className="text-red-500 mt-1 text-left">{errors.titleId.message}</p>
-                        )}
-                      </div>
-
                       <div className="mb-4 flex">
                         <label>
                           <input
@@ -940,24 +898,85 @@ export default function FlowFeature() {
                         </label>
                       </div>
 
-                      {isEditCustom && (
-                        <div className="mb-4">
+                      <div className="mb-4">
+                        {isEditCustom ? (
+                          <>
+                            <input
+                              {...register('customtitle', {
+                                required: 'タイトルを入力してください',
+                              })}
+                              value={editData.customtitle}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setEditData({ ...editData, customtitle: value });
+                              }}
+                              placeholder="タイトル"
+                              className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            />
+                            {errors.customtitle && (
+                              <p className="text-red-500 mt-1 text-left">
+                                {errors.customtitle.message}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <>
+                            <select
+                              {...register('titleId', { required: 'タイトルを選択してください' })}
+                              style={{ height: '42px' }}
+                              value={editData.titleId}
+                              onChange={(e) => {
+                                const value = e.target.value;
+                                setEditData({ ...editData, titleId: value });
+                              }}
+                              className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                            >
+                              <option value="">タイトルを選択</option>
+                              {analysisTitles
+                                .filter((title) => {
+                                  if (title.id === 1) {
+                                    return false;
+                                  }
+                                  const isCurrentTitle = title.id.toString() === editData.titleId;
+                                  const isUsedTitle = analyses.some(
+                                    (analysis) => analysis.title === title.title,
+                                  );
+                                  return isCurrentTitle || !isUsedTitle;
+                                })
+                                .map((title) => (
+                                  <option key={title.id} value={title.id}>
+                                    {title.title}
+                                  </option>
+                                ))}
+                            </select>
+                            {errors.titleId && (
+                              <p className="text-red-500 mt-1 text-left">
+                                {errors.titleId.message}
+                              </p>
+                            )}
+                          </>
+                        )}
+                      </div>
+
+                      <div className="mb-4 flex">
+                        <label>
                           <input
-                            {...register('customtitle', { required: 'タイトルを入力してください' })}
+                            type="checkbox"
+                            checked={editIsAllDay}
                             onChange={(e) => {
-                              const value = e.target.value;
-                              setEditData({ ...editData, customtitle: value });
+                              setEditIsAllDay(e.target.checked);
+                              if (e.target.checked) {
+                                setEditData((prev) => ({
+                                  ...prev,
+                                  started_at: '',
+                                }));
+                              }
                             }}
-                            placeholder="タイトル"
-                            className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            className="mr-2 cursor-pointer"
                           />
-                          {errors.customtitle && (
-                            <p className="text-red-500 mt-1 text-left">
-                              {errors.customtitle.message}
-                            </p>
-                          )}
-                        </div>
-                      )}
+                          終日
+                        </label>
+                      </div>
 
                       {!editIsAllDay && (
                         <div className="mb-4 mt-2">
@@ -1021,26 +1040,6 @@ export default function FlowFeature() {
                         {errors.ended_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
                         )}
-                      </div>
-
-                      <div className="mb-4 flex">
-                        <label>
-                          <input
-                            type="checkbox"
-                            checked={editIsAllDay}
-                            onChange={(e) => {
-                              setEditIsAllDay(e.target.checked);
-                              if (e.target.checked) {
-                                setEditData((prev) => ({
-                                  ...prev,
-                                  started_at: '',
-                                }));
-                              }
-                            }}
-                            className="mr-2 cursor-pointer"
-                          />
-                          終日
-                        </label>
                       </div>
 
                       <textarea
