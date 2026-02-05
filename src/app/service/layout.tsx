@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { TITLE } from '@/constants/data';
+import ServiceShell from './ServiceShell';
 
 type Props = {
   children: React.ReactNode;
@@ -32,5 +33,5 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ServiceLayout(props: Props) {
   const { children } = props;
 
-  return <>{children}</>;
+  return <ServiceShell>{children}</ServiceShell>;
 }
