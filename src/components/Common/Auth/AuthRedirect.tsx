@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { supabase } from '@/libs/supabase';
 
 type AuthRedirectProps = {
@@ -11,6 +11,7 @@ type AuthRedirectProps = {
 
 export default function AuthRedirect({ requireAuth, children }: AuthRedirectProps) {
   const router = useRouter();
+  const pathname = usePathname();
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -19,11 +20,11 @@ export default function AuthRedirect({ requireAuth, children }: AuthRedirectProp
         data: { user },
       } = await supabase.auth.getUser();
 
-      if (requireAuth && !user) {
+      if (requireAuth && !user && pathname !== '/service/auth/login') {
         // 認証が必要なページで未認証の場合、ログインページにリダイレクト
         router.replace('/service/auth/login');
         return;
-      } else if (!requireAuth && user) {
+      } else if (!requireAuth && user && pathname.startsWith('/service/auth')) {
         // 認証不要なページ（auth関連）で認証済みの場合、/serviceにリダイレクト
         router.replace('/service');
         return;
@@ -34,22 +35,10 @@ export default function AuthRedirect({ requireAuth, children }: AuthRedirectProp
     };
 
     checkAuth();
-  }, [requireAuth, router]);
+  }, [pathname, requireAuth, router]);
 
   if (isLoading) {
-    return (
-      <div
-        style={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          backgroundColor: 'white',
-          zIndex: 9999,
-        }}
-      />
-    );
+    return null;
   }
 
   return <>{children}</>;
