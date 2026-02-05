@@ -10,7 +10,6 @@ import {
   InformationCircleIcon,
   BuildingOffice2Icon,
   ClipboardDocumentListIcon,
-  NumberedListIcon,
   ShareIcon,
   ArrowRightStartOnRectangleIcon,
   EnvelopeIcon as EnvelopeIconOutline,
@@ -59,7 +58,6 @@ export const SERVICE_NAVIGATION = [
   { name: '企業管理', href: '/service/selection', icon: BuildingOffice2Icon },
   { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
   { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
-  { name: 'ToDoリスト', href: '/service/todo', icon: NumberedListIcon },
 ];
 
 export const SERVICE_SETTING_NAVIGATION = [
@@ -72,7 +70,7 @@ export const HOME_HEROES = [
   {
     name: '一括管理カレンダー',
     description:
-      '企業ごとの選考状況や、今後のToDoリストを自動でカレンダーに反映し、一目で予定を把握することができます。',
+      '企業ごとの選考状況を自動でカレンダーに反映し、一目で予定を把握することができます。',
     icon: CalendarDaysIcon,
   },
   {

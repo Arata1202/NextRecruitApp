@@ -76,17 +76,6 @@ export default function CalendarFeature() {
           return;
         }
 
-        const { data: todoData, error: todoError } = await supabase
-          .from('todo')
-          .select('title, description, started_at, ended_at')
-          .eq('supabaseauth_id', user.id);
-
-        if (todoError) {
-          console.error('Error fetching todo events:', todoError);
-          setIsLoading(false);
-          return;
-        }
-
         const mappedSelectionEvents = (selectionData as unknown as EventData[])
           .filter((item) => item.selection?.title)
           .map((item) => ({
@@ -100,17 +89,6 @@ export default function CalendarFeature() {
             className: 'bg-blue-500 text-white hover:bg-blue-600 px-1',
           }));
 
-        const mappedTodoEvents = (todoData || []).map((item, index) => ({
-          title: item.title,
-          start: item.started_at || item.ended_at,
-          end: item.ended_at ? `${item.ended_at.split('T')[0]}T23:59:59` : '',
-          extendedProps: {
-            id: `todo-${index}`,
-            type: 'todo',
-          },
-          className: 'bg-green-600 text-white hover:bg-green-700 px-1',
-        }));
-
         const mappedHolidayEvents = Object.entries(holidayData).map(([date, name]) => ({
           title: name,
           start: date,
@@ -123,7 +101,7 @@ export default function CalendarFeature() {
           },
         }));
 
-        setEvents([...mappedSelectionEvents, ...mappedTodoEvents, ...mappedHolidayEvents]);
+        setEvents([...mappedSelectionEvents, ...mappedHolidayEvents]);
       } catch (error) {
         console.error('Error fetching data:', error);
       } finally {
@@ -138,8 +116,6 @@ export default function CalendarFeature() {
     const { id, type } = clickInfo.event.extendedProps;
     if (type === 'selection' && id) {
       router.push(`/service/selection/flow?id=${id}`);
-    } else if (type === 'todo') {
-      router.push('/service/todo');
     }
   };
 
