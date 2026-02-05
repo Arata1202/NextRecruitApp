@@ -25,8 +25,11 @@ interface MappedEvent {
   title: string;
   start: string;
   end: string;
+  className?: string;
+  allDay?: boolean;
   extendedProps: {
     id: string;
+    type: 'selection' | 'holiday';
   };
 }
 
@@ -41,7 +44,7 @@ export default function CalendarFeature() {
     const fetchData = async () => {
       try {
         const response = await fetch('https://holidays-jp.github.io/api/v1/date.json');
-        const holidayData = await response.json();
+        const holidayData = (await response.json()) as Record<string, string>;
         setHolidays(Object.keys(holidayData));
 
         const {
@@ -76,7 +79,7 @@ export default function CalendarFeature() {
           return;
         }
 
-        const mappedSelectionEvents = (selectionData as unknown as EventData[])
+        const mappedSelectionEvents: MappedEvent[] = (selectionData as unknown as EventData[])
           .filter((item) => item.selection?.title)
           .map((item) => ({
             title: item.selection.title,
@@ -89,17 +92,19 @@ export default function CalendarFeature() {
             className: 'bg-blue-500 text-white hover:bg-blue-600 px-1',
           }));
 
-        const mappedHolidayEvents = Object.entries(holidayData).map(([date, name]) => ({
-          title: name,
-          start: date,
-          end: date,
-          className: 'bg-red-400 text-white px-1',
-          allDay: true,
-          extendedProps: {
-            id: `holiday-${date}`,
-            type: 'holiday',
-          },
-        }));
+        const mappedHolidayEvents: MappedEvent[] = Object.entries(holidayData).map(
+          ([date, name]) => ({
+            title: name,
+            start: date,
+            end: date,
+            className: 'bg-red-400 text-white px-1',
+            allDay: true,
+            extendedProps: {
+              id: `holiday-${date}`,
+              type: 'holiday',
+            },
+          }),
+        );
 
         setEvents([...mappedSelectionEvents, ...mappedHolidayEvents]);
       } catch (error) {
