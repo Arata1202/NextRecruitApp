@@ -10,7 +10,7 @@ const toSlug = (text: string) => {
   const normalized = text
     .toLowerCase()
     .replace(/&[a-z0-9#]+;/gi, '')
-    .replace(/[^\p{L}\p{N}\s-]/gu, '')
+    .replace(/[^a-z0-9\u3040-\u30ff\u3400-\u9fff\s-]/g, '')
     .trim()
     .replace(/\s+/g, '-');
 
