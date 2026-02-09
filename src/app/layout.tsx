@@ -5,7 +5,6 @@ import { TITLE, DESCRIPTION } from '@/constants/data';
 import ScrollTopButton from '@/components/Common/Layouts/ScrollToTop';
 import GoogleAdSense from '@/components/ThirdParties/GoogleAdSense';
 import GoogleAnalytics from '@/components/ThirdParties/GoogleAnalytics';
-import OneSignal from '@/components/ThirdParties/OneSignal';
 
 const geistSans = localFont({
   src: './fonts/GeistVF.woff',
@@ -92,7 +91,6 @@ export default async function RootLayout({ children }: Props) {
         <ScrollTopButton />
         <GoogleAdSense />
         <GoogleAnalytics />
-        <OneSignal />
       </body>
     </html>
   );
