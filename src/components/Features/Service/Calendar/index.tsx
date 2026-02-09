@@ -97,7 +97,7 @@ export default function CalendarFeature() {
             title: name,
             start: date,
             end: date,
-            className: 'bg-red-400 text-white px-1',
+            className: 'bg-red-400 text-white px-1 cursor-default',
             allDay: true,
             extendedProps: {
               id: `holiday-${date}`,
@@ -128,6 +128,13 @@ export default function CalendarFeature() {
     const date = info.date.toISOString().split('T')[0];
     if (holidays.includes(date)) {
       info.el.style.backgroundColor = '#ffebee';
+      info.el.style.cursor = 'default';
+    }
+  };
+
+  const eventDidMount = (info: any) => {
+    if (info.event.extendedProps?.type === 'holiday') {
+      info.el.style.cursor = 'default';
     }
   };
 
@@ -179,6 +186,7 @@ export default function CalendarFeature() {
                 timeZone="Asia/Tokyo"
                 height="auto"
                 dayCellDidMount={dayCellDidMount}
+                eventDidMount={eventDidMount}
               />
               <AdUnit slot="7998948559" style={{ marginBottom: '1.25rem', marginTop: '1.25rem' }} />
             </div>

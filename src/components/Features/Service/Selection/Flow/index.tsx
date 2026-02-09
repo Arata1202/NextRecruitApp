@@ -31,6 +31,8 @@ type AnalysisTitle = {
   title: string;
 };
 
+type SortOrder = 'asc' | 'desc';
+
 export default function FlowFeature() {
   useMutationObserver();
   const router = useRouter();
@@ -58,6 +60,7 @@ export default function FlowFeature() {
   const [initialEditTitle, setInitialEditTitle] = useState<string>('');
   const [filteredAnalyses, setFilteredAnalyses] = useState<Analysis[]>([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const [sortOrder, setSortOrder] = useState<SortOrder>('desc');
   const [descriptionLength, setDescriptionLength] = useState(0);
   const [pageTitle, setPageTitle] = useState<string>('');
   const [loading, setLoading] = useState(true);
@@ -416,10 +419,22 @@ export default function FlowFeature() {
       const searchLower = searchTerm.toLowerCase();
       const titleMatch = analysis.title.toLowerCase().includes(searchLower);
       const customTitleMatch = analysis.customtitle?.toLowerCase().includes(searchLower);
-      return titleMatch || customTitleMatch;
+      const descriptionMatch = analysis.description?.toLowerCase().includes(searchLower);
+      return titleMatch || customTitleMatch || descriptionMatch;
     });
-    setFilteredAnalyses(results);
-  }, [searchTerm, analyses]);
+
+    const sortedResults = [...results].sort((a, b) => {
+      const timeA = a.started_at
+        ? new Date(a.started_at).getTime()
+        : new Date(a.ended_at || 0).getTime();
+      const timeB = b.started_at
+        ? new Date(b.started_at).getTime()
+        : new Date(b.ended_at || 0).getTime();
+      return sortOrder === 'asc' ? timeA - timeB : timeB - timeA;
+    });
+
+    setFilteredAnalyses(sortedResults);
+  }, [searchTerm, analyses, sortOrder]);
 
   useEffect(() => {
     const fetchPageTitle = async () => {
@@ -504,7 +519,7 @@ export default function FlowFeature() {
               </div>
               <div>
                 <div className="flex">
-                  <div className="w-full Search relative rounded-md shadow-sm">
+                  <div className="w-2/3 Search relative rounded-md shadow-sm">
                     <input
                       type="text"
                       value={searchTerm}
@@ -512,6 +527,16 @@ export default function FlowFeature() {
                       placeholder="検索"
                       className={`block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                     />
+                  </div>
+                  <div className="w-1/3 ml-2">
+                    <select
+                      value={sortOrder}
+                      onChange={(e) => setSortOrder(e.target.value as SortOrder)}
+                      className={`cursor-pointer block w-full h-full rounded-md border py-2.5 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                    >
+                      <option value="asc">日付の早い順</option>
+                      <option value="desc">日付の遅い順</option>
+                    </select>
                   </div>
                 </div>
                 <div>
@@ -561,7 +586,7 @@ export default function FlowFeature() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、選考状況を追加してみましょう！
+                          右上の追加ボタンから、カードを追加してみましょう！
                         </p>
                       </div>
                     </div>

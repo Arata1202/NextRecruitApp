@@ -20,6 +20,14 @@ type Analysis = {
   id: number;
   title: string;
   star_id: string;
+  description: string;
+};
+
+const getStatusBadgeClass = (status: string) => {
+  if (status === '内定済み') return 'bg-green-100 text-green-700';
+  if (status === '選考中') return 'bg-slate-100 text-slate-600';
+  if (status === '辞退') return 'bg-red-100 text-red-700';
+  return 'bg-gray-100 text-gray-500';
 };
 
 export default function SelectionFeature() {
@@ -85,13 +93,13 @@ export default function SelectionFeature() {
             `
             id,
             title,
+            description,
             star_id (
               title,
               sort
             )
             `,
           )
-          .ilike('title', `%${searchTerm}%`)
           .eq('supabaseauth_id', userId);
 
         const { data, error } = await query;
@@ -105,6 +113,7 @@ export default function SelectionFeature() {
           id: item.id,
           title: item.title,
           star_id: item.star_id?.title || '未設定',
+          description: item.description || '',
           sort: item.star_id?.sort || Infinity,
         }));
 
@@ -121,7 +130,7 @@ export default function SelectionFeature() {
     };
 
     fetchAnalyses();
-  }, [userId, searchTerm]);
+  }, [userId]);
 
   // スターデータ
   useEffect(() => {
@@ -180,6 +189,7 @@ export default function SelectionFeature() {
             id: data[0].id,
             title: formValues.title,
             star_id: starTitle,
+            description: '',
           },
           ...prev,
         ]);
@@ -286,9 +296,13 @@ export default function SelectionFeature() {
   useEffect(() => {
     const results = analyses.filter((analysis) => {
       const matchesSearchTerm = analysis.title.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesDescription = (analysis.description || '')
+        .toLowerCase()
+        .includes(searchTerm.toLowerCase());
+      const matchesStar = analysis.star_id.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesStarTitle = !selectedStarTitle || analysis.star_id === selectedStarTitle;
 
-      return matchesSearchTerm && matchesStarTitle;
+      return (matchesSearchTerm || matchesDescription || matchesStar) && matchesStarTitle;
     });
 
     setFilteredAnalyses(results);
@@ -315,7 +329,7 @@ export default function SelectionFeature() {
                       </h2>
                     </div>
                     <p className="mt-2 text-sm text-gray-500">
-                      応募企業を一覧で管理し、志望度や進捗を整理するために活用します。
+                      応募企業を一覧で管理し、選考ステータスや進捗を整理するために活用します。
                     </p>
                   </div>
                   <div className="flex ml-4 mt-0">
@@ -382,7 +396,7 @@ export default function SelectionFeature() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、企業を追加してみましょう！
+                          右上の追加ボタンから、カードを追加してみましょう！
                         </p>
                       </div>
                     </div>
@@ -405,6 +419,11 @@ export default function SelectionFeature() {
                         className="text-base/7 font-semibold text-blue-500 hover:text-blue-600"
                       > */}
                         <h3 className="text-base/7 font-semibold">{analysis.title}</h3>
+                        <span
+                          className={`ml-3 inline-flex items-center rounded-full px-3 py-0.5 text-xs leading-none font-semibold ${getStatusBadgeClass(analysis.star_id)}`}
+                        >
+                          {analysis.star_id}
+                        </span>
                         {/* </a> */}
                         <div className="flex ml-auto items-start">
                           {/* <button
@@ -430,8 +449,7 @@ export default function SelectionFeature() {
                           </button>
                         </div>
                       </div>
-                      <div className="flex justify-between items-center px-4 py-3 sm:px-6 border-t border-gray-300">
-                        <p className="whitespace-pre-wrap">{analysis.star_id}</p>
+                      <div className="flex justify-end items-center px-4 py-3 sm:px-6 border-t border-gray-300">
                         <button
                           type="button"
                           onClick={() => handleNavigateToDetail(analysis.id)}
@@ -491,16 +509,13 @@ export default function SelectionFeature() {
                       </div>
 
                       <div className="mb-4">
-                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
-                          志望度（企業一覧の並び順に影響します）
-                        </label>
                         <select
                           {...register('selectionStarId', { required: '選択してください' })}
                           id="selectionStar"
                           style={{ height: '42px' }}
                           className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                         >
-                          <option value="">選択してください</option>
+                          <option value="">ステータスを選択</option>
                           {selectionStars.map((star) => (
                             <option key={star.id} value={star.id}>
                               {star.title}
@@ -585,9 +600,6 @@ export default function SelectionFeature() {
                         )}
                       </div>
                       <div className="mb-4">
-                        <label htmlFor="ended_at" className="block text-sm font-medium text-left">
-                          志望度（企業一覧の並び順に影響します）
-                        </label>
                         <select
                           {...register('selectionStarId', { required: '選択してください' })}
                           id="selectionStar"
@@ -599,7 +611,7 @@ export default function SelectionFeature() {
                           style={{ height: '42px' }}
                           className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                         >
-                          <option value="">選択してください</option>
+                          <option value="">ステータスを選択</option>
                           {selectionStars.map((star) => (
                             <option key={star.id} value={star.id}>
                               {star.title}

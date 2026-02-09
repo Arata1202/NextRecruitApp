@@ -612,7 +612,9 @@ export default function HappinessFeature() {
                     </div>
                     <div className="mt-2 text-center sm:ml-4 sm:text-left">
                       <DialogTitle as="h1" className="text-base font-bold leading-6">
-                        編集
+                        {editTargetAge !== null
+                          ? `「${editTargetAge}歳」を編集`
+                          : '「タイトル」を編集'}
                       </DialogTitle>
                     </div>
                   </div>
@@ -718,14 +720,12 @@ export default function HappinessFeature() {
                   </div>
                   <div className="mt-2 text-center sm:ml-4 sm:text-left">
                     <DialogTitle as="h3" className="text-base font-semibold text-gray-900">
-                      削除
+                      {deleteTarget
+                        ? `「${deleteTarget.age}歳」を削除しますか？`
+                        : '「タイトル」を削除しますか？'}
                     </DialogTitle>
                     <div className="mt-2">
-                      <p className="text-sm text-gray-500">
-                        {deleteTarget
-                          ? `${deleteTarget.age}歳のデータを削除します。`
-                          : 'このデータを削除します。'}
-                      </p>
+                      <p className="text-sm text-gray-500">操作は取り消すことができません。</p>
                     </div>
                   </div>
                 </div>

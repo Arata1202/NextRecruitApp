@@ -189,7 +189,7 @@ export default function DashBoardFeature() {
               </div>
               <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                 <p className="whitespace-pre-wrap">
-                  企業管理の選考状況から、予定を追加してみましょう！
+                  右上の追加ボタンから、カードを追加してみましょう！
                 </p>
               </div>
             </div>

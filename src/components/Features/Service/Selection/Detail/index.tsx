@@ -345,7 +345,8 @@ export default function DetailFeature() {
       const searchLower = searchTerm.toLowerCase();
       const titleMatch = analysis.title.toLowerCase().includes(searchLower);
       const customTitleMatch = analysis.customtitle?.toLowerCase().includes(searchLower);
-      return titleMatch || customTitleMatch;
+      const descriptionMatch = analysis.description?.toLowerCase().includes(searchLower);
+      return titleMatch || customTitleMatch || descriptionMatch;
     });
     setFilteredAnalyses(results);
   }, [searchTerm, analyses]);
@@ -519,7 +520,7 @@ export default function DetailFeature() {
                       </div>
                       <div className="px-4 py-3 sm:px-6 border-t border-gray-300">
                         <p className="whitespace-pre-wrap">
-                          右上の追加ボタンから、企業情報を追加してみましょう！
+                          右上の追加ボタンから、カードを追加してみましょう！
                         </p>
                       </div>
                     </div>
