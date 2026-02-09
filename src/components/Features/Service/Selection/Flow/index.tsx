@@ -532,7 +532,7 @@ export default function FlowFeature() {
                     <select
                       value={sortOrder}
                       onChange={(e) => setSortOrder(e.target.value as SortOrder)}
-                      className={`cursor-pointer block w-full h-full rounded-md border py-2.5 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                      className={`cursor-pointer block h-[42px] w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                     >
                       <option value="asc">日付の早い順</option>
                       <option value="desc">日付の遅い順</option>
@@ -782,7 +782,7 @@ export default function FlowFeature() {
                             type="datetime-local"
                             {...register('started_at', { required: false })}
                             style={{ height: '42px' }}
-                            className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            className={`cursor-pointer block w-full min-w-0 max-w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                           />
                           {errors.started_at && (
                             <p className="text-red-500 mt-1 text-left">
@@ -813,7 +813,7 @@ export default function FlowFeature() {
                             },
                           })}
                           style={{ height: '42px' }}
-                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                          className={`cursor-pointer block w-full min-w-0 max-w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                         />
                         {errors.ended_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
@@ -1025,7 +1025,7 @@ export default function FlowFeature() {
                               }))
                             }
                             style={{ height: '42px' }}
-                            className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            className={`cursor-pointer block w-full min-w-0 max-w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                           />
                           {errors.started_at && (
                             <p className="text-red-500 mt-1 text-left">
@@ -1063,7 +1063,7 @@ export default function FlowFeature() {
                             }))
                           }
                           style={{ height: '42px' }}
-                          className={`cursor-pointer block w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                          className={`cursor-pointer block w-full min-w-0 max-w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                         />
                         {errors.ended_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>

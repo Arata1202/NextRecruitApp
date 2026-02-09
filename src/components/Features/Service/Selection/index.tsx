@@ -361,7 +361,7 @@ export default function SelectionFeature() {
                         const value = e.target.value;
                         setSelectedStarTitle(value !== '' ? value : null);
                       }}
-                      className={`cursor-pointer block w-full h-full rounded-md border py-2.5 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
+                      className={`cursor-pointer block h-[42px] w-full rounded-md border py-2 pl-3 pr-3 sm:text-sm sm:leading-6 border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none`}
                     >
                       <option value="">全て</option>
                       {selectionStars.map((star) => (

@@ -201,6 +201,7 @@ export default function MainLayout() {
                         <li key={item.name}>
                           <Link
                             href={item.href}
+                            onClick={() => setSidebarOpen(false)}
                             className={classNames(
                               item.current
                                 ? 'bg-gray-50 text-blue-500'
@@ -227,7 +228,14 @@ export default function MainLayout() {
                       {(isAndroid || isIOS) && !isPWA && (
                         <li>
                           <a
-                            onClick={(isAndroid && handleA2hs) || (() => setA2hsModalOpen(true))}
+                            onClick={() => {
+                              setSidebarOpen(false);
+                              if (isAndroid) {
+                                handleA2hs();
+                                return;
+                              }
+                              setA2hsModalOpen(true);
+                            }}
                             className="group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
                           >
                             <DevicePhoneMobileIcon className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500" />
@@ -238,15 +246,20 @@ export default function MainLayout() {
                       {SERVICE_SETTING_NAVIGATION_ITEMS.map((item) => (
                         <li key={item.name}>
                           <a
-                            onClick={
-                              item.name === 'シェアする'
-                                ? handleShare
-                                : item.name === 'ログアウト'
-                                  ? handleLogout
-                                  : item.name === 'お問い合わせ'
-                                    ? () => router.push('/contact')
-                                    : undefined
-                            }
+                            onClick={() => {
+                              setSidebarOpen(false);
+                              if (item.name === 'シェアする') {
+                                handleShare();
+                                return;
+                              }
+                              if (item.name === 'ログアウト') {
+                                handleLogout();
+                                return;
+                              }
+                              if (item.name === 'お問い合わせ') {
+                                router.push('/contact');
+                              }
+                            }}
                             className="cursor-pointer group -mx-2 flex gap-x-3 rounded-md p-2 text-sm/6 font-semibold text-gray-700 hover:bg-gray-50 hover:text-blue-500"
                           >
                             <item.icon className="size-6 shrink-0 text-gray-700 group-hover:text-blue-500" />
