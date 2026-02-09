@@ -87,6 +87,12 @@ export const HOME_HEROES = [
       '文字数カウンターを活用して、ガクチカや自己PRなどの定型文を保存しておくことができます。',
     icon: ClipboardDocumentListIcon,
   },
+  {
+    name: '幸福度',
+    description:
+      '年齢ごとの幸福度と理由を記録し、グラフで可視化することで自分の変化を振り返ることができます。',
+    icon: FaceSmileIcon,
+  },
 ];
 
 export const HOME_RECOMMENDS = [
