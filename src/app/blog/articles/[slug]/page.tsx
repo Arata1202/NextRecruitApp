@@ -10,7 +10,7 @@ type Props = {
   }>;
 };
 
-export const generateStaticParams = async () => {
+export async function generateStaticParams() {
   try {
     const data = await getAllBlogIds();
     return data.map((item) => ({ slug: item.id }));
@@ -18,7 +18,7 @@ export const generateStaticParams = async () => {
     console.error('Failed to fetch blog ids from microCMS:', error);
     return [];
   }
-};
+}
 
 export default async function Page(props: Props) {
   const params = await props.params;
