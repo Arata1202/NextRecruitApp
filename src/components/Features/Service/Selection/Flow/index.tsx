@@ -487,6 +487,9 @@ export default function FlowFeature() {
                         {pageTitle}
                       </h2>
                     </div>
+                    <p className="mt-2 text-sm text-gray-500">
+                      企業ごとの選考ステップを時系列で管理し、次の行動を明確にします。
+                    </p>
                   </div>
                   <div className="flex ml-4 mt-0">
                     <button

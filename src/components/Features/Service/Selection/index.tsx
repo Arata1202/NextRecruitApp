@@ -314,6 +314,9 @@ export default function SelectionFeature() {
                         企業管理
                       </h2>
                     </div>
+                    <p className="mt-2 text-sm text-gray-500">
+                      応募企業を一覧で管理し、志望度や進捗を整理するために活用します。
+                    </p>
                   </div>
                   <div className="flex ml-4 mt-0">
                     <button

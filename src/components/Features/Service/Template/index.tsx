@@ -346,6 +346,9 @@ export default function TemplateFeature() {
                         ESテンプレート
                       </h2>
                     </div>
+                    <p className="mt-2 text-sm text-gray-500">
+                      ESテンプレートを蓄積し、応募時に素早く文章を作成するために活用します。
+                    </p>
                   </div>
                   <div className="flex ml-4 mt-0">
                     <button

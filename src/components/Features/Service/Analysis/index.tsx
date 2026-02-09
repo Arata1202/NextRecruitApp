@@ -383,6 +383,9 @@ export default function AnalysisFeature() {
                         自己分析
                       </h2>
                     </div>
+                    <p className="mt-2 text-sm text-gray-500">
+                      自己分析の項目を記録し、ESや面接で伝える軸を整理するために活用します。
+                    </p>
                   </div>
                   <div className="flex ml-4 mt-0">
                     <button

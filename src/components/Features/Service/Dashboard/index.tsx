@@ -364,6 +364,9 @@ export default function DashBoardFeature() {
                         就活イベント
                       </h2>
                     </div>
+                    <p className="mt-2 text-sm text-gray-500">
+                      就活の予定と期限を一覧で確認し、今日やるべきことを把握するために活用します。
+                    </p>
                   </div>
                 </div>
               </div>

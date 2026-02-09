@@ -147,6 +147,9 @@ export default function CalendarFeature() {
                         カレンダー
                       </h2>
                     </div>
+                    <p className="mt-2 text-sm text-gray-500">
+                      選考フローの日程をカレンダーで確認し、面接や提出期限の見落としを防ぎます。
+                    </p>
                   </div>
                 </div>
               </div>

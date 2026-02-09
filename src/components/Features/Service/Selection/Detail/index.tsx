@@ -434,6 +434,9 @@ export default function DetailFeature() {
                         {pageTitle}
                       </h2>
                     </div>
+                    <p className="mt-2 text-sm text-gray-500">
+                      企業ごとの詳細メモを整理し、選考準備に必要な情報を管理します。
+                    </p>
                   </div>
                   <div className="flex ml-4 mt-0">
                     <button
