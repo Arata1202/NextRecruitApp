@@ -3,6 +3,7 @@ import {
   HomeIcon,
   UserPlusIcon,
   ArrowRightEndOnRectangleIcon,
+  BellAlertIcon,
 } from '@heroicons/react/24/solid';
 import {
   CalendarDaysIcon,
@@ -31,6 +32,7 @@ export const PROJECT_IMAGE = [
 
 export const HEADER_NAVIGATION = [
   { name: 'ホーム', path: '/', icon: HomeIcon },
+  { name: 'ブログ', path: '/blog', icon: BellAlertIcon },
   { name: 'お問い合わせ', path: '/contact', icon: EnvelopeIcon },
   { name: 'アカウント登録', path: '/service/auth/signup', icon: UserPlusIcon },
   { name: 'ログイン', path: '/service/auth/login', icon: ArrowRightEndOnRectangleIcon },

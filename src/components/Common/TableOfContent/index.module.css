@@ -1,0 +1,54 @@
+.wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.toc {
+  width: 50%;
+  border: 1px solid rgb(209 213 219);
+  padding: 1rem;
+  border-radius: 0.5rem;
+}
+
+.title {
+  text-align: center;
+  font-weight: bold;
+  font-size: 1.125rem;
+}
+
+.list {
+  margin-top: 1rem;
+  list-style: none;
+  padding-left: 0;
+  line-height: 1.5;
+}
+
+.list li {
+  margin: 0;
+}
+
+.link {
+  display: inline;
+  padding: 0;
+  color: rgb(55 65 81) !important;
+  line-height: 1.5;
+  text-decoration: none !important;
+}
+
+.link:hover {
+  color: rgb(59 130 246) !important;
+  text-decoration: none !important;
+}
+
+.link:visited,
+.link:active,
+.link:focus {
+  color: rgb(55 65 81) !important;
+  text-decoration: none !important;
+}
+
+@media (max-width: 768px) {
+  .toc {
+    width: 100%;
+  }
+}

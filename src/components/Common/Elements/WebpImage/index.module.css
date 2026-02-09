@@ -1,0 +1,51 @@
+.image {
+  height: auto;
+  max-width: 300px;
+}
+
+.recent {
+  height: auto;
+  max-width: 100%;
+}
+
+.thumbnail {
+  width: 960px;
+  height: auto;
+  margin-bottom: 0;
+  margin-top: 10px;
+}
+
+@media (max-width: 1023px) and (min-width: 641px) {
+  .image {
+    height: auto;
+    max-width: 300px;
+  }
+}
+
+@media (max-width: 1081px) and (min-width: 1023px) {
+  .image {
+    height: auto;
+    max-width: 250px;
+  }
+}
+
+@media (max-width: 717px) and (min-width: 641px) {
+  .image {
+    height: auto;
+    max-width: 200px;
+  }
+}
+
+@media (max-width: 640px) {
+  .image {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
+  }
+
+  .thumbnail {
+    width: 100%;
+    height: auto;
+  }
+}
