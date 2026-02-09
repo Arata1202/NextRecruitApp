@@ -16,7 +16,7 @@ export default function HomeFeature() {
         <Suggest />
         <Support />
         <div className={styles.adWrap}>
-          <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} />
+          <AdUnit slot="7998948559" style={{ marginTop: '1.25rem' }} showSponsorship={false} />
         </div>
       </div>
     </div>

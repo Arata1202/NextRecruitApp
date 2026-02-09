@@ -18,11 +18,25 @@ type Props = {
   format?: string;
   responsive?: string;
   style?: object;
+  showSponsorship?: boolean;
 };
 
-export default function AdUnit({ slot, format = 'rectangle', responsive = 'false', style }: Props) {
+const shouldShowSponsorshipByEnv = (() => {
+  const value = process.env.NEXT_PUBLIC_SHOW_SPONSORSHIP;
+  if (value === undefined) return true;
+  return value.toLowerCase() !== 'false';
+})();
+
+export default function AdUnit({
+  slot,
+  format = 'rectangle',
+  responsive = 'false',
+  style,
+  showSponsorship,
+}: Props) {
   let pathname = usePathname();
   pathname = pathname ? pathname : '';
+  const shouldShowSponsorship = showSponsorship ?? shouldShowSponsorshipByEnv;
 
   useMutationObserver();
 
@@ -45,7 +59,7 @@ export default function AdUnit({ slot, format = 'rectangle', responsive = 'false
         className={`${styles.container} mut-guard`}
         style={{ ...style }}
       >
-        <p className={`text-center text-gray-700`}>スポンサーリンク</p>
+        {shouldShowSponsorship && <p className={`text-center text-gray-700`}>スポンサーリンク</p>}
         <ins
           className={`${styles.adUnit} adsbygoogle mut-guard`}
           data-ad-client={`ca-pub-${publisherId}`}
