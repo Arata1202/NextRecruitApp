@@ -781,7 +781,7 @@ export default function FlowFeature() {
                           <input
                             type="datetime-local"
                             {...register('started_at', { required: false })}
-                            className={`cursor-pointer block box-border h-[42px] w-full min-w-0 max-w-full [inline-size:100%] [min-inline-size:0] rounded-md border px-3 py-0 text-base sm:text-sm border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            className={`cursor-pointer block box-border h-[42px] w-full min-w-0 max-w-full [inline-size:100%] [min-inline-size:0] rounded-md border p-0 text-base sm:text-sm border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                           />
                           {errors.started_at && (
                             <p className="text-red-500 mt-1 text-left">
@@ -811,7 +811,7 @@ export default function FlowFeature() {
                               return true;
                             },
                           })}
-                          className={`cursor-pointer block box-border h-[42px] w-full min-w-0 max-w-full [inline-size:100%] [min-inline-size:0] rounded-md border px-3 py-0 text-base sm:text-sm border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                          className={`cursor-pointer block box-border h-[42px] w-full min-w-0 max-w-full [inline-size:100%] [min-inline-size:0] rounded-md border p-0 text-base sm:text-sm border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                         />
                         {errors.ended_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
@@ -1022,7 +1022,7 @@ export default function FlowFeature() {
                                 started_at: e.target.value,
                               }))
                             }
-                            className={`cursor-pointer block box-border h-[42px] w-full min-w-0 max-w-full [inline-size:100%] [min-inline-size:0] rounded-md border px-3 py-0 text-base sm:text-sm border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                            className={`cursor-pointer block box-border h-[42px] w-full min-w-0 max-w-full [inline-size:100%] [min-inline-size:0] rounded-md border p-0 text-base sm:text-sm border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                           />
                           {errors.started_at && (
                             <p className="text-red-500 mt-1 text-left">
@@ -1059,7 +1059,7 @@ export default function FlowFeature() {
                               ended_at: e.target.value,
                             }))
                           }
-                          className={`cursor-pointer block box-border h-[42px] w-full min-w-0 max-w-full [inline-size:100%] [min-inline-size:0] rounded-md border px-3 py-0 text-base sm:text-sm border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
+                          className={`cursor-pointer block box-border h-[42px] w-full min-w-0 max-w-full [inline-size:100%] [min-inline-size:0] rounded-md border p-0 text-base sm:text-sm border-gray-300 focus:border-2 focus:border-blue-500 focus:outline-none placeholder:text-gray-500`}
                         />
                         {errors.ended_at && (
                           <p className="text-red-500 mt-1 text-left">{errors.ended_at.message}</p>
