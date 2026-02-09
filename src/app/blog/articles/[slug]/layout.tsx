@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { TITLE } from '@/constants/data';
-import { getBlogDetail } from '@/libs/microcms';
+import { getAllBlogIds, getBlogDetail } from '@/libs/microcms';
 
 type Props = {
   children: React.ReactNode;
@@ -8,6 +8,18 @@ type Props = {
     slug: string;
   }>;
 };
+
+export const dynamicParams = false;
+
+export async function generateStaticParams() {
+  try {
+    const data = await getAllBlogIds();
+    return data.map((item) => ({ slug: item.id }));
+  } catch (error) {
+    console.error('Failed to fetch blog ids from microCMS:', error);
+    return [];
+  }
+}
 
 export async function generateMetadata(props: Props): Promise<Metadata> {
   const params = await props.params;
