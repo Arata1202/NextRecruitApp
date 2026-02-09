@@ -129,19 +129,6 @@ body {
   font-family: var(--font-geist-sans), 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', sans-serif;
 }
 
-/* iOS Safariでのモーダル内入力崩れ対策 */
-input[type='datetime-local'] {
-  width: 100%;
-  max-width: 100%;
-  min-width: 0;
-}
-
-@media (max-width: 639px) {
-  input[type='datetime-local'] {
-    font-size: 16px;
-  }
-}
-
 @layer utilities {
   .text-balance {
     text-wrap: balance;
