@@ -91,6 +91,7 @@ export default function HappinessFeature() {
   const [editDraft, setEditDraft] = useState<Draft>(EMPTY_DRAFT);
   const [editTargetAge, setEditTargetAge] = useState<number | null>(null);
   const [deleteTarget, setDeleteTarget] = useState<HappinessRow | null>(null);
+  const [graphViewWidth, setGraphViewWidth] = useState(100);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -135,6 +136,23 @@ export default function HappinessFeature() {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    const updateGraphViewWidth = () => {
+      const width = window.innerWidth;
+      if (width >= 1024) {
+        setGraphViewWidth(250); // PC
+      } else if (width >= 640) {
+        setGraphViewWidth(180); // Tablet
+      } else {
+        setGraphViewWidth(90); // SP
+      }
+    };
+
+    updateGraphViewWidth();
+    window.addEventListener('resize', updateGraphViewWidth);
+    return () => window.removeEventListener('resize', updateGraphViewWidth);
+  }, []);
+
   const filteredRows = useMemo(() => {
     const normalizedSearch = searchTerm.trim().toLowerCase();
 
@@ -160,6 +178,59 @@ export default function HappinessFeature() {
       return scoreA - scoreB;
     });
   }, [rows, searchTerm, sortOrder]);
+
+  const graphRows = useMemo(
+    () =>
+      [...rows]
+        .filter(
+          (row): row is HappinessRow & { happinessScore: number } => row.happinessScore !== null,
+        )
+        .sort((a, b) => a.age - b.age),
+    [rows],
+  );
+
+  const graph = useMemo(() => {
+    if (graphRows.length === 0) return null;
+
+    const viewWidth = graphViewWidth;
+    const viewHeight = 60;
+    const margin = { top: 6, right: 10, bottom: 12, left: 16 };
+    const graphWidth = viewWidth - margin.left - margin.right;
+    const graphHeight = viewHeight - margin.top - margin.bottom;
+
+    const toX = (age: number) => margin.left + ((age - MIN_AGE) / (MAX_AGE - MIN_AGE)) * graphWidth;
+    const toY = (score: number) =>
+      margin.top + ((MAX_SCORE - score) / (MAX_SCORE - MIN_SCORE)) * graphHeight;
+
+    const points = graphRows.map((row) => ({
+      x: toX(row.age),
+      y: toY(row.happinessScore),
+      age: row.age,
+      score: row.happinessScore,
+    }));
+
+    const xTicks = [0, 5, 10, 15, 20, 25, 30].map((age) => ({
+      value: age,
+      x: toX(age),
+    }));
+    const yTicks = [-10, -5, 0, 5, 10].map((score) => ({
+      value: score,
+      y: toY(score),
+    }));
+
+    return {
+      viewWidth,
+      viewHeight,
+      margin,
+      points,
+      xTicks,
+      yTicks,
+      linePath: points.map((point) => `${point.x},${point.y}`).join(' '),
+      yTop: toY(MAX_SCORE),
+      yMid: toY(0),
+      yBottom: toY(MIN_SCORE),
+    };
+  }, [graphRows, graphViewWidth]);
 
   const usedAges = useMemo(() => new Set(rows.map((row) => row.age)), [rows]);
   const addAgeOptions = useMemo(() => AGE_OPTIONS.filter((age) => !usedAges.has(age)), [usedAges]);
@@ -423,6 +494,125 @@ export default function HappinessFeature() {
             }}
           >
             {error && <p className="mb-4 text-sm font-semibold text-red-500">{error}</p>}
+
+            <div className="overflow-hidden bg-white shadow rounded-lg mb-5">
+              <div className="px-4 py-3 sm:px-6">
+                {graph ? (
+                  <div className="mx-auto w-full">
+                    <svg
+                      viewBox={`0 0 ${graph.viewWidth} ${graph.viewHeight}`}
+                      className="w-full h-56 sm:h-64"
+                      role="img"
+                      aria-label="年齢と幸福度のグラフ"
+                    >
+                      {graph.yTicks.map((tick) => (
+                        <g key={`y-${tick.value}`}>
+                          <line
+                            x1={graph.margin.left}
+                            y1={tick.y}
+                            x2={graph.viewWidth - graph.margin.right}
+                            y2={tick.y}
+                            stroke={tick.value === 0 ? '#D1D5DB' : '#E5E7EB'}
+                            strokeWidth={tick.value === 0 ? '0.5' : '0.4'}
+                          />
+                          <text
+                            x={graph.margin.left - 1.8}
+                            y={tick.y + 1}
+                            fontSize="2.8"
+                            textAnchor="end"
+                            fill="#6B7280"
+                          >
+                            {tick.value > 0 ? `+${tick.value}` : tick.value}
+                          </text>
+                        </g>
+                      ))}
+
+                      {graph.xTicks.map((tick) => (
+                        <g key={`x-${tick.value}`}>
+                          <line
+                            x1={tick.x}
+                            y1={graph.viewHeight - graph.margin.bottom}
+                            x2={tick.x}
+                            y2={graph.viewHeight - graph.margin.bottom + 1}
+                            stroke="#D1D5DB"
+                            strokeWidth="0.4"
+                          />
+                          <text
+                            x={tick.x}
+                            y={graph.viewHeight - graph.margin.bottom + 3.8}
+                            fontSize="2.8"
+                            textAnchor="middle"
+                            fill="#6B7280"
+                          >
+                            {tick.value}
+                          </text>
+                        </g>
+                      ))}
+
+                      <line
+                        x1={graph.margin.left}
+                        y1={graph.yTop}
+                        x2={graph.viewWidth - graph.margin.right}
+                        y2={graph.yTop}
+                        stroke="#E5E7EB"
+                        strokeWidth="0.4"
+                      />
+                      <line
+                        x1={graph.margin.left}
+                        y1={graph.margin.top}
+                        x2={graph.margin.left}
+                        y2={graph.viewHeight - graph.margin.bottom}
+                        stroke="#9CA3AF"
+                        strokeWidth="0.5"
+                      />
+                      <line
+                        x1={graph.margin.left}
+                        y1={graph.viewHeight - graph.margin.bottom}
+                        x2={graph.viewWidth - graph.margin.right}
+                        y2={graph.viewHeight - graph.margin.bottom}
+                        stroke="#9CA3AF"
+                        strokeWidth="0.5"
+                      />
+                      <line
+                        x1={graph.margin.left}
+                        y1={graph.yMid}
+                        x2={graph.viewWidth - graph.margin.right}
+                        y2={graph.yMid}
+                        stroke="#D1D5DB"
+                        strokeWidth="0.5"
+                      />
+                      <line
+                        x1={graph.margin.left}
+                        y1={graph.yBottom}
+                        x2={graph.viewWidth - graph.margin.right}
+                        y2={graph.yBottom}
+                        stroke="#E5E7EB"
+                        strokeWidth="0.4"
+                      />
+
+                      <polyline
+                        fill="none"
+                        stroke="#3B82F6"
+                        strokeWidth="0.8"
+                        points={graph.linePath}
+                        strokeLinejoin="round"
+                        strokeLinecap="round"
+                      />
+
+                      {graph.points.map((point) => (
+                        <g key={`${point.age}-${point.score}`}>
+                          <circle cx={point.x} cy={point.y} r="1.2" fill="#3B82F6" />
+                        </g>
+                      ))}
+                    </svg>
+                  </div>
+                ) : (
+                  <p className="whitespace-pre-wrap">
+                    カードを追加すると、ここにグラフが表示されます。
+                  </p>
+                )}
+              </div>
+            </div>
 
             {filteredRows.length === 0 ? (
               <div className="overflow-hidden bg-white shadow rounded-lg mb-5">
