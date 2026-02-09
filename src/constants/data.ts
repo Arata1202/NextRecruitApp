@@ -14,6 +14,7 @@ import {
   ArrowRightStartOnRectangleIcon,
   EnvelopeIcon as EnvelopeIconOutline,
   ChartPieIcon,
+  FaceSmileIcon,
 } from '@heroicons/react/24/outline';
 
 export const TITLE = '就活スケジュール管理サービス リクビジョン';
@@ -58,6 +59,7 @@ export const SERVICE_NAVIGATION = [
   { name: '企業管理', href: '/service/selection', icon: BuildingOffice2Icon },
   { name: 'ESテンプレート', href: '/service/template', icon: ClipboardDocumentListIcon },
   { name: '自己分析', href: '/service/analysis', icon: ChartBarIcon },
+  { name: '幸福度', href: '/service/happiness', icon: FaceSmileIcon },
 ];
 
 export const SERVICE_SETTING_NAVIGATION = [
