@@ -1,21 +1,76 @@
-.space {
-  margin-top: 100px;
+.section {
+  margin-top: 82px;
+  margin-bottom: 34px;
 }
 
-.marginBottom {
-  margin-bottom: 38px;
+.header {
+  max-width: 42rem;
+}
+
+.eyebrow {
+  font-size: 0.76rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: #0f766e;
+}
+
+.title {
+  margin-top: 0.54rem;
+  font-size: clamp(1.7rem, 4.4vw, 2.9rem);
+  line-height: 1.15;
+  font-weight: 780;
+  color: #0f172a;
+}
+
+.description {
+  margin-top: 0.8rem;
+  line-height: 1.72;
+  color: #334155;
+}
+
+.grid {
+  margin-top: 1.2rem;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+}
+
+.card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 1.15rem;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 20px 34px rgba(15, 23, 42, 0.1);
+}
+
+.cardImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.45s ease;
+}
+
+.card:hover .cardImage {
+  transform: scale(1.06);
+}
+
+@media (min-width: 768px) {
+  .grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1280px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 1023px) {
-  .space {
-    margin-top: 50px;
-  }
-
-  .textLeft {
-    text-align: left;
-  }
-
-  .marginBottom {
-    margin-bottom: 0 !important;
+  .section {
+    margin-top: 56px;
+    margin-bottom: 10px;
   }
 }

@@ -1,25 +1,190 @@
 .hero {
-  margin-top: 38px;
+  margin-top: 20px;
 }
 
-.mobile {
-  display: none;
+.grid {
+  display: grid;
+  gap: 2.5rem;
+  align-items: center;
 }
 
-.pc {
+.copy {
+  animation: riseIn 0.72s ease-out both;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border-radius: 999px;
+  border: 1px solid rgba(15, 23, 42, 0.16);
+  background: rgba(255, 255, 255, 0.72);
+  padding: 0.4rem 0.9rem;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: #14532d;
+  box-shadow: 0 8px 30px rgba(15, 23, 42, 0.08);
+}
+
+.badgeIcon {
+  width: 1rem;
+  height: 1rem;
+}
+
+.title {
+  margin-top: 1.1rem;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+  font-weight: 780;
+  color: #0f172a;
+}
+
+.titleAccent {
   display: block;
+  margin-top: 0.25rem;
+  color: #0f766e;
+}
+
+.description {
+  margin-top: 1.15rem;
+  max-width: 40rem;
+  font-size: 1.06rem;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.actions {
+  margin-top: 1.7rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.primaryAction,
+.secondaryAction {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.85rem;
+  padding: 0.82rem 1.2rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.primaryAction {
+  background: linear-gradient(135deg, #0f766e 0%, #0f4c81 100%);
+  color: #ffffff;
+  box-shadow: 0 16px 26px rgba(15, 76, 129, 0.2);
+}
+
+.secondaryAction {
+  border: 1px solid rgba(15, 23, 42, 0.18);
+  background: rgba(255, 255, 255, 0.76);
+  color: #0f172a;
+}
+
+.primaryAction:hover,
+.secondaryAction:hover {
+  transform: translateY(-1px);
+}
+
+.featureList {
+  margin-top: 0.8rem;
+  display: grid;
+  gap: 0.7rem;
+}
+
+.featureCard {
+  display: flex;
+  gap: 0.75rem;
+  border-radius: 0.95rem;
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  background: rgba(255, 255, 255, 0.78);
+  padding: 0.82rem 0.95rem;
+  box-shadow: 0 14px 26px rgba(15, 23, 42, 0.06);
+}
+
+.featureIcon {
+  margin-top: 0.15rem;
+  width: 1.2rem;
+  height: 1.2rem;
+  color: #0f766e;
+  flex-shrink: 0;
+}
+
+.featureTitle {
+  font-size: 0.94rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.featureDescription {
+  margin-top: 0.2rem;
+  font-size: 0.86rem;
+  line-height: 1.55;
+  color: #475569;
+}
+
+.visualArea {
+  animation: riseIn 0.86s ease-out both;
+  animation-delay: 0.08s;
+  align-self: start;
+}
+
+.visualCard {
+  width: 100%;
+}
+
+.visualImage {
+  width: 100%;
+  border-radius: 1.2rem;
+  display: block;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  box-shadow: 0 24px 45px rgba(15, 23, 42, 0.16);
+}
+
+@keyframes riseIn {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (min-width: 1024px) {
+  .grid {
+    grid-template-columns: minmax(0, 1.03fr) minmax(0, 0.97fr);
+  }
+
+  .featureList {
+    grid-column: 1 / -1;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 1023px) {
   .hero {
-    margin-top: 0 !important;
+    margin-top: 6px;
   }
 
-  .mobile {
-    display: block;
+  .title {
+    font-size: clamp(1.85rem, 9vw, 2.8rem);
   }
 
-  .pc {
-    display: none;
+  .description {
+    font-size: 0.99rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .actions {
+    display: grid;
+    grid-template-columns: 1fr;
   }
 }

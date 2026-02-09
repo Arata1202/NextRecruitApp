@@ -1,0 +1,60 @@
+.home {
+  --lp-ink: #0f172a;
+  --lp-muted: #475569;
+  --lp-surface: #ffffff;
+  --lp-border: rgba(15, 23, 42, 0.12);
+  --lp-primary: #0f766e;
+  --lp-primary-deep: #0f4c81;
+  --lp-warm: #fb923c;
+  position: relative;
+  overflow: hidden;
+  padding: 24px 0 40px;
+  background:
+    radial-gradient(circle at 8% 8%, rgba(15, 118, 110, 0.2), transparent 38%),
+    radial-gradient(circle at 92% 14%, rgba(251, 146, 60, 0.22), transparent 34%),
+    linear-gradient(180deg, #f7fbff 0%, #eef5ff 46%, #fdf7ed 100%);
+  color: var(--lp-ink);
+}
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+.decorTop,
+.decorBottom {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 9999px;
+  filter: blur(50px);
+  opacity: 0.4;
+}
+
+.decorTop {
+  top: -120px;
+  left: -60px;
+  width: 280px;
+  height: 280px;
+  background: rgba(56, 189, 248, 0.4);
+}
+
+.decorBottom {
+  right: -120px;
+  bottom: -140px;
+  width: 360px;
+  height: 360px;
+  background: rgba(249, 115, 22, 0.35);
+}
+
+.adWrap {
+  margin-top: 1.25rem;
+  margin-inline: auto;
+  max-width: 80rem;
+  padding-inline: 1.5rem;
+}
+
+@media (max-width: 1023px) {
+  .home {
+    padding: 16px 0 28px;
+  }
+}

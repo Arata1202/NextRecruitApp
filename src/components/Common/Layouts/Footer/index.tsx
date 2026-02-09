@@ -35,6 +35,20 @@ export default function Footer() {
               </div>
               <div className={`${styles.menuItem} mt-10 md:mt-0`}>
                 <h3 className="text-sm/6 font-semibold ">デベロッパー</h3>
+                <ul className="mt-6 space-y-4">
+                  {FOOTER_NAVIGATION.developer.map((item) => (
+                    <li key={item.name}>
+                      <Link
+                        href={item.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-sm/6 hover:text-blue-500"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
             <div className={`${styles.menuItem} md:grid md:grid-cols-2 md:gap-8`}>
