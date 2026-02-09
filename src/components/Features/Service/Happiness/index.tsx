@@ -748,7 +748,7 @@ export default function HappinessFeature() {
                         onChange={(event) =>
                           setAddDraft((prev) => ({ ...prev, reason: event.target.value }))
                         }
-                        className="w-full rounded-md border border-gray-300 p-3 text-base sm:text-sm focus:border-2 focus:border-blue-500 focus:outline-none"
+                        className="w-full rounded-md border border-gray-300 p-3 text-sm focus:border-2 focus:border-blue-500 focus:outline-none"
                         placeholder="内容"
                       />
                     </div>
@@ -856,7 +856,7 @@ export default function HappinessFeature() {
                             reason: event.target.value,
                           }))
                         }
-                        className="w-full rounded-md border border-gray-300 p-3 text-base sm:text-sm focus:border-2 focus:border-blue-500 focus:outline-none"
+                        className="w-full rounded-md border border-gray-300 p-3 text-sm focus:border-2 focus:border-blue-500 focus:outline-none"
                         placeholder="内容"
                       />
                     </div>
