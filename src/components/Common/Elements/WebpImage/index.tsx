@@ -15,9 +15,10 @@ type Props = {
 };
 
 const getDimension = (card: boolean, recent: boolean) => {
-  if (recent) return { width: 320, height: 180 };
-  if (card) return { width: 240, height: 126 };
-  return { width: 960, height: 504 };
+  // Use width-only resizing to avoid any cropping.
+  if (recent) return { width: 320 };
+  if (card) return { width: 240 };
+  return { width: 960 };
 };
 
 const getClassName = (card: boolean, recent: boolean, className?: string) => {
@@ -41,9 +42,9 @@ export default function WebpImage({
     return <img src={fallbackSrc} alt={alt} className={finalClassName} loading="lazy" />;
   }
 
-  const { width, height } = getDimension(card, recent);
-  const src1x = `${item.thumbnail.url}?fm=webp&q=60&fit=crop&w=${width}&h=${height}`;
-  const src2x = `${src1x}&dpr=2`;
+  const { width } = getDimension(card, recent);
+  const src1x = `${item.thumbnail.url}?fm=webp&q=60&w=${width}`;
+  const src2x = `${item.thumbnail.url}?fm=webp&q=60&w=${width}&dpr=2`;
   const srcSet = `${src1x} 1x, ${src2x} 2x`;
 
   return (

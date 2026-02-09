@@ -1,4 +1,3 @@
-import Link from 'next/link';
 import { ArrowPathIcon, ClockIcon } from '@heroicons/react/24/outline';
 import { Blog } from '@/types/microcms';
 import { formatDate } from '@/utils/formatDate';
@@ -43,7 +42,7 @@ export default function BlogFeature({ articles, errorMessage }: Props) {
     <ul className={styles.list}>
       {articles.map((article) => (
         <li key={article.id} className={styles.item}>
-          <Link href={`/blog/articles/${article.id}`} className={styles.link}>
+          <a href={`/blog/articles/${article.id}`} className={styles.link}>
             <WebpImage item={article} card={true} className={styles.image} />
             <div className={styles.content}>
               <h2 className={styles.title}>{article.title}</h2>
@@ -61,7 +60,7 @@ export default function BlogFeature({ articles, errorMessage }: Props) {
                 )}
               </div>
             </div>
-          </Link>
+          </a>
         </li>
       ))}
     </ul>
