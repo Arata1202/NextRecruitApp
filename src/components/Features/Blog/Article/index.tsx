@@ -44,56 +44,91 @@ const isRelatedArticleLink = (value: unknown): value is RelatedArticleLink => {
   return typeof value === 'object' && value !== null && 'id' in value;
 };
 
+const RIKUVISION_URL = 'https://rikuvision.realunivlog.com';
+const RIKUVISION_SECTION_TITLE = 'リクビジョンでできること';
+const RIKUVISION_SECTION_ID_BASE = 'rikuvision-dekirukoto';
+
 export default function BlogArticleFeature({ article }: Props) {
-  const { headings, processedHtml, introBlocks, contentBlocks } = useMemo(() => {
-    const extractedHeadings: Heading[] = [];
-    const idCount: Record<string, number> = {};
+  const { headings, processedHtml, introBlocks, contentBlocks, rikuvisionSectionId } =
+    useMemo(() => {
+      const extractedHeadings: Heading[] = [];
+      const idCount: Record<string, number> = {};
 
-    const prepareHtml = (html: string, prefix: string, collectHeadings = false) => {
-      const { processedHtml: nextHtml } = extractHeadingsFromHtml(
-        html,
-        collectHeadings
-          ? {
-              collectHeadings: extractedHeadings,
-              idCount,
-              idPrefix: prefix,
-            }
-          : { idPrefix: prefix },
-      );
-      return withLazyImage(nextHtml);
-    };
+      const prepareHtml = (html: string, prefix: string, collectHeadings = false) => {
+        const { processedHtml: nextHtml } = extractHeadingsFromHtml(
+          html,
+          collectHeadings
+            ? {
+                collectHeadings: extractedHeadings,
+                idCount,
+                idPrefix: prefix,
+              }
+            : { idPrefix: prefix },
+        );
+        return withLazyImage(nextHtml);
+      };
 
-    const processedIntroduction = (article.introduction_blocks || []).map((block, index) => ({
-      ...block,
-      processedRichText: block.rich_text
-        ? prepareHtml(block.rich_text, `intro-${index}`)
-        : undefined,
-      processedCustomHtml: block.custom_html
-        ? prepareHtml(block.custom_html, `intro-custom-${index}`)
-        : undefined,
-    }));
+      const processedIntroduction = (article.introduction_blocks || []).map((block, index) => ({
+        ...block,
+        processedRichText: block.rich_text
+          ? prepareHtml(block.rich_text, `intro-${index}`)
+          : undefined,
+        processedCustomHtml: block.custom_html
+          ? prepareHtml(block.custom_html, `intro-custom-${index}`)
+          : undefined,
+      }));
 
-    const processedContentBlocks = (article.content_blocks || []).map((block, index) => ({
-      ...block,
-      processedRichText: block.rich_text
-        ? prepareHtml(block.rich_text, `content-${index}`, true)
-        : undefined,
-      processedCustomHtml: block.custom_html
-        ? prepareHtml(block.custom_html, `content-custom-${index}`, true)
-        : undefined,
-    }));
+      const processedContentBlocks = (article.content_blocks || []).map((block, index) => ({
+        ...block,
+        processedRichText: block.rich_text
+          ? prepareHtml(block.rich_text, `content-${index}`, true)
+          : undefined,
+        processedCustomHtml: block.custom_html
+          ? prepareHtml(block.custom_html, `content-custom-${index}`, true)
+          : undefined,
+      }));
 
-    const fallbackHtml = article.content ? prepareHtml(article.content, 'content', true) : '';
+      const fallbackHtml = article.content ? prepareHtml(article.content, 'content', true) : '';
 
-    return {
-      headings: extractedHeadings,
-      processedHtml: fallbackHtml,
-      introBlocks: processedIntroduction,
-      contentBlocks: processedContentBlocks,
-    };
-  }, [article.content, article.content_blocks, article.introduction_blocks]);
+      const rikuvisionSectionIdCount = (idCount[RIKUVISION_SECTION_ID_BASE] || 0) + 1;
+      idCount[RIKUVISION_SECTION_ID_BASE] = rikuvisionSectionIdCount;
+      const finalRikuvisionSectionId =
+        rikuvisionSectionIdCount === 1
+          ? RIKUVISION_SECTION_ID_BASE
+          : `${RIKUVISION_SECTION_ID_BASE}-${rikuvisionSectionIdCount}`;
+      extractedHeadings.push({
+        id: finalRikuvisionSectionId,
+        title: RIKUVISION_SECTION_TITLE,
+        level: 2,
+      });
+
+      return {
+        headings: extractedHeadings,
+        processedHtml: fallbackHtml,
+        introBlocks: processedIntroduction,
+        contentBlocks: processedContentBlocks,
+        rikuvisionSectionId: finalRikuvisionSectionId,
+      };
+    }, [article.content, article.content_blocks, article.introduction_blocks]);
 
   const hasBlockContent = introBlocks.length > 0 || contentBlocks.length > 0;
+
+  const renderRikuvisionCard = () => (
+    <Link href={RIKUVISION_URL} className={styles.wantToReadCard}>
+      <WebpImage
+        item={{ title: '就活管理サービス リクビジョン' }}
+        card={true}
+        className={styles.wantToReadImage}
+        fallbackSrc="/images/og/1.png"
+      />
+      <div className={styles.wantToReadBody}>
+        <p className={styles.wantToReadHeading}>就活スケジュール管理サービス リクビジョン</p>
+        <p className={styles.wantToReadDescription}>
+          就活における日程管理や自己分析、選考状況などを一括で管理することのできるサービスです。
+        </p>
+      </div>
+    </Link>
+  );
 
   const renderBlock = (block: ProcessedBlock) => (
     <>
@@ -216,6 +251,16 @@ export default function BlogArticleFeature({ article }: Props) {
         </div>
       ))}
 
+      <div className={styles.introBlock}>
+        <div className={styles.content}>
+          <p>
+            まずは就活情報をまとめて管理できる場所を作るのが近道です。就活管理サービス リクビジョン
+            なら、イベント・企業情報・選考状況を一括で整理できます。
+          </p>
+        </div>
+        <div className={styles.wantToReadWrap}>{renderRikuvisionCard()}</div>
+      </div>
+
       {headings.length > 0 && (
         <div className={styles.tocWrap}>
           <TableOfContent headings={headings} />
@@ -229,9 +274,51 @@ export default function BlogArticleFeature({ article }: Props) {
               {renderBlock(block)}
             </div>
           ))}
+          <div className={styles.contentBlock}>
+            <div className={styles.content}>
+              <h2 id={rikuvisionSectionId} className="bg-gray-300 text-gray-700">
+                {RIKUVISION_SECTION_TITLE}
+              </h2>
+              <p>
+                リクビジョンは、就活生向けに
+                <strong>イベント・企業情報・選考状況をまとめて管理できるサービス</strong>です。
+              </p>
+              <ul>
+                <li>面接や締切をカレンダーで一目管理できます</li>
+                <li>企業ごとの選考状況を整理できます</li>
+                <li>ESテンプレや自己分析もまとめて保存できます</li>
+                <li>
+                  幸福度を記録して、幼少期から現在までの変化を振り返り、就活の軸の決定や自己理解を深めるために活用できます。
+                </li>
+              </ul>
+            </div>
+            <div className={styles.wantToReadWrap}>{renderRikuvisionCard()}</div>
+          </div>
         </>
       ) : (
-        <div className={styles.content} dangerouslySetInnerHTML={{ __html: processedHtml }} />
+        <>
+          <div className={styles.content} dangerouslySetInnerHTML={{ __html: processedHtml }} />
+          <div className={styles.contentBlock}>
+            <div className={styles.content}>
+              <h2 id={rikuvisionSectionId} className="bg-gray-300 text-gray-700">
+                {RIKUVISION_SECTION_TITLE}
+              </h2>
+              <p>
+                リクビジョンは、就活生向けに
+                <strong>イベント・企業情報・選考状況をまとめて管理できるサービス</strong>です。
+              </p>
+              <ul>
+                <li>面接や締切をカレンダーで一目管理できます</li>
+                <li>企業ごとの選考状況を整理できます</li>
+                <li>ESテンプレや自己分析もまとめて保存できます</li>
+                <li>
+                  幸福度を記録して、幼少期から現在までの変化を振り返り、就活の軸の決定や自己理解を深めるために活用できます。
+                </li>
+              </ul>
+            </div>
+            <div className={styles.wantToReadWrap}>{renderRikuvisionCard()}</div>
+          </div>
+        </>
       )}
     </article>
   );
